@@ -1,0 +1,18 @@
+ext {
+    core_ktx_version = "1.16.0"
+    lifecycle_version = "2.9.1"
+    activity_compose_version = "1.10.1"
+    compose_bom_version = "2025.06.01"
+    navigation_version = "1.0.0-alpha01"
+    desugaring_version = "2.1.5"
+
+    detekt_version = "1.23.8"
+    gson_version = "2.11.0"
+    kotlin_serialization_version = "1.5.1"
+    glide_version = "2.5.1"
+    koin_version = "4.0.0"
+    retrofit_version = "3.0.0"
+    logging_interceptor_version = "5.1.0"
+    datastore_version = "1.1.7"
+    room_version = "2.7.2"
+}

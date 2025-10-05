@@ -1,4 +1,4 @@
-package com.firdavs.persianliterature.ui.theme
+package com.firdavs.persianliterature.app.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

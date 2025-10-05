@@ -1,0 +1,63 @@
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+
+apply from: "$rootDir/gradle/scripts/dependencies.gradle"
+apply from: "$rootDir/gradle/scripts/detekt.gradle"
+
+def signingProps = new Properties()
+def propsDir = file("$rootDir/signing/")
+if (!propsDir.exists()) propsDir.mkdir()
+def props = file("$rootDir/signing/signing.properties")
+if (!props.exists()) props.createNewFile()
+props.withInputStream { signingProps.load(it) }
+
+android {
+    compileSdk 36
+    defaultConfig {
+        minSdk 24
+        targetSdk 36
+        versionCode 1
+        versionName "1.0"
+
+        vectorDrawables.useSupportLibrary true
+        multiDexEnabled true
+        resourceConfigurations += ['ru']
+
+    }
+    buildFeatures {
+        buildConfig true
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.7"
+    }
+    kotlin {
+        jvmToolchain(17)
+    }
+    lint {
+        disable 'Instantiatable'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+            )
+        }
+        debug {
+            minifyEnabled false
+            debuggable true
+        }
+    }
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+    }
+}
+
+dependencies {
+    implementation library.koin
+    coreLibraryDesugaring library.desugaring
+}

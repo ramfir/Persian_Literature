@@ -1,4 +1,6 @@
-package com.firdavs.persianliterature.ui.theme
+@file:Suppress("MagicNumber")
+
+package com.firdavs.persianliterature.app.theme
 
 import androidx.compose.ui.graphics.Color
 
