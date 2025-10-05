@@ -1,0 +1,29 @@
+apply plugin: 'com.android.application'
+apply plugin: 'maven-publish'
+apply from: "$rootDir/gradle/scripts/android-config.gradle"
+apply from: "$rootDir/gradle/scripts/compose-dependencies.gradle"
+
+android {
+    namespace 'com.firdavs.persianliterature.app'
+
+    defaultConfig {
+        applicationId "com.firdavs.persianliterature"
+    }
+}
+
+dependencies {
+    implementation library.activity_compose
+    implementation groups.navigation
+}
+
+tasks.register("runKoinModuleTests", Test.class) {
+    description = "Runs Koin module tests."
+    group = "verification"
+
+    testClassesDirs = files("/src/test/kotlin")
+    include("/src/test/kotlin/KoinModulesTest.class")
+}
+
+tasks.named("check") {
+    dependsOn("runKoinModuleTests")
+}

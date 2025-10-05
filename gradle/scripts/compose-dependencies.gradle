@@ -1,0 +1,10 @@
+apply from: "$rootDir/gradle/scripts/dependencies.gradle"
+
+dependencies {
+    implementation platform(library.compose_bom)
+    implementation groups.compose
+    implementation groups.lifecycle
+    implementation library.koin_compose
+    implementation library.compose_tooling_preview
+    debugImplementation groups.compose_debug
+}

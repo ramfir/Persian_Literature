@@ -1,0 +1,21 @@
+apply plugin: "io.gitlab.arturbosch.detekt"
+apply from: "$rootDir/gradle/scripts/dependencies.gradle"
+
+def reportDir = "$rootProject.rootDir/build/reports/"
+def reportsFile = "$reportDir/detekt.html"
+
+detekt {
+    parallel = true
+    ignoredBuildTypes = ["debug", "release"]
+    config = files("$rootDir/config/detekt-config.yml")
+    reportsDir = file(reportDir)
+    autoCorrect = true
+    reports {
+        html.required.set(true)
+        html.outputLocation.set(file(reportsFile))
+    }
+}
+
+dependencies {
+    detektPlugins "$library.detekt_formatting"
+}
