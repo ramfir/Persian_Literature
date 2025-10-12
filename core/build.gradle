@@ -1,0 +1,10 @@
+apply from: "$rootDir/gradle/scripts/compose-module.gradle"
+
+android {
+    namespace 'com.firdavs.persianliterature.core'
+}
+
+dependencies {
+    implementation library.datastore
+    implementation library.kotlin_serialization
+}

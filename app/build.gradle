@@ -12,6 +12,10 @@ android {
 }
 
 dependencies {
+    implementation module.author_ui
+    implementation module.core
+    implementation module.ui_kit
+
     implementation library.activity_compose
     implementation groups.navigation
 }
