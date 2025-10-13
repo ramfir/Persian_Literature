@@ -1,0 +1,9 @@
+apply from: "$rootDir/gradle/scripts/compose-module.gradle"
+
+android {
+    namespace 'com.firdavs.persianliterature.ui.kit'
+}
+
+dependencies {
+    implementation module.core
+}

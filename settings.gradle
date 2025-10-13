@@ -21,4 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Persian Literature"
 include(":app")
- 
+include(":author_ui")
+include ':core'
+include ':ui_kit'
