@@ -15,7 +15,7 @@ fun Navigator(
     modifier: Modifier = Modifier
 ) {
     val backStack = rememberNavBackStack(Route.AuthorsList)
-    backStack.startNewRoot(Route.AuthorsList)
+    //backStack.startNewRoot(Route.AuthorsList)
 
     NavDisplay(
         modifier = modifier,

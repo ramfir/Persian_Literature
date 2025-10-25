@@ -7,4 +7,6 @@ android {
 dependencies {
     implementation module.core
     implementation module.ui_kit
+
+    implementation library.glide
 }

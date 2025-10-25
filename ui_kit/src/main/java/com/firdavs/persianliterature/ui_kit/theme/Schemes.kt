@@ -13,8 +13,8 @@ val LightColorScheme = lightColorScheme(
     errorContainer = Red,
     onErrorContainer = MelonLight,
 
-    background = DarkChocolate,
-    onBackground = Parchment_Text,
+    background = GreyLight,
+    onBackground = GoldLight,
 
     outline = Grey
 )
@@ -30,8 +30,8 @@ val DarkColorScheme = lightColorScheme(
     errorContainer = Red,
     onErrorContainer = MelonLight,
 
-    background = DarkChocolate,
-    onBackground = Parchment_Text,
+    background = GreyLight,
+    onBackground = GoldLight,
 
     outline = Grey
 )
