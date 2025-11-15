@@ -1,15 +1,17 @@
 apply from: "$rootDir/gradle/scripts/compose-module.gradle"
 
 android {
-    namespace 'com.firdavs.persianliterature.author.ui'
+    namespace 'com.firdavs.persianliterature.author'
 }
 
 dependencies {
-    implementation module.core
-    implementation module.ui_kit
     implementation module.author_api
 
-    implementation library.glide
     implementation platform(library.firebase_bom)
     implementation library.firestore_ktx
+    implementation library.coroutines_play_services
+
+    implementation library.room_runtime
+    implementation library.room_ktx
+    kapt library.room_compiler
 }

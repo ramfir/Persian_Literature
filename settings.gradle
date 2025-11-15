@@ -24,3 +24,5 @@ include(":app")
 include(":author_ui")
 include ':core'
 include ':ui_kit'
+include ':author_api'
+include ':author'

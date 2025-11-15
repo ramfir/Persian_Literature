@@ -3,6 +3,7 @@ buildscript {
         kotlin_version = "2.2.0"
         plugin_android_version = '8.10.0'
         plugin_detekt_verstion = "1.23.8"
+        plugin_google_services_version = "4.4.2"
     }
 }
 
@@ -16,4 +17,6 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlin_version" apply false
     id 'io.gitlab.arturbosch.detekt' version "$plugin_detekt_verstion" apply false
     id 'org.jetbrains.kotlin.plugin.compose' version "$kotlin_version" apply false
+    id 'com.google.gms.google-services' version "$plugin_google_services_version" apply false
+
 }
