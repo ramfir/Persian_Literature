@@ -7,7 +7,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.firdavs.persianliterature.app.ui.MainActivityUiState
-import com.firdavs.persianliterature.author_ui.list.AuthorsListEntryPoint
+import com.firdavs.persianliterature.author.ui.list.AuthorsListEntryPoint
 
 @Composable
 fun Navigator(
@@ -15,7 +15,6 @@ fun Navigator(
     modifier: Modifier = Modifier
 ) {
     val backStack = rememberNavBackStack(Route.AuthorsList)
-    backStack.startNewRoot(Route.AuthorsList)
 
     NavDisplay(
         modifier = modifier,

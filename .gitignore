@@ -10,3 +10,5 @@
 local.properties
 /signing/signing.properties
 /.kotlin/
+/app/google-services.json
+

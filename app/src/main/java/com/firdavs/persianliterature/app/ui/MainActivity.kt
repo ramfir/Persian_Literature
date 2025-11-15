@@ -11,7 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.firdavs.persianliterature.app.navigation.Navigator
-import com.firdavs.persianliterature.ui_kit.theme.AppTheme
+import com.firdavs.persianliterature.ui.kit.theme.AppTheme
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {

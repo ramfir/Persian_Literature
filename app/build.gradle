@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'maven-publish'
 apply from: "$rootDir/gradle/scripts/android-config.gradle"
 apply from: "$rootDir/gradle/scripts/compose-dependencies.gradle"
+apply plugin: 'com.google.gms.google-services'
 
 android {
     namespace 'com.firdavs.persianliterature.app'
@@ -12,9 +13,10 @@ android {
 }
 
 dependencies {
-    implementation module.author_ui
     implementation module.core
     implementation module.ui_kit
+    implementation module.author_ui
+    implementation module.author
 
     implementation library.activity_compose
     implementation groups.navigation
