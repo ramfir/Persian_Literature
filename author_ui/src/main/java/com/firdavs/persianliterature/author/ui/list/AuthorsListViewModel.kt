@@ -4,17 +4,20 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
 import com.firdavs.persianliterature.author.ui.mapper.AuthorUiMapper
+import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import com.firdavs.persianliterature.core.presentation.BaseViewModel
 import kotlinx.coroutines.launch
 
 class AuthorsListViewModel(
     private val authorRepository: AuthorRepository,
-    private val authorUiMapper: AuthorUiMapper
+    private val authorUiMapper: AuthorUiMapper,
+    private val worksRepository: WorksRepository
 ) :
     BaseViewModel<AuthorsListUiState>(AuthorsListUiState()) {
     init {
         observeAuthors()
         fetchAuthors()
+        fetchWorks()
     }
 
     private fun observeAuthors() {
@@ -35,6 +38,16 @@ class AuthorsListViewModel(
                 post { it.copy(isLoading = false) }
             }.onSuccess {
                 post { it.copy(isLoading = false) }
+            }
+        }
+    }
+
+    private fun fetchWorks() {
+        viewModelScope.launch {
+            runCatching {
+                worksRepository.fetchWorks()
+            }.onFailure {
+                Log.e(TAG, "fetchWorks error ", it)
             }
         }
     }

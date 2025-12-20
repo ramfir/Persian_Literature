@@ -5,5 +5,6 @@ data class AuthorUiModel(
     val photoUrl: String?,
     val fullName: String,
     val birthDate: String,
-    val deathDate: String
+    val deathDate: String,
+    val bioUrl: String? = null
 )

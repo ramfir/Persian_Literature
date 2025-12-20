@@ -8,8 +8,10 @@ dependencies {
     implementation module.core
     implementation module.ui_kit
     implementation module.author_api
+    implementation module.util
 
     implementation library.glide
     implementation platform(library.firebase_bom)
     implementation library.firestore_ktx
+    implementation library.pdf_viewer
 }

@@ -7,6 +7,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.firdavs.persianliterature.app.ui.MainActivityUiState
+import com.firdavs.persianliterature.author.ui.details.AuthorDetailsEntryPoint
 import com.firdavs.persianliterature.author.ui.list.AuthorsListEntryPoint
 
 @Composable
@@ -20,7 +21,12 @@ fun Navigator(
         modifier = modifier,
         backStack = backStack,
         entryProvider = entryProvider {
-            entry<Route.AuthorsList> { AuthorsListEntryPoint() }
+            entry<Route.AuthorsList> {
+                AuthorsListEntryPoint(
+                    onAuthorClick = { backStack.next(Route.AuthorDetails(it)) }
+                )
+            }
+            entry<Route.AuthorDetails> { AuthorDetailsEntryPoint(it.id) }
         }
     )
 }

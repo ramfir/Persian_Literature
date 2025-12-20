@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface AuthorRepository {
     suspend fun fetchAuthors()
     fun getAuthors(): Flow<List<Author>>
+    fun getAuthor(id: String): Flow<Author>
 }

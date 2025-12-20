@@ -7,5 +7,5 @@ data class AuthorsListUiState(
     val authors: List<AuthorUiModel> = emptyList(),
     val isSearchActive: Boolean = false,
     val searchQuery: String = "",
-    val isLoading: Boolean = false
+    val isLoading: Boolean = true
 ) : UiState()

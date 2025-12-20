@@ -17,6 +17,7 @@ dependencies {
     implementation module.ui_kit
     implementation module.author_ui
     implementation module.author
+    implementation module.util
 
     implementation library.activity_compose
     implementation groups.navigation
