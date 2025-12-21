@@ -33,7 +33,7 @@ class AuthorDetailsViewModel(
                     it.copy(author = author.toUi(), isLoading = false)
                 }
                 author.bioUrl?.let {
-                    downloadPdf(it)
+                    downloadPdf(it, author.name)
                 } ?: post { it.copy(isLoadingFile = false) }
             }
         }
@@ -46,28 +46,24 @@ class AuthorDetailsViewModel(
             }
         }
     }
-    private fun downloadPdf(url: String) {
+    private fun downloadPdf(url: String, fileName: String) {
         downloadPdfScope.launch {
             post { it.copy(isLoadingFile = true) }
-            runWithRetry(maxAttempts = 5) { tryDownloadPdf(url) }?.let {
+            runWithRetry(maxAttempts = 5) { tryDownloadPdf(url, fileName) }?.let {
                 post { it.copy(isLoadingFile = false) }
             }
         }
     }
 
-    private suspend fun tryDownloadPdf(url: String) {
-        pdfDownloader.downloadPdfFile(pdfUrl = url) { pdfFile ->
+    private suspend fun tryDownloadPdf(url: String, fileName: String) {
+        pdfDownloader.downloadPdfFile(pdfUrl = url, fileName = fileName) { pdfFile ->
             post { it.copy(isLoadingFile = false) }
             post { it.copy(bioFile = pdfFile) }
         }
     }
 
-    fun onBioClick() {
-        post { it.copy(chapter = Chapter.Bio) }
-    }
-
-    fun onWorksClick() {
-        post { it.copy(chapter = Chapter.Works) }
+    fun onChapterClick(chapter: Chapter) {
+        post { it.copy(chapter = chapter) }
     }
 
     companion object {

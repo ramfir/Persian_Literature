@@ -16,4 +16,7 @@ interface WorksDao {
 
     @Query("SELECT * FROM ${AuthorsDb.WORKS} WHERE authorId = :id")
     fun getByAuthorIdFlow(id: String): Flow<List<WorkEntity>>
+
+    @Query("SELECT * FROM ${AuthorsDb.WORKS} WHERE id = :id")
+    fun getByIdFlow(id: String): Flow<WorkEntity>
 }

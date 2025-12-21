@@ -6,6 +6,8 @@
     <string name="bio">Biography</string>
     <string name="works">Works</string>
     <string name="bio_loading">Loading biography…</string>
+    <string name="work_loading">Loading work…</string>
     <string name="no_works_found">No works found</string>
+    <string name="no_bio_found">No bio found</string>
     <string name="published_at">published at %s</string>
 </resources>

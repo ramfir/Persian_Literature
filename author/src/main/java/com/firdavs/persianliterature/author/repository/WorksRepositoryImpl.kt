@@ -34,4 +34,10 @@ class WorksRepositoryImpl(
             works.toDomain()
         }
     }
+
+    override fun getWork(id: String): Flow<Work> {
+        return worksDao.getByIdFlow(id).map {
+            it.toDomain()
+        }
+    }
 }

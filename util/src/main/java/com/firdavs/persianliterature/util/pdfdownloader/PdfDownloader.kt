@@ -6,6 +6,7 @@ import java.io.File
 interface PdfDownloader {
     suspend fun downloadPdfFile(
         pdfUrl: String,
+        fileName: String,
         @MainThread
         doOnSuccess: (File) -> Unit
     )

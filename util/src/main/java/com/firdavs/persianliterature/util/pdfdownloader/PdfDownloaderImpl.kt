@@ -11,15 +11,16 @@ import java.net.URL
 class PdfDownloaderImpl(private val context: Context) : PdfDownloader {
     override suspend fun downloadPdfFile(
         pdfUrl: String,
+        fileName: String,
         doOnSuccess: (File) -> Unit
     ) {
-        val filePath = downloadToFile(pdfUrl)
+        val filePath = downloadToFile(pdfUrl, fileName)
         withContext(Dispatchers.Main) {
             doOnSuccess(File(filePath))
         }
     }
 
-    private fun downloadToFile(pdfUrl: String): String {
+    private fun downloadToFile(pdfUrl: String, downloadedFileName: String): String {
         val filePath = context.filesDir.toString() + "/$downloadedFileName"
 
         val url = URL(pdfUrl)
@@ -40,7 +41,6 @@ class PdfDownloaderImpl(private val context: Context) : PdfDownloader {
     }
 
     companion object {
-        private const val downloadedFileName: String = "downloaded.pdf"
         private const val bufferSize: Int = 8192
     }
 }

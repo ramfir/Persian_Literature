@@ -9,4 +9,7 @@ sealed interface Route : NavKey {
 
     @Serializable
     data class AuthorDetails(val id: String) : Route
+
+    @Serializable
+    data class WorkDetails(val id: String) : Route
 }

@@ -1,6 +1,7 @@
 package com.firdavs.persianliterature.author.ui.details
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,13 +53,14 @@ import java.io.File
 @Composable
 fun AuthorDetailsEntryPoint(
     id: String,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onWorkClick: (String) -> Unit
 ) {
-    BaseEntryPoint(AuthorDetailsViewModel::class, id,) { state, viewModel ->
+    BaseEntryPoint(AuthorDetailsViewModel::class, id) { state, viewModel ->
         AuthorDetailsScreen(
             state = state,
-            onBioClick = viewModel::onBioClick,
-            onWorksClick = viewModel::onWorksClick,
+            onWorkClick = onWorkClick,
+            onChapterClick = viewModel::onChapterClick,
             onBackClick = onBackClick
         )
     }
@@ -67,8 +69,8 @@ fun AuthorDetailsEntryPoint(
 @Composable
 fun AuthorDetailsScreen(
     state: AuthorDetailsUiState,
-    onBioClick: () -> Unit,
-    onWorksClick: () -> Unit,
+    onChapterClick: (Chapter) -> Unit,
+    onWorkClick: (String) -> Unit,
     onBackClick: () -> Unit
 ) {
     BaseScreen(
@@ -120,7 +122,8 @@ fun AuthorDetailsScreen(
                             }
                             Chapter.Works -> {
                                 WorksChapter(
-                                    works = state.works
+                                    works = state.works,
+                                    onWorkClick = onWorkClick
                                 )
                             }
                         }
@@ -130,8 +133,7 @@ fun AuthorDetailsScreen(
         },
         footerContent = {
             AuthorDetailsFooter(
-                onBioClick = onBioClick,
-                onWorksClick = onWorksClick
+                onChapterClick = onChapterClick
             )
         }
     )
@@ -180,13 +182,13 @@ private fun BioChapter(
                         }
                     }
                 )
-            }
+            } ?: H3Text(text = stringResource(R.string.no_bio_found))
         }
     }
 }
 
 @Composable
-private fun WorksChapter(works: List<Work>) {
+private fun WorksChapter(works: List<Work>, onWorkClick: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -208,7 +210,7 @@ private fun WorksChapter(works: List<Work>) {
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(works) { work ->
-                    WorkItem(work)
+                    WorkItem(work, onWorkClick = onWorkClick)
                     HorizontalDivider(
                         modifier = Modifier.padding(horizontal = 16.dp),
                         thickness = 1.dp,
@@ -221,10 +223,16 @@ private fun WorksChapter(works: List<Work>) {
 }
 
 @Composable
-private fun WorkItem(work: Work) {
+private fun WorkItem(
+    work: Work,
+    onWorkClick: (String) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable(onClick = {
+                onWorkClick(work.id)
+            })
             .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -240,8 +248,7 @@ private fun WorkItem(work: Work) {
 
 @Composable
 private fun AuthorDetailsFooter(
-    onBioClick: () -> Unit,
-    onWorksClick: () -> Unit
+    onChapterClick: (Chapter) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -251,7 +258,9 @@ private fun AuthorDetailsFooter(
         IconButton(
             modifier = Modifier
                 .weight(1f),
-            onClick = onBioClick
+            onClick = {
+                onChapterClick.invoke(Chapter.Bio)
+            }
         ) {
             Icon(
                 imageVector = Icons.Outlined.AccountCircle,
@@ -262,7 +271,9 @@ private fun AuthorDetailsFooter(
         IconButton(
             modifier = Modifier
                 .weight(1f),
-            onClick = onWorksClick
+            onClick = {
+                onChapterClick.invoke(Chapter.Works)
+            }
         ) {
             Icon(
                 imageVector = Icons.Outlined.DateRange,
@@ -281,8 +292,8 @@ private fun AuthorDetailsScreenPreview(
     AppPreviewTheme {
         AuthorDetailsScreen(
             state = state,
-            onBioClick = {},
-            onWorksClick = {},
+            onChapterClick = {},
+            onWorkClick = {},
             onBackClick = {}
         )
     }
