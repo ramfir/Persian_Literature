@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
 import com.firdavs.persianliterature.author.ui.mapper.AuthorUiMapper
+import com.firdavs.persianliterature.author.ui.model.AuthorUiModel
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import com.firdavs.persianliterature.core.presentation.BaseViewModel
 import kotlinx.coroutines.launch
@@ -20,10 +21,12 @@ class AuthorsListViewModel(
         fetchWorks()
     }
 
+    private var allAuthors: List<AuthorUiModel> = emptyList()
     private fun observeAuthors() {
         viewModelScope.launch {
             authorRepository.getAuthors().collect { authors ->
-                post { it.copy(authors = authorUiMapper.map(authors)) }
+                allAuthors = authorUiMapper.map(authors)
+                post { it.copy(authors = allAuthors) }
             }
         }
     }
@@ -66,6 +69,14 @@ class AuthorsListViewModel(
 
     fun onClearSearchQueryClick() {
         post { it.copy(searchQuery = "") }
+    }
+
+    fun filterAuthorsList() {
+        val searchQuery = state.value.searchQuery
+        val filteredAuthors = allAuthors.filter { author ->
+            author.fullName.contains(searchQuery, ignoreCase = true)
+        }
+        post { it.copy(authors = filteredAuthors) }
     }
 
     companion object {
