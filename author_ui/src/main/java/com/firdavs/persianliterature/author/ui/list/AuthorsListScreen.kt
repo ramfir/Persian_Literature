@@ -5,6 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,6 +20,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -26,9 +29,9 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,6 +52,9 @@ import com.firdavs.persianliterature.ui.kit.theme.AppPreviewTheme
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import com.firdavs.persianliterature.ui.kit.theme.LocalTypography
 import com.skydoves.landscapist.glide.GlideImage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 
 @Composable
@@ -62,7 +68,8 @@ fun AuthorsListEntryPoint(
             onExitSearchClick = viewModel::onExitSearchClick,
             onSearchQueryChange = viewModel::onSearchQueryChange,
             onClearSearchQueryClick = viewModel::onClearSearchQueryClick,
-            onAuthorClick = onAuthorClick
+            onAuthorClick = onAuthorClick,
+            filterAuthorsList = viewModel::filterAuthorsList
         )
     }
 }
@@ -75,7 +82,8 @@ private fun AuthorsListScreen(
     onExitSearchClick: () -> Unit,
     onSearchQueryChange: (String) -> Unit,
     onClearSearchQueryClick: () -> Unit,
-    onAuthorClick: (String) -> Unit
+    onAuthorClick: (String) -> Unit,
+    filterAuthorsList: () -> Unit
 ) {
     BaseScreen(
         drawerContent = {
@@ -93,74 +101,16 @@ private fun AuthorsListScreen(
             }
         },
         topBar = { drawerState, scope ->
-            TopAppBar(
-                title = {
-                    if (!state.isSearchActive) {
-                        H3Text(
-                            text = stringResource(R.string.authors_list)
-                        )
-                    }
-                },
-                navigationIcon = {
-                    if (state.isSearchActive) {
-                        IconButton(onClick = onExitSearchClick) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back"
-                            )
-                        }
-                    } else {
-                        IconButton(onClick = {
-                            scope.launch { drawerState.open() }
-                        }) {
-                            Icon(Icons.Default.Menu, "Open drawer")
-                        }
-                    }
-                },
-                actions = {
-                    if (state.isSearchActive) {
-                        TextField(
-                            value = state.searchQuery,
-                            textStyle = LocalTypography.current.h3TextStyle,
-                            onValueChange = onSearchQueryChange,
-                            modifier = Modifier
-                                .padding(start = 32.dp)
-                                .fillMaxWidth()
-                                .align(Alignment.CenterVertically),
-                            placeholder = {
-                                H3Text(stringResource(R.string.search_authors))
-                            },
-                            singleLine = true,
-                            colors = TextFieldDefaults.colors(
-                                unfocusedContainerColor = Color.Transparent,
-                                focusedContainerColor = Color.Transparent,
-                                cursorColor = LocalColors.current.primary,
-                                unfocusedIndicatorColor = Color.Transparent,
-                                focusedIndicatorColor = Color.Transparent
-                            ),
-                            trailingIcon = {
-                                if (state.searchQuery.isNotEmpty()) {
-                                    IconButton(onClick = onClearSearchQueryClick) {
-                                        Icon(
-                                            Icons.Default.Close,
-                                            contentDescription = "Clear search"
-                                        )
-                                    }
-                                }
-                            }
-                        )
-                    } else {
-                        IconButton(onClick = onSearchClick) {
-                            Icon(
-                                Icons.Default.Search,
-                                contentDescription = "Search"
-                            )
-                        }
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = LocalColors.current.background
-                )
+            TopBar(
+                drawerState = drawerState,
+                scope = scope,
+                isSearchActive = state.isSearchActive,
+                searchQuery = state.searchQuery,
+                onSearchQueryChange = onSearchQueryChange,
+                onClearSearchQueryClick = onClearSearchQueryClick,
+                onSearchClick = onSearchClick,
+                onExitSearchClick = onExitSearchClick,
+                filterAuthorsList = filterAuthorsList
             )
         },
         mainContent = {
@@ -192,6 +142,93 @@ private fun AuthorsListScreen(
             }
         }
     )
+}
+
+@OptIn(FlowPreview::class)
+@Composable
+private fun TopBar(
+    drawerState: DrawerState,
+    scope: CoroutineScope,
+    isSearchActive: Boolean,
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit,
+    onClearSearchQueryClick: () -> Unit,
+    onSearchClick: () -> Unit,
+    onExitSearchClick: () -> Unit,
+    filterAuthorsList: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (isSearchActive) {
+            IconButton(onClick = onExitSearchClick) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back"
+                )
+            }
+        } else {
+            IconButton(onClick = {
+                scope.launch { drawerState.open() }
+            }) {
+                Icon(Icons.Default.Menu, "Open drawer")
+            }
+        }
+        if (isSearchActive) {
+            LaunchedEffect(searchQuery) {
+                snapshotFlow {
+                    searchQuery
+                }
+                    .debounce(SEARCH_DEBOUNCE)
+                    .collect {
+                        filterAuthorsList()
+                    }
+            }
+            TextField(
+                value = searchQuery,
+                textStyle = LocalTypography.current.h3TextStyle,
+                onValueChange = onSearchQueryChange,
+                modifier = Modifier
+                    .padding(start = 32.dp)
+                    .fillMaxWidth()
+                    .align(Alignment.CenterVertically),
+                placeholder = {
+                    H3Text(stringResource(R.string.search_authors))
+                },
+                singleLine = true,
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedContainerColor = Color.Transparent,
+                    cursorColor = LocalColors.current.primary,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent
+                ),
+                trailingIcon = {
+                    if (searchQuery.isNotEmpty()) {
+                        IconButton(onClick = onClearSearchQueryClick) {
+                            Icon(
+                                Icons.Default.Close,
+                                contentDescription = "Clear search"
+                            )
+                        }
+                    }
+                }
+            )
+        } else {
+            Spacer(Modifier.weight(1f))
+            H3Text(text = stringResource(R.string.authors_list))
+            Spacer(Modifier.weight(1f))
+            IconButton(onClick = onSearchClick) {
+                Icon(
+                    Icons.Default.Search,
+                    contentDescription = "Search"
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -263,7 +300,10 @@ private fun AuthorsListScreenPreview(
             onExitSearchClick = {},
             onSearchQueryChange = {},
             onClearSearchQueryClick = {},
-            onAuthorClick = {}
+            onAuthorClick = {},
+            filterAuthorsList = {}
         )
     }
 }
+
+private const val SEARCH_DEBOUNCE = 300L
