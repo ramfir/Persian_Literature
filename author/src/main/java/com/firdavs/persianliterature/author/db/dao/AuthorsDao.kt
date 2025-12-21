@@ -19,4 +19,7 @@ interface AuthorsDao {
 
     @Query("SELECT * FROM ${AuthorsDb.AUTHORS}")
     fun getAllFlow(): Flow<List<AuthorEntity>>
+
+    @Query("SELECT * FROM ${AuthorsDb.AUTHORS} WHERE id = :id")
+    fun getByIdFlow(id: String): Flow<AuthorEntity>
 }

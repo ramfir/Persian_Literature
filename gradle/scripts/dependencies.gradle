@@ -45,14 +45,17 @@ ext {
             firebase_bom           : ("com.google.firebase:firebase-bom:$firebase_bom_version"),
             firestore_ktx          :("com.google.firebase:firebase-firestore-ktx"),
 
-            coroutines_play_services: ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_play_services_version")
+            coroutines_play_services: ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_play_services_version"),
+
+            pdf_viewer             : ("io.github.afreakyelf:Pdf-Viewer:$pdf_viewer_version")
     ]
     module = [
             core            : project(":core"),
             ui_kit          : project(":ui_kit"),
             author_ui       : project(":author_ui"),
             author_api      : project(":author_api"),
-            author          : project(":author")
+            author          : project(":author"),
+            util            : project(":util")
     ]
     groups = [
             compose      : [

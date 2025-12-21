@@ -6,4 +6,10 @@ import kotlinx.serialization.Serializable
 sealed interface Route : NavKey {
     @Serializable
     object AuthorsList : Route
+
+    @Serializable
+    data class AuthorDetails(val id: String) : Route
+
+    @Serializable
+    data class WorkDetails(val id: String) : Route
 }

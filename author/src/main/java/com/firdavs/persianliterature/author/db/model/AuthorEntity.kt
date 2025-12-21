@@ -11,5 +11,6 @@ data class AuthorEntity(
     val imageUrl: String?,
     val birthDate: String,
     val deathDate: String,
-    val birthPlace: String
+    val birthPlace: String,
+    val bioUrl: String?
 )

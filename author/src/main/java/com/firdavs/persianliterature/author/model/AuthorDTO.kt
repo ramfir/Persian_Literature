@@ -1,7 +1,6 @@
 package com.firdavs.persianliterature.author.model
 
 import com.firdavs.persianliterature.author.db.model.AuthorEntity
-import com.firdavs.persianliterature.author_api.model.Author
 import com.google.firebase.firestore.PropertyName
 
 data class AuthorDTO(
@@ -15,18 +14,9 @@ data class AuthorDTO(
     @get:PropertyName("deathDate") @set:PropertyName("deathDate")
     var deathDate: String = "",
     @get:PropertyName("birthPlace") @set:PropertyName("birthPlace")
-    var birthPlace: String = ""
-)
-
-fun List<AuthorDTO>.toDomain() = map { it.toDomain() }
-
-fun AuthorDTO.toDomain() = Author(
-    id = id,
-    name = name,
-    imageUrl = imageUrl,
-    birthDate = birthDate,
-    deathDate = deathDate,
-    birthPlace = birthPlace
+    var birthPlace: String = "",
+    @get:PropertyName("bioUrl") @set:PropertyName("bioUrl")
+    var bioUrl: String? = null
 )
 
 fun List<AuthorDTO>.toDb() = map { it.toDb() }
@@ -37,5 +27,6 @@ fun AuthorDTO.toDb() = AuthorEntity(
     imageUrl = imageUrl,
     birthDate = birthDate,
     deathDate = deathDate,
-    birthPlace = birthPlace
+    birthPlace = birthPlace,
+    bioUrl = bioUrl
 )

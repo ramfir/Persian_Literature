@@ -33,7 +33,7 @@ import kotlinx.coroutines.CoroutineScope
 fun BaseScreen(
     modifier: Modifier = Modifier,
     drawerContent: (@Composable () -> Unit)? = null,
-    topBar: @Composable (DrawerState, CoroutineScope) -> Unit,
+    topBar: (@Composable (DrawerState, CoroutineScope) -> Unit)? = null,
     mainContent: @Composable () -> Unit,
     footerContent: (@Composable BoxScope.() -> Unit)? = null
 ) {
@@ -45,7 +45,11 @@ fun BaseScreen(
         Scaffold(
             modifier = modifier.fillMaxSize(),
             containerColor = backgroundColor,
-            topBar = { topBar(drawerState, scope) },
+            topBar = {
+                topBar?.let {
+                    topBar(drawerState, scope)
+                }
+            },
             content = { innerPadding ->
                 Column(Modifier.fillMaxSize()) {
                     Box(
@@ -61,9 +65,11 @@ fun BaseScreen(
                     if (footerContent != null) {
                         Box(
                             modifier = Modifier.Companion
-                                .background(AppTheme.colors.onPrimary)
-                                .fillMaxWidth()
-                                .padding(16.dp),
+                                .background(
+                                    color = AppTheme.colors.primary,
+                                    shape = AppTheme.shapes.medium
+                                )
+                                .fillMaxWidth(),
                             content = footerContent
                         )
                     }

@@ -2,6 +2,7 @@ package com.firdavs.persianliterature.author.repository
 
 import com.firdavs.persianliterature.author.db.dao.AuthorsDao
 import com.firdavs.persianliterature.author.db.mapper.AuthorsEntityToDomainMapper
+import com.firdavs.persianliterature.author.db.mapper.toDomain
 import com.firdavs.persianliterature.author.model.AuthorDTO
 import com.firdavs.persianliterature.author.model.toDb
 import com.firdavs.persianliterature.author_api.model.Author
@@ -23,16 +24,22 @@ class AuthorRepositoryImpl(
         val lang = Locale.getDefault().language
         val authorsCollection = Firebase.firestore.collection("authors_$lang")
         val snapshot = authorsCollection.get(Source.SERVER).await()
-        val ss = snapshot.documents.mapNotNull { document ->
+        val authorsDTO = snapshot.documents.mapNotNull { document ->
             val authorDto = document.toObject(AuthorDTO::class.java)
             authorDto?.copy(id = document.id)
         }
-        authorsDao.insert(ss.toDb())
+        authorsDao.insert(authorsDTO.toDb())
     }
 
     override fun getAuthors(): Flow<List<Author>> {
         return authorsDao.getAllFlow().map {
             authorsEntityToDomainMapper.mapTo(it)
+        }
+    }
+
+    override fun getAuthor(id: String): Flow<Author> {
+        return authorsDao.getByIdFlow(id).map {
+            it.toDomain()
         }
     }
 }

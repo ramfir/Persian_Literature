@@ -1,6 +1,7 @@
 package com.firdavs.persianliterature.author.ui.list
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,14 +52,17 @@ import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.launch
 
 @Composable
-fun AuthorsListEntryPoint() {
+fun AuthorsListEntryPoint(
+    onAuthorClick: (String) -> Unit
+) {
     BaseEntryPoint(AuthorsListViewModel::class) { state, viewModel ->
         AuthorsListScreen(
             state = state,
             onSearchClick = viewModel::onSearchClick,
             onExitSearchClick = viewModel::onExitSearchClick,
             onSearchQueryChange = viewModel::onSearchQueryChange,
-            onClearSearchQueryClick = viewModel::onClearSearchQueryClick
+            onClearSearchQueryClick = viewModel::onClearSearchQueryClick,
+            onAuthorClick = onAuthorClick
         )
     }
 }
@@ -70,7 +74,8 @@ private fun AuthorsListScreen(
     onSearchClick: () -> Unit,
     onExitSearchClick: () -> Unit,
     onSearchQueryChange: (String) -> Unit,
-    onClearSearchQueryClick: () -> Unit
+    onClearSearchQueryClick: () -> Unit,
+    onAuthorClick: (String) -> Unit
 ) {
     BaseScreen(
         drawerContent = {
@@ -175,7 +180,7 @@ private fun AuthorsListScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(state.authors) { author ->
-                            AuthorItem(author)
+                            AuthorItem(author, onAuthorClick)
                             HorizontalDivider(
                                 modifier = Modifier.padding(horizontal = 16.dp),
                                 thickness = 1.dp,
@@ -190,12 +195,14 @@ private fun AuthorsListScreen(
 }
 
 @Composable
-private fun AuthorItem(
-    author: AuthorUiModel
+fun AuthorItem(
+    author: AuthorUiModel,
+    onAuthorClick: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onAuthorClick(author.id) }
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -255,7 +262,8 @@ private fun AuthorsListScreenPreview(
             onSearchClick = {},
             onExitSearchClick = {},
             onSearchQueryChange = {},
-            onClearSearchQueryClick = {}
+            onClearSearchQueryClick = {},
+            onAuthorClick = {}
         )
     }
 }
