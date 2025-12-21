@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material3.CircularProgressIndicator
@@ -50,13 +51,15 @@ import java.io.File
 
 @Composable
 fun AuthorDetailsEntryPoint(
-    id: String
+    id: String,
+    onBackClick: () -> Unit
 ) {
-    BaseEntryPoint(AuthorDetailsViewModel::class, id) { state, viewModel ->
+    BaseEntryPoint(AuthorDetailsViewModel::class, id,) { state, viewModel ->
         AuthorDetailsScreen(
             state = state,
             onBioClick = viewModel::onBioClick,
-            onWorksClick = viewModel::onWorksClick
+            onWorksClick = viewModel::onWorksClick,
+            onBackClick = onBackClick
         )
     }
 }
@@ -65,9 +68,32 @@ fun AuthorDetailsEntryPoint(
 fun AuthorDetailsScreen(
     state: AuthorDetailsUiState,
     onBioClick: () -> Unit,
-    onWorksClick: () -> Unit
+    onWorksClick: () -> Unit,
+    onBackClick: () -> Unit
 ) {
     BaseScreen(
+        topBar = { drawerState, scope ->
+            Box(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                IconButton(
+                    modifier = Modifier
+                        .align(Alignment.CenterStart),
+                    onClick = onBackClick
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
+                H2Text(
+                    modifier = Modifier
+                        .align(Alignment.Center),
+                    text = stringResource(state.chapter.getStringRes()),
+                    textAlign = TextAlign.Center
+                )
+            }
+        },
         mainContent = {
             Box(
                 modifier = Modifier
@@ -122,12 +148,6 @@ private fun BioChapter(
         Column(
             horizontalAlignment = CenterHorizontally
         ) {
-            H2Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = stringResource(R.string.bio),
-                textAlign = TextAlign.Center
-            )
             AuthorItem(
                 author = author,
                 onAuthorClick = {}
@@ -167,9 +187,6 @@ private fun BioChapter(
 
 @Composable
 private fun WorksChapter(works: List<Work>) {
-    H2Text(
-        text = stringResource(R.string.works)
-    )
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -265,7 +282,8 @@ private fun AuthorDetailsScreenPreview(
         AuthorDetailsScreen(
             state = state,
             onBioClick = {},
-            onWorksClick = {}
+            onWorksClick = {},
+            onBackClick = {}
         )
     }
 }

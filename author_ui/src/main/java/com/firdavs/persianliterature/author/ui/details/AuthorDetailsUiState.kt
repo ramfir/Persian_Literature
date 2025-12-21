@@ -1,5 +1,6 @@
 package com.firdavs.persianliterature.author.ui.details
 
+import com.firdavs.persianliterature.author.ui.R
 import com.firdavs.persianliterature.author.ui.model.AuthorUiModel
 import com.firdavs.persianliterature.author_api.model.Work
 import com.firdavs.persianliterature.core.presentation.UiState
@@ -17,4 +18,9 @@ data class AuthorDetailsUiState(
 
 enum class Chapter {
     Bio, Works
+}
+
+fun Chapter.getStringRes(): Int = when (this) {
+    Chapter.Bio -> R.string.bio
+    Chapter.Works -> R.string.works
 }

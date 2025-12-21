@@ -18,6 +18,9 @@ class AuthorDetailsViewModel(
     private val worksRepository: WorksRepository,
     private val pdfDownloader: PdfDownloader
 ) : BaseViewModel<AuthorDetailsUiState>(AuthorDetailsUiState(null)) {
+
+    private val downloadPdfScope = CoroutineScope(Job() + Dispatchers.IO)
+
     init {
         observeAuthor()
         observeWorks()
@@ -43,8 +46,6 @@ class AuthorDetailsViewModel(
             }
         }
     }
-
-    private val downloadPdfScope = CoroutineScope(Job() + Dispatchers.IO)
     private fun downloadPdf(url: String) {
         downloadPdfScope.launch {
             post { it.copy(isLoadingFile = true) }
