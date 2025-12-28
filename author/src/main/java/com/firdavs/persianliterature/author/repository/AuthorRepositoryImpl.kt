@@ -13,7 +13,6 @@ import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
-import java.util.Locale
 
 class AuthorRepositoryImpl(
     private val authorsDao: AuthorsDao,
@@ -21,7 +20,7 @@ class AuthorRepositoryImpl(
 ) : AuthorRepository {
 
     override suspend fun fetchAuthors() {
-        val lang = Locale.getDefault().language
+        val lang = "en" // Locale.getDefault().language for test purpose
         val authorsCollection = Firebase.firestore.collection("authors_$lang")
         val snapshot = authorsCollection.get(Source.SERVER).await()
         val authorsDTO = snapshot.documents.mapNotNull { document ->

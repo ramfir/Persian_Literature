@@ -20,6 +20,8 @@ dependencies {
     implementation module.util
 
     implementation library.activity_compose
+    implementation platform(library.firebase_bom)
+    implementation library.firestore_ktx
     implementation groups.navigation
 }
 
