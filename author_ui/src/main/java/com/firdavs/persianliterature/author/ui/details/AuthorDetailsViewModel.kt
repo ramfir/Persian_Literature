@@ -1,5 +1,7 @@
 package com.firdavs.persianliterature.author.ui.details
 
+import android.annotation.SuppressLint
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.firdavs.persianliterature.author.ui.mapper.toUi
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
@@ -11,9 +13,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.io.File
 
+@SuppressLint("StaticFieldLeak")
 class AuthorDetailsViewModel(
     private val id: String,
+    private val context: Context,
     private val authorRepository: AuthorRepository,
     private val worksRepository: WorksRepository,
     private val pdfDownloader: PdfDownloader
@@ -33,7 +38,13 @@ class AuthorDetailsViewModel(
                     it.copy(author = author.toUi(), isLoading = false)
                 }
                 author.bioUrl?.let {
-                    downloadPdf(it, author.name)
+                    val bioFilePath = context.filesDir.toString() + "/${author.name}"
+                    val bioFile = File(bioFilePath)
+                    if (bioFile.exists().not()) {
+                        downloadPdf(it, author.name)
+                    } else {
+                        post { it.copy(bioFile = bioFile, isLoadingFile = false) }
+                    }
                 } ?: post { it.copy(isLoadingFile = false) }
             }
         }

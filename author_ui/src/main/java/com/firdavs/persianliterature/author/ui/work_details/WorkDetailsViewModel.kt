@@ -1,5 +1,7 @@
 package com.firdavs.persianliterature.author.ui.work_details
 
+import android.annotation.SuppressLint
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import com.firdavs.persianliterature.core.presentation.BaseViewModel
@@ -9,9 +11,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.io.File
 
+@SuppressLint("StaticFieldLeak")
 class WorkDetailsViewModel(
     private val id: String,
+    private val context: Context,
     private val worksRepository: WorksRepository,
     private val pdfDownloader: PdfDownloader
 ) : BaseViewModel<WorkDetailsUiState>(WorkDetailsUiState(null)) {
@@ -28,7 +33,13 @@ class WorkDetailsViewModel(
                     it.copy(work = work)
                 }
                 work.fileUrl?.let {
-                    downloadPdf(it, work.title)
+                    val workFilePath = context.filesDir.toString() + "/${work.title}"
+                    val workFile = File(workFilePath)
+                    if (workFile.exists().not()) {
+                        downloadPdf(it, work.title)
+                    } else {
+                        post { it.copy(workFile = workFile, isLoading = false) }
+                    }
                 } ?: post { it.copy(isLoading = false) }
             }
         }
