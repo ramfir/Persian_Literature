@@ -56,7 +56,7 @@ fun BaseScreen(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth()
-                            .padding(innerPadding)
+                            .padding(top = innerPadding.calculateTopPadding())
                             .thenIfNotNull(footerContent) { drawShadow() }
                     ) {
                         mainContent()
@@ -64,7 +64,7 @@ fun BaseScreen(
 
                     if (footerContent != null) {
                         Box(
-                            modifier = Modifier.Companion
+                            modifier = Modifier
                                 .background(
                                     color = AppTheme.colors.primary,
                                     shape = AppTheme.shapes.medium
