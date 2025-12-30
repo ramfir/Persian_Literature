@@ -10,107 +10,107 @@ class AuthorsListStateProvider : PreviewParameterProvider<AuthorsListUiState> {
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 )
             ),
             isSearchActive = false,
@@ -122,37 +122,37 @@ class AuthorsListStateProvider : PreviewParameterProvider<AuthorsListUiState> {
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 )
             ),
             isSearchActive = true,
@@ -163,37 +163,37 @@ class AuthorsListStateProvider : PreviewParameterProvider<AuthorsListUiState> {
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 ),
                 AuthorUiModel(
                     id = "1",
                     photoUrl = "",
-                    fullName = "Abu Abdullah Rudaki",
-                    birthDate = "18.05.1444",
-                    deathDate = "18.05.1499"
+                    name = "Abu Abdullah Rudaki",
+                    born = "18.05.1444",
+                    died = "18.05.1499"
                 )
             ),
             isSearchActive = true,

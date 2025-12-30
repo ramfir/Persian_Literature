@@ -278,12 +278,12 @@ fun AuthorItem(
         T1Text(
             modifier = Modifier
                 .padding(top = 4.dp),
-            text = "${author.birthDate} - ${author.deathDate}"
+            text = "${author.born} - ${author.died}"
         )
         H3Text(
             modifier = Modifier
                 .padding(top = 4.dp),
-            text = author.fullName
+            text = author.name
         )
     }
 }

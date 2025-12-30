@@ -9,12 +9,12 @@ data class AuthorDTO(
     var name: String = "",
     @get:PropertyName("imageUrl") @set:PropertyName("imageUrl")
     var imageUrl: String? = null,
-    @get:PropertyName("birthDate") @set:PropertyName("birthDate")
-    var birthDate: String = "",
-    @get:PropertyName("deathDate") @set:PropertyName("deathDate")
-    var deathDate: String = "",
-    @get:PropertyName("birthPlace") @set:PropertyName("birthPlace")
-    var birthPlace: String = "",
+    @get:PropertyName("born") @set:PropertyName("born")
+    var born: String = "",
+    @get:PropertyName("died") @set:PropertyName("died")
+    var died: String = "",
+    @get:PropertyName("place") @set:PropertyName("place")
+    var place: String = "",
     @get:PropertyName("bioUrl") @set:PropertyName("bioUrl")
     var bioUrl: String? = null
 )
@@ -25,8 +25,8 @@ fun AuthorDTO.toDb() = AuthorEntity(
     id = id,
     name = name,
     imageUrl = imageUrl,
-    birthDate = birthDate,
-    deathDate = deathDate,
-    birthPlace = birthPlace,
+    born = born,
+    died = died,
+    place = place,
     bioUrl = bioUrl
 )

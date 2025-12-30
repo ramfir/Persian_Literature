@@ -4,8 +4,8 @@ data class Author(
     val id: String,
     val name: String,
     val imageUrl: String?,
-    val birthDate: String,
-    val deathDate: String,
-    val birthPlace: String,
+    val born: String,
+    val died: String,
+    val place: String,
     val bioUrl: String?
 )

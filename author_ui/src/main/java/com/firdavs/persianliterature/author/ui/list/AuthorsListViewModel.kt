@@ -74,7 +74,7 @@ class AuthorsListViewModel(
     fun filterAuthorsList() {
         val searchQuery = state.value.searchQuery
         val filteredAuthors = allAuthors.filter { author ->
-            author.fullName.contains(searchQuery, ignoreCase = true)
+            author.name.contains(searchQuery, ignoreCase = true)
         }
         post { it.copy(authors = filteredAuthors) }
     }

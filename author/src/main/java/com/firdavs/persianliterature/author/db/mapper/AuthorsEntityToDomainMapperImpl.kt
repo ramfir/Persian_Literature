@@ -21,9 +21,9 @@ fun AuthorEntity.toDomain() = Author(
     id = this.id,
     name = this.name,
     imageUrl = this.imageUrl,
-    birthDate = this.birthDate,
-    deathDate = this.deathDate,
-    birthPlace = this.birthPlace,
+    born = this.born,
+    died = this.died,
+    place = this.place,
     bioUrl = this.bioUrl
 )
 
@@ -31,8 +31,8 @@ fun Author.toDb() = AuthorEntity(
     id = this.id,
     name = this.name,
     imageUrl = this.imageUrl,
-    birthDate = this.birthDate,
-    deathDate = this.deathDate,
-    birthPlace = this.birthPlace,
+    born = this.born,
+    died = this.died,
+    place = this.place,
     bioUrl = this.bioUrl
 )

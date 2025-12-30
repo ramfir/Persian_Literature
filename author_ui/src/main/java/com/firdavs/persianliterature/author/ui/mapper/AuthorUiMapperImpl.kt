@@ -12,8 +12,8 @@ class AuthorUiMapperImpl : AuthorUiMapper {
 fun Author.toUi() = AuthorUiModel(
     id = this.id,
     photoUrl = this.imageUrl,
-    fullName = this.name,
-    birthDate = this.birthDate,
-    deathDate = this.deathDate,
+    name = this.name,
+    born = this.born,
+    died = this.died,
     bioUrl = this.bioUrl
 )
