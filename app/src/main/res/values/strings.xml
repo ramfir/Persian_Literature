@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Persian Literature</string>
+    <string name="exit_toast_message">Click again if you want to quit the app</string>
 </resources>
