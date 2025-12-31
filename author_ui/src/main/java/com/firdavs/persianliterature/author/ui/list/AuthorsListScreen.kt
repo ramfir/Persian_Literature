@@ -25,8 +25,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -44,10 +42,12 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.firdavs.persianliterature.author.ui.R
 import com.firdavs.persianliterature.author.ui.model.AuthorUiModel
+import com.firdavs.persianliterature.core.model.Chapter
 import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.BaseScreen
 import com.firdavs.persianliterature.ui.kit.H3Text
 import com.firdavs.persianliterature.ui.kit.T1Text
+import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
 import com.firdavs.persianliterature.ui.kit.theme.AppPreviewTheme
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import com.firdavs.persianliterature.ui.kit.theme.LocalTypography
@@ -59,7 +59,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AuthorsListEntryPoint(
-    onAuthorClick: (String) -> Unit
+    onAuthorClick: (String) -> Unit,
+    onChapterClick: (Chapter) -> Unit
 ) {
     BaseEntryPoint(AuthorsListViewModel::class) { state, viewModel ->
         AuthorsListScreen(
@@ -69,7 +70,8 @@ fun AuthorsListEntryPoint(
             onSearchQueryChange = viewModel::onSearchQueryChange,
             onClearSearchQueryClick = viewModel::onClearSearchQueryClick,
             onAuthorClick = onAuthorClick,
-            filterAuthorsList = viewModel::filterAuthorsList
+            filterAuthorsList = viewModel::filterAuthorsList,
+            onChapterClick = onChapterClick
         )
     }
 }
@@ -83,22 +85,15 @@ private fun AuthorsListScreen(
     onSearchQueryChange: (String) -> Unit,
     onClearSearchQueryClick: () -> Unit,
     onAuthorClick: (String) -> Unit,
-    filterAuthorsList: () -> Unit
+    filterAuthorsList: () -> Unit,
+    onChapterClick: (Chapter) -> Unit
 ) {
     BaseScreen(
         drawerContent = {
-            ModalDrawerSheet {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        stringResource(R.string.favourites),
-                        modifier = Modifier.padding(8.dp)
-                    )
-                    Text(
-                        stringResource(R.string.settings),
-                        modifier = Modifier.padding(8.dp)
-                    )
-                }
-            }
+            DrawerSheet(
+                chapters = state.chapters,
+                onChapterClick = onChapterClick
+            )
         },
         topBar = { drawerState, scope ->
             TopBar(
@@ -301,7 +296,8 @@ private fun AuthorsListScreenPreview(
             onSearchQueryChange = {},
             onClearSearchQueryClick = {},
             onAuthorClick = {},
-            filterAuthorsList = {}
+            filterAuthorsList = {},
+            onChapterClick = {}
         )
     }
 }
