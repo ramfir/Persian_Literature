@@ -89,7 +89,6 @@ fun BaseScreen(
     }
 }
 
-
 private fun Modifier.drawShadow() = drawBehind {
     val shadowHeight = 7.dp.toPx()
     drawRect(

@@ -1,0 +1,10 @@
+<resources>
+    <string name="about_app_description">Discover the timeless beauty of Persian literature through the ages. This app is your gateway to the rich literary heritage of persian, featuring the masterworks of legendary poets and writers who have shaped Persian culture for over a millennium. From the mystical verses of Rumi and Hafez to the epic tales of Ferdowsi\'s Shahnameh, explore the wisdom, romance, and spirituality that define Persian poetry and prose. Whether you\'re a student, scholar, or simply a lover of beautiful words, you\'ll find inspiration in these immortal works.</string>
+    <string name="overview">Overview</string>
+    <string name="features">Features</string>
+    <string name="authors_list_with_works">List of poets and writers with their works</string>
+    <string name="add_favourites">Adding poet or writer or their works to favourites</string>
+    <string name="languages">Changing language to Tajik, English or Russian</string>
+    <string name="app_author">App author</string>
+    <string name="firdavs">Firdavs Salimov</string>
+</resources>

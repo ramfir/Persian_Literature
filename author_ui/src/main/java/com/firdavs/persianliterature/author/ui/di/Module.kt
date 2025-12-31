@@ -14,7 +14,22 @@ import org.koin.dsl.module
 
 val authorUiModule = module {
     viewModelOf(::AuthorsListViewModel)
-    viewModel { (args: Array<Any?>) -> AuthorDetailsViewModel(args.first() as String, androidContext(), get(), get(), get()) }
-    viewModel { (args: Array<Any?>) -> WorkDetailsViewModel(args.first() as String, androidContext(), get(), get()) }
+    viewModel {
+            (args: Array<Any?>) -> AuthorDetailsViewModel(
+        args.first() as String,
+        androidContext(),
+        get(),
+        get(),
+        get()
+    )
+    }
+    viewModel {
+            (args: Array<Any?>) -> WorkDetailsViewModel(
+        args.first() as String,
+        androidContext(),
+        get(),
+        get()
+    )
+    }
     factoryOf(::AuthorUiMapperImpl) bind AuthorUiMapper::class
 }

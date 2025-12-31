@@ -55,7 +55,8 @@ ext {
             author_ui       : project(":author_ui"),
             author_api      : project(":author_api"),
             author          : project(":author"),
-            util            : project(":util")
+            util            : project(":util"),
+            about_app       : project(":about_app")
     ]
     groups = [
             compose      : [

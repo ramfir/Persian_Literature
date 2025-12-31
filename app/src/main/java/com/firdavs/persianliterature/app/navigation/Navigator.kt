@@ -9,10 +9,12 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
+import com.firdavs.persianliterature.about_app.ui.AboutAppEntryPoint
 import com.firdavs.persianliterature.app.ui.MainActivityUiState
 import com.firdavs.persianliterature.author.ui.details.AuthorDetailsEntryPoint
 import com.firdavs.persianliterature.author.ui.list.AuthorsListEntryPoint
 import com.firdavs.persianliterature.author.ui.work_details.WorkDetailsEntryPoint
+import com.firdavs.persianliterature.core.model.Chapter
 
 @Composable
 fun Navigator(
@@ -32,7 +34,13 @@ fun Navigator(
         entryProvider = entryProvider {
             entry<Route.AuthorsList> {
                 AuthorsListEntryPoint(
-                    onAuthorClick = { backStack.next(Route.AuthorDetails(it)) }
+                    onAuthorClick = { backStack.next(Route.AuthorDetails(it)) },
+                    onChapterClick = { chapter ->
+                        when (chapter) {
+                            Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
+                            else -> {}
+                        }
+                    }
                 )
             }
             entry<Route.AuthorDetails> {
@@ -46,6 +54,16 @@ fun Navigator(
                 WorkDetailsEntryPoint(
                     id = it.id,
                     onBackClick = { backStack.back() }
+                )
+            }
+            entry<Route.AboutApp> {
+                AboutAppEntryPoint(
+                    onChapterClick = { chapter ->
+                        when (chapter) {
+                            Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
+                            else -> {}
+                        }
+                    }
                 )
             }
         }
