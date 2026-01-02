@@ -19,4 +19,13 @@ interface WorksDao {
 
     @Query("SELECT * FROM ${AuthorsDb.WORKS} WHERE id = :id")
     fun getByIdFlow(id: String): Flow<WorkEntity>
+
+    @Query("SELECT * FROM ${AuthorsDb.WORKS} WHERE isFavourite = 1")
+    fun getFavouritesFlow(): Flow<List<WorkEntity>>
+
+    @Query("UPDATE ${AuthorsDb.WORKS} SET isFavourite = :isFavourite WHERE id = :id")
+    suspend fun updateFavourite(id: String, isFavourite: Boolean)
+
+    @Query("SELECT id FROM ${AuthorsDb.WORKS} WHERE isFavourite = 1")
+    suspend fun getFavouriteIds(): List<String>
 }

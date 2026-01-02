@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,6 +24,7 @@ import com.firdavs.persianliterature.ui.kit.BaseScreen
 import com.firdavs.persianliterature.ui.kit.H2Text
 import com.firdavs.persianliterature.ui.kit.H3Text
 import com.firdavs.persianliterature.ui.kit.H4Text
+import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import com.rajat.pdfviewer.compose.PdfRendererViewCompose
 import com.rajat.pdfviewer.util.PdfSource
 
@@ -33,7 +36,8 @@ fun WorkDetailsEntryPoint(
     BaseEntryPoint(WorkDetailsViewModel::class, id) { state, viewModel ->
         WorkDetailsScreen(
             state = state,
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            onToggleFavourite = viewModel::onToggleFavourite
         )
     }
 }
@@ -41,7 +45,8 @@ fun WorkDetailsEntryPoint(
 @Composable
 fun WorkDetailsScreen(
     state: WorkDetailsUiState,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onToggleFavourite: (Boolean) -> Unit = {}
 ) {
     BaseScreen(
         topBar = { drawerState, scope ->
@@ -64,6 +69,31 @@ fun WorkDetailsScreen(
                     text = state.work?.title ?: "",
                     textAlign = TextAlign.Center
                 )
+                state.work?.let { work ->
+                    IconButton(
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd),
+                        onClick = { onToggleFavourite(!work.isFavourite) }
+                    ) {
+                        Icon(
+                            imageVector = if (work.isFavourite) {
+                                Icons.Filled.Favorite
+                            } else {
+                                Icons.Outlined.FavoriteBorder
+                            },
+                            contentDescription = if (work.isFavourite) {
+                                stringResource(R.string.remove_from_favourites)
+                            } else {
+                                stringResource(R.string.add_to_favourites)
+                            },
+                            tint = if (work.isFavourite) {
+                                LocalColors.current.primary
+                            } else {
+                                LocalColors.current.onPrimary
+                            }
+                        )
+                    }
+                }
             }
         },
         mainContent = {

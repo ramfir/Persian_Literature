@@ -10,4 +10,8 @@
     <string name="no_works_found">No works found</string>
     <string name="no_bio_found">No bio found</string>
     <string name="published_at">published at %s</string>
+    <string name="no_favourite_authors">No favourite authors yet</string>
+    <string name="no_favourite_works">No favourite works yet</string>
+    <string name="add_to_favourites">Add to favourites</string>
+    <string name="remove_from_favourites">Remove from favourites</string>
 </resources>

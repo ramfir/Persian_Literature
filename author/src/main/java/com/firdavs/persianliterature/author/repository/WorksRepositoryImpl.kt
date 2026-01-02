@@ -26,7 +26,12 @@ class WorksRepositoryImpl(
             val workDto = document.toObject(WorkDTO::class.java)
             workDto?.copy(id = document.id)
         }
-        worksDao.insert(worksDTO.toDb())
+        // Preserve existing favourite status
+        val existingFavouriteIds = worksDao.getFavouriteIds().toSet()
+        val worksWithFavourites = worksDTO.toDb().map { work ->
+            work.copy(isFavourite = work.id in existingFavouriteIds)
+        }
+        worksDao.insert(worksWithFavourites)
     }
 
     override fun getWorksByAuthorId(authorId: String): Flow<List<Work>> {

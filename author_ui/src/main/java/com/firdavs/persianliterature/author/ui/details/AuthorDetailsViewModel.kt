@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.firdavs.persianliterature.author.ui.mapper.toUi
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
+import com.firdavs.persianliterature.author_api.repository.FavouritesRepository
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import com.firdavs.persianliterature.core.presentation.BaseViewModel
 import com.firdavs.persianliterature.util.coroutines.runWithRetry
@@ -21,7 +22,8 @@ class AuthorDetailsViewModel(
     private val context: Context,
     private val authorRepository: AuthorRepository,
     private val worksRepository: WorksRepository,
-    private val pdfDownloader: PdfDownloader
+    private val pdfDownloader: PdfDownloader,
+    private val favouritesRepository: FavouritesRepository
 ) : BaseViewModel<AuthorDetailsUiState>(AuthorDetailsUiState(null)) {
 
     private val downloadPdfScope = CoroutineScope(Job() + Dispatchers.IO)
@@ -75,6 +77,18 @@ class AuthorDetailsViewModel(
 
     fun onChapterClick(chapter: Chapter) {
         post { it.copy(chapter = chapter) }
+    }
+
+    fun onToggleAuthorFavourite(isFavourite: Boolean) {
+        viewModelScope.launch {
+            favouritesRepository.toggleAuthorFavourite(id, isFavourite)
+        }
+    }
+
+    fun onToggleWorkFavourite(workId: String, isFavourite: Boolean) {
+        viewModelScope.launch {
+            favouritesRepository.toggleWorkFavourite(workId, isFavourite)
+        }
     }
 
     companion object {

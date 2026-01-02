@@ -17,8 +17,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -71,7 +73,8 @@ fun AuthorsListEntryPoint(
             onClearSearchQueryClick = viewModel::onClearSearchQueryClick,
             onAuthorClick = onAuthorClick,
             filterAuthorsList = viewModel::filterAuthorsList,
-            onChapterClick = onChapterClick
+            onChapterClick = onChapterClick,
+            onToggleFavourite = viewModel::onToggleFavourite
         )
     }
 }
@@ -86,7 +89,8 @@ private fun AuthorsListScreen(
     onClearSearchQueryClick: () -> Unit,
     onAuthorClick: (String) -> Unit,
     filterAuthorsList: () -> Unit,
-    onChapterClick: (Chapter) -> Unit
+    onChapterClick: (Chapter) -> Unit,
+    onToggleFavourite: (String, Boolean) -> Unit
 ) {
     BaseScreen(
         drawerContent = {
@@ -125,7 +129,11 @@ private fun AuthorsListScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(state.authors) { author ->
-                            AuthorItem(author, onAuthorClick)
+                            AuthorItem(
+                                author = author,
+                                onAuthorClick = onAuthorClick,
+                                onToggleFavourite = onToggleFavourite
+                            )
                             HorizontalDivider(
                                 modifier = Modifier.padding(horizontal = 16.dp),
                                 thickness = 1.dp,
@@ -229,57 +237,86 @@ private fun TopBar(
 @Composable
 fun AuthorItem(
     author: AuthorUiModel,
-    onAuthorClick: (String) -> Unit
+    onAuthorClick: (String) -> Unit,
+    onToggleFavourite: ((String, Boolean) -> Unit)? = null
 ) {
-    Column(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onAuthorClick(author.id) }
             .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        // for preview
-        if (LocalInspectionMode.current) {
-            Image(
+        Column(
+            modifier = Modifier.weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // for preview
+            if (LocalInspectionMode.current) {
+                Image(
+                    modifier = Modifier
+                        .size(70.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                    painter = painterResource(R.drawable.img_rudaki),
+                    contentDescription = null
+                )
+            } else {
+                GlideImage(
+                    imageModel = { author.photoUrl },
+                    modifier = Modifier
+                        .size(70.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                    loading = {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .size(50.dp)
+                        )
+                    },
+                    failure = {
+                        Image(
+                            modifier = Modifier
+                                .size(70.dp)
+                                .clip(RoundedCornerShape(8.dp)),
+                            painter = painterResource(R.drawable.img_rudaki),
+                            contentDescription = null
+                        )
+                    }
+                )
+            }
+            T1Text(
                 modifier = Modifier
-                    .size(70.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                painter = painterResource(R.drawable.img_rudaki),
-                contentDescription = null
+                    .padding(top = 4.dp),
+                text = "${author.born} - ${author.died}"
             )
-        } else {
-            GlideImage(
-                imageModel = { author.photoUrl },
+            H3Text(
                 modifier = Modifier
-                    .size(70.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                loading = {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .size(50.dp)
-                    )
-                },
-                failure = {
-                    Image(
-                        modifier = Modifier
-                            .size(70.dp)
-                            .clip(RoundedCornerShape(8.dp)),
-                        painter = painterResource(R.drawable.img_rudaki),
-                        contentDescription = null
-                    )
-                }
+                    .padding(top = 4.dp),
+                text = author.name
             )
         }
-        T1Text(
-            modifier = Modifier
-                .padding(top = 4.dp),
-            text = "${author.born} - ${author.died}"
-        )
-        H3Text(
-            modifier = Modifier
-                .padding(top = 4.dp),
-            text = author.name
-        )
+        onToggleFavourite?.let { toggle ->
+            IconButton(
+                onClick = { toggle(author.id, !author.isFavourite) }
+            ) {
+                Icon(
+                    imageVector = if (author.isFavourite) {
+                        Icons.Filled.Favorite
+                    } else {
+                        Icons.Outlined.FavoriteBorder
+                    },
+                    contentDescription = if (author.isFavourite) {
+                        stringResource(R.string.remove_from_favourites)
+                    } else {
+                        stringResource(R.string.add_to_favourites)
+                    },
+                    tint = if (author.isFavourite) {
+                        LocalColors.current.primary
+                    } else {
+                        LocalColors.current.onPrimary
+                    }
+                )
+            }
+        }
     }
 }
 
@@ -297,7 +334,8 @@ private fun AuthorsListScreenPreview(
             onClearSearchQueryClick = {},
             onAuthorClick = {},
             filterAuthorsList = {},
-            onChapterClick = {}
+            onChapterClick = {},
+            onToggleFavourite = { _, _ -> }
         )
     }
 }

@@ -15,4 +15,7 @@ sealed interface Route : NavKey {
 
     @Serializable
     object AboutApp : Route
+
+    @Serializable
+    object Favourites : Route
 }

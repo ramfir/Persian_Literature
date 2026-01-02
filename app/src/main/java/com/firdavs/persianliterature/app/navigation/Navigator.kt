@@ -21,6 +21,7 @@ import com.firdavs.persianliterature.about_app.ui.AboutAppEntryPoint
 import com.firdavs.persianliterature.app.R
 import com.firdavs.persianliterature.app.ui.MainActivityUiState
 import com.firdavs.persianliterature.author.ui.details.AuthorDetailsEntryPoint
+import com.firdavs.persianliterature.author.ui.favourites.FavouritesEntryPoint
 import com.firdavs.persianliterature.author.ui.list.AuthorsListEntryPoint
 import com.firdavs.persianliterature.author.ui.work_details.WorkDetailsEntryPoint
 import com.firdavs.persianliterature.core.model.Chapter
@@ -70,6 +71,7 @@ fun Navigator(
                     onChapterClick = { chapter ->
                         when (chapter) {
                             Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
+                            Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
                             else -> {}
                         }
                     }
@@ -93,9 +95,23 @@ fun Navigator(
                     onChapterClick = { chapter ->
                         when (chapter) {
                             Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
+                            Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
                             else -> {}
                         }
                     }
+                )
+            }
+            entry<Route.Favourites> {
+                FavouritesEntryPoint(
+                    onChapterClick = { chapter ->
+                        when (chapter) {
+                            Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
+                            Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
+                            else -> {}
+                        }
+                    },
+                    onAuthorClick = { backStack.next(Route.AuthorDetails(it)) },
+                    onWorkClick = { backStack.next(Route.WorkDetails(it)) }
                 )
             }
         }

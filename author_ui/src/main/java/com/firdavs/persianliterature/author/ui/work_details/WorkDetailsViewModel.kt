@@ -3,6 +3,7 @@ package com.firdavs.persianliterature.author.ui.work_details
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.firdavs.persianliterature.author_api.repository.FavouritesRepository
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import com.firdavs.persianliterature.core.presentation.BaseViewModel
 import com.firdavs.persianliterature.util.coroutines.runWithRetry
@@ -18,7 +19,8 @@ class WorkDetailsViewModel(
     private val id: String,
     private val context: Context,
     private val worksRepository: WorksRepository,
-    private val pdfDownloader: PdfDownloader
+    private val pdfDownloader: PdfDownloader,
+    private val favouritesRepository: FavouritesRepository
 ) : BaseViewModel<WorkDetailsUiState>(WorkDetailsUiState(null)) {
     private val downloadPdfScope = CoroutineScope(Job() + Dispatchers.IO)
 
@@ -58,6 +60,12 @@ class WorkDetailsViewModel(
         pdfDownloader.downloadPdfFile(pdfUrl = url, fileName = fileName) { pdfFile ->
             post { it.copy(isLoading = false) }
             post { it.copy(workFile = pdfFile) }
+        }
+    }
+
+    fun onToggleFavourite(isFavourite: Boolean) {
+        viewModelScope.launch {
+            favouritesRepository.toggleWorkFavourite(id, isFavourite)
         }
     }
 }
