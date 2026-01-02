@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Адабиёти форсӣ</string>
+    <string name="exit_toast_message">Барои баромад аз барнома боз як маротиба зарба занед</string>
+    <string name="select_language">Забонро интихоб кунед</string>
+    <string name="apply">Татбиқ кунед</string>
+</resources>

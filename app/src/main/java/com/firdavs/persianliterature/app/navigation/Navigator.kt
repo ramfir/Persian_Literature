@@ -19,6 +19,7 @@ import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import com.firdavs.persianliterature.about_app.ui.AboutAppEntryPoint
 import com.firdavs.persianliterature.app.R
+import com.firdavs.persianliterature.app.settings.SettingsEntryPoint
 import com.firdavs.persianliterature.app.ui.MainActivityUiState
 import com.firdavs.persianliterature.author.ui.details.AuthorDetailsEntryPoint
 import com.firdavs.persianliterature.author.ui.favourites.FavouritesEntryPoint
@@ -72,6 +73,7 @@ fun Navigator(
                         when (chapter) {
                             Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
                             Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
+                            Chapter.Settings -> backStack.startNewRoot(Route.Settings)
                             else -> {}
                         }
                     }
@@ -96,6 +98,7 @@ fun Navigator(
                         when (chapter) {
                             Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
                             Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
+                            Chapter.Settings -> backStack.startNewRoot(Route.Settings)
                             else -> {}
                         }
                     }
@@ -107,11 +110,24 @@ fun Navigator(
                         when (chapter) {
                             Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
                             Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
+                            Chapter.Settings -> backStack.startNewRoot(Route.Settings)
                             else -> {}
                         }
                     },
                     onAuthorClick = { backStack.next(Route.AuthorDetails(it)) },
                     onWorkClick = { backStack.next(Route.WorkDetails(it)) }
+                )
+            }
+            entry<Route.Settings> {
+                SettingsEntryPoint(
+                    onChapterClick = { chapter ->
+                        when (chapter) {
+                            Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
+                            Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
+                            Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
+                            else -> {}
+                        }
+                    }
                 )
             }
         }

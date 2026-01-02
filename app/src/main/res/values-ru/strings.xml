@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Персидская литература</string>
+    <string name="exit_toast_message">Нажмите ещё раз, чтобы выйти из приложения</string>
+    <string name="select_language">Выберите язык</string>
+    <string name="apply">Применить</string>
+</resources>
