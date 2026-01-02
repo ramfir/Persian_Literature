@@ -11,7 +11,8 @@ data class WorkEntity(
     val authorId: String,
     val title: String,
     val publishYear: String,
-    val fileUrl: String?
+    val fileUrl: String?,
+    val isFavourite: Boolean = false
 )
 
 fun List<WorkEntity>.toDomain() = map { it.toDomain() }
@@ -21,5 +22,6 @@ fun WorkEntity.toDomain() = Work(
     authorId = authorId,
     title = title,
     publishYear = publishYear,
-    fileUrl = fileUrl
+    fileUrl = fileUrl,
+    isFavourite = isFavourite
 )

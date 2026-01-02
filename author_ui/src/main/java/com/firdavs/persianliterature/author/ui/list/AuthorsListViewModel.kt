@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
 import com.firdavs.persianliterature.author.ui.mapper.AuthorUiMapper
 import com.firdavs.persianliterature.author.ui.model.AuthorUiModel
+import com.firdavs.persianliterature.author_api.repository.FavouritesRepository
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import com.firdavs.persianliterature.core.presentation.BaseViewModel
 import kotlinx.coroutines.launch
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 class AuthorsListViewModel(
     private val authorRepository: AuthorRepository,
     private val authorUiMapper: AuthorUiMapper,
-    private val worksRepository: WorksRepository
+    private val worksRepository: WorksRepository,
+    private val favouritesRepository: FavouritesRepository
 ) :
     BaseViewModel<AuthorsListUiState>(AuthorsListUiState()) {
     init {
@@ -77,6 +79,12 @@ class AuthorsListViewModel(
             author.name.contains(searchQuery, ignoreCase = true)
         }
         post { it.copy(authors = filteredAuthors) }
+    }
+
+    fun onToggleFavourite(authorId: String, isFavourite: Boolean) {
+        viewModelScope.launch {
+            favouritesRepository.toggleAuthorFavourite(authorId, isFavourite)
+        }
     }
 
     companion object {

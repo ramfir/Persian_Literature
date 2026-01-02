@@ -24,7 +24,8 @@ fun AuthorEntity.toDomain() = Author(
     born = this.born,
     died = this.died,
     place = this.place,
-    bioUrl = this.bioUrl
+    bioUrl = this.bioUrl,
+    isFavourite = this.isFavourite
 )
 
 fun Author.toDb() = AuthorEntity(
@@ -34,5 +35,6 @@ fun Author.toDb() = AuthorEntity(
     born = this.born,
     died = this.died,
     place = this.place,
-    bioUrl = this.bioUrl
+    bioUrl = this.bioUrl,
+    isFavourite = this.isFavourite
 )

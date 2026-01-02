@@ -7,8 +7,10 @@ import com.firdavs.persianliterature.author.db.dao.WorksDao
 import com.firdavs.persianliterature.author.db.mapper.AuthorsEntityToDomainMapper
 import com.firdavs.persianliterature.author.db.mapper.AuthorsEntityToDomainMapperImpl
 import com.firdavs.persianliterature.author.repository.AuthorRepositoryImpl
+import com.firdavs.persianliterature.author.repository.FavouritesRepositoryImpl
 import com.firdavs.persianliterature.author.repository.WorksRepositoryImpl
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
+import com.firdavs.persianliterature.author_api.repository.FavouritesRepository
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
@@ -18,6 +20,7 @@ import org.koin.dsl.module
 val authorModule = module {
     singleOf(::AuthorRepositoryImpl) bind AuthorRepository::class
     singleOf(::WorksRepositoryImpl) bind WorksRepository::class
+    singleOf(::FavouritesRepositoryImpl) bind FavouritesRepository::class
     single<AuthorsDb> {
         Room.databaseBuilder(
             androidContext(),

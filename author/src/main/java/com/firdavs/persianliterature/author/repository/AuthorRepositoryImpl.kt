@@ -27,7 +27,12 @@ class AuthorRepositoryImpl(
             val authorDto = document.toObject(AuthorDTO::class.java)
             authorDto?.copy(id = document.id)
         }
-        authorsDao.insert(authorsDTO.toDb())
+        // Preserve existing favourite status
+        val existingFavouriteIds = authorsDao.getFavouriteIds().toSet()
+        val authorsWithFavourites = authorsDTO.toDb().map { author ->
+            author.copy(isFavourite = author.id in existingFavouriteIds)
+        }
+        authorsDao.insert(authorsWithFavourites)
     }
 
     override fun getAuthors(): Flow<List<Author>> {

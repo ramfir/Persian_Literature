@@ -22,4 +22,13 @@ interface AuthorsDao {
 
     @Query("SELECT * FROM ${AuthorsDb.AUTHORS} WHERE id = :id")
     fun getByIdFlow(id: String): Flow<AuthorEntity>
+
+    @Query("SELECT * FROM ${AuthorsDb.AUTHORS} WHERE isFavourite = 1")
+    fun getFavouritesFlow(): Flow<List<AuthorEntity>>
+
+    @Query("UPDATE ${AuthorsDb.AUTHORS} SET isFavourite = :isFavourite WHERE id = :id")
+    suspend fun updateFavourite(id: String, isFavourite: Boolean)
+
+    @Query("SELECT id FROM ${AuthorsDb.AUTHORS} WHERE isFavourite = 1")
+    suspend fun getFavouriteIds(): List<String>
 }

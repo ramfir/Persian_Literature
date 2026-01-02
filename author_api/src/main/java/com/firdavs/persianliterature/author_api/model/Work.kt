@@ -5,5 +5,6 @@ data class Work(
     val authorId: String,
     val title: String,
     val publishYear: String,
-    val fileUrl: String?
+    val fileUrl: String?,
+    val isFavourite: Boolean = false
 )

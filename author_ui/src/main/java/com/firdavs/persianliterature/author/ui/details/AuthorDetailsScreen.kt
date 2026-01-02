@@ -14,8 +14,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.DateRange
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -61,7 +63,9 @@ fun AuthorDetailsEntryPoint(
             state = state,
             onWorkClick = onWorkClick,
             onChapterClick = viewModel::onChapterClick,
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            onToggleAuthorFavourite = viewModel::onToggleAuthorFavourite,
+            onToggleWorkFavourite = viewModel::onToggleWorkFavourite
         )
     }
 }
@@ -71,7 +75,9 @@ fun AuthorDetailsScreen(
     state: AuthorDetailsUiState,
     onChapterClick: (Chapter) -> Unit,
     onWorkClick: (String) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onToggleAuthorFavourite: (Boolean) -> Unit = {},
+    onToggleWorkFavourite: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     BaseScreen(
         topBar = { drawerState, scope ->
@@ -94,6 +100,29 @@ fun AuthorDetailsScreen(
                     text = stringResource(state.chapter.getStringRes()),
                     textAlign = TextAlign.Center
                 )
+                if (state.chapter == Chapter.Bio) {
+                    state.author?.let { author ->
+                        IconButton(
+                            modifier = Modifier
+                                .align(Alignment.CenterEnd),
+                            onClick = { onToggleAuthorFavourite(!author.isFavourite) }
+                        ) {
+                            Icon(
+                                imageVector = if (author.isFavourite) {
+                                    Icons.Filled.Favorite
+                                } else {
+                                    Icons.Outlined.FavoriteBorder
+                                },
+                                contentDescription = null,
+                                tint = if (author.isFavourite) {
+                                    LocalColors.current.primary
+                                } else {
+                                    LocalColors.current.onPrimary
+                                }
+                            )
+                        }
+                    }
+                }
             }
         },
         mainContent = {
@@ -123,7 +152,8 @@ fun AuthorDetailsScreen(
                             Chapter.Works -> {
                                 WorksChapter(
                                     works = state.works,
-                                    onWorkClick = onWorkClick
+                                    onWorkClick = onWorkClick,
+                                    onToggleWorkFavourite = onToggleWorkFavourite
                                 )
                             }
                         }
@@ -188,7 +218,11 @@ private fun BioChapter(
 }
 
 @Composable
-private fun WorksChapter(works: List<Work>, onWorkClick: (String) -> Unit) {
+private fun WorksChapter(
+    works: List<Work>,
+    onWorkClick: (String) -> Unit,
+    onToggleWorkFavourite: (String, Boolean) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -210,7 +244,11 @@ private fun WorksChapter(works: List<Work>, onWorkClick: (String) -> Unit) {
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(works) { work ->
-                    WorkItem(work, onWorkClick = onWorkClick)
+                    WorkItem(
+                        work = work,
+                        onWorkClick = onWorkClick,
+                        onToggleFavourite = onToggleWorkFavourite
+                    )
                     HorizontalDivider(
                         modifier = Modifier.padding(horizontal = 16.dp),
                         thickness = 1.dp,
@@ -225,7 +263,8 @@ private fun WorksChapter(works: List<Work>, onWorkClick: (String) -> Unit) {
 @Composable
 private fun WorkItem(
     work: Work,
-    onWorkClick: (String) -> Unit
+    onWorkClick: (String) -> Unit,
+    onToggleFavourite: (String, Boolean) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -237,12 +276,27 @@ private fun WorkItem(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        H4Text(
-            text = work.title
-        )
-        H5Text(
-            text = stringResource(R.string.published_at, work.publishYear)
-        )
+        Column(modifier = Modifier.weight(1f)) {
+            H4Text(text = work.title)
+            H5Text(text = stringResource(R.string.published_at, work.publishYear))
+        }
+        IconButton(
+            onClick = { onToggleFavourite(work.id, !work.isFavourite) }
+        ) {
+            Icon(
+                imageVector = if (work.isFavourite) {
+                    Icons.Filled.Favorite
+                } else {
+                    Icons.Outlined.FavoriteBorder
+                },
+                contentDescription = null,
+                tint = if (work.isFavourite) {
+                    LocalColors.current.primary
+                } else {
+                    LocalColors.current.onPrimary
+                }
+            )
+        }
     }
 }
 

@@ -1,6 +1,7 @@
 package com.firdavs.persianliterature.author.ui.di
 
 import com.firdavs.persianliterature.author.ui.details.AuthorDetailsViewModel
+import com.firdavs.persianliterature.author.ui.favourites.FavouritesViewModel
 import com.firdavs.persianliterature.author.ui.list.AuthorsListViewModel
 import com.firdavs.persianliterature.author.ui.mapper.AuthorUiMapper
 import com.firdavs.persianliterature.author.ui.mapper.AuthorUiMapperImpl
@@ -14,10 +15,12 @@ import org.koin.dsl.module
 
 val authorUiModule = module {
     viewModelOf(::AuthorsListViewModel)
+    viewModelOf(::FavouritesViewModel)
     viewModel {
             (args: Array<Any?>) -> AuthorDetailsViewModel(
         args.first() as String,
         androidContext(),
+        get(),
         get(),
         get(),
         get()
@@ -27,6 +30,7 @@ val authorUiModule = module {
             (args: Array<Any?>) -> WorkDetailsViewModel(
         args.first() as String,
         androidContext(),
+        get(),
         get(),
         get()
     )
