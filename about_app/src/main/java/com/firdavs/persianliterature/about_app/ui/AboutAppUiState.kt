@@ -5,12 +5,7 @@ import com.firdavs.persianliterature.core.model.Chapter
 import com.firdavs.persianliterature.core.presentation.UiState
 
 data class AboutAppUiState(
-    val chapters: List<Chapter> = listOf(
-        Chapter.Authors,
-        Chapter.AboutApp,
-        Chapter.Favourites,
-        Chapter.Settings
-    ),
+    val chapters: List<Chapter> = Chapter.all,
     val features: List<Int> = listOf(
         R.string.authors_list_with_works,
         R.string.add_favourites,

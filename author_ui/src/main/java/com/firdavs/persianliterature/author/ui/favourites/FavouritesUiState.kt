@@ -9,12 +9,7 @@ data class FavouritesUiState(
     val favouriteAuthors: List<AuthorUiModel> = emptyList(),
     val favouriteWorks: List<Work> = emptyList(),
     val selectedTab: FavouritesTab = FavouritesTab.Authors,
-    val chapters: List<Chapter> = listOf(
-        Chapter.Authors,
-        Chapter.AboutApp,
-        Chapter.Favourites,
-        Chapter.Settings
-    )
+    val chapters: List<Chapter> = Chapter.all
 ) : UiState()
 
 enum class FavouritesTab {
