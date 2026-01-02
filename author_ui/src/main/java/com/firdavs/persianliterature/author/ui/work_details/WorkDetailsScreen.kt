@@ -81,11 +81,7 @@ fun WorkDetailsScreen(
                             } else {
                                 Icons.Outlined.FavoriteBorder
                             },
-                            contentDescription = if (work.isFavourite) {
-                                stringResource(R.string.remove_from_favourites)
-                            } else {
-                                stringResource(R.string.add_to_favourites)
-                            },
+                            contentDescription = null,
                             tint = if (work.isFavourite) {
                                 LocalColors.current.primary
                             } else {

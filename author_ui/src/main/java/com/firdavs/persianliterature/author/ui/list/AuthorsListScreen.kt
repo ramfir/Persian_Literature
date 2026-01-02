@@ -304,11 +304,7 @@ fun AuthorItem(
                     } else {
                         Icons.Outlined.FavoriteBorder
                     },
-                    contentDescription = if (author.isFavourite) {
-                        stringResource(R.string.remove_from_favourites)
-                    } else {
-                        stringResource(R.string.add_to_favourites)
-                    },
+                    contentDescription = null,
                     tint = if (author.isFavourite) {
                         LocalColors.current.primary
                     } else {

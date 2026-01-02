@@ -113,11 +113,7 @@ fun AuthorDetailsScreen(
                                 } else {
                                     Icons.Outlined.FavoriteBorder
                                 },
-                                contentDescription = if (author.isFavourite) {
-                                    stringResource(R.string.remove_from_favourites)
-                                } else {
-                                    stringResource(R.string.add_to_favourites)
-                                },
+                                contentDescription = null,
                                 tint = if (author.isFavourite) {
                                     LocalColors.current.primary
                                 } else {
@@ -293,11 +289,7 @@ private fun WorkItem(
                 } else {
                     Icons.Outlined.FavoriteBorder
                 },
-                contentDescription = if (work.isFavourite) {
-                    stringResource(R.string.remove_from_favourites)
-                } else {
-                    stringResource(R.string.add_to_favourites)
-                },
+                contentDescription = null,
                 tint = if (work.isFavourite) {
                     LocalColors.current.primary
                 } else {
