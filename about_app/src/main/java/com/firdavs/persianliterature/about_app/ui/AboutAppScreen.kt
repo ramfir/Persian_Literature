@@ -49,6 +49,7 @@ private fun AboutAppScreen(
         drawerContent = {
             DrawerSheet(
                 chapters = state.chapters,
+                currentChapter = Chapter.AboutApp,
                 onChapterClick = onChapterClick
             )
         },

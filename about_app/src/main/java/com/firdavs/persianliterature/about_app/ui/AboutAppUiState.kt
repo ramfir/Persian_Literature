@@ -7,6 +7,7 @@ import com.firdavs.persianliterature.core.presentation.UiState
 data class AboutAppUiState(
     val chapters: List<Chapter> = listOf(
         Chapter.Authors,
+        Chapter.AboutApp,
         Chapter.Favourites,
         Chapter.Settings
     ),

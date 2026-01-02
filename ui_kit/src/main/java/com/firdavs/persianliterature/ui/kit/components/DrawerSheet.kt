@@ -19,6 +19,7 @@ import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 @Composable
 fun DrawerSheet(
     chapters: List<Chapter>,
+    currentChapter: Chapter,
     onChapterClick: (Chapter) -> Unit
 ) {
     val colors = LocalColors.current
@@ -31,10 +32,11 @@ fun DrawerSheet(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(chapters) { chapter ->
+                val isCurrentChapter = chapter == currentChapter
                 H4Text(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { onChapterClick(chapter) }
+                        .clickable(enabled = !isCurrentChapter) { onChapterClick(chapter) }
                         .background(color = colors.primary, shape = RoundedCornerShape(8.dp))
                         .padding(8.dp),
                     res = chapter.titleRes

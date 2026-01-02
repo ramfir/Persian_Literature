@@ -96,6 +96,7 @@ private fun AuthorsListScreen(
         drawerContent = {
             DrawerSheet(
                 chapters = state.chapters,
+                currentChapter = Chapter.Authors,
                 onChapterClick = onChapterClick
             )
         },

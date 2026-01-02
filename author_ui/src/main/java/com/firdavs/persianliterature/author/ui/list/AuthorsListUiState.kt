@@ -10,6 +10,7 @@ data class AuthorsListUiState(
     val searchQuery: String = "",
     val isLoading: Boolean = true,
     val chapters: List<Chapter> = listOf(
+        Chapter.Authors,
         Chapter.AboutApp,
         Chapter.Favourites,
         Chapter.Settings

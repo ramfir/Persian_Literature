@@ -12,6 +12,7 @@ data class FavouritesUiState(
     val chapters: List<Chapter> = listOf(
         Chapter.Authors,
         Chapter.AboutApp,
+        Chapter.Favourites,
         Chapter.Settings
     )
 ) : UiState()
