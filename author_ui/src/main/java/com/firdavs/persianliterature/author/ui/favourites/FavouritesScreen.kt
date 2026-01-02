@@ -72,6 +72,7 @@ private fun FavouritesScreen(
         drawerContent = {
             DrawerSheet(
                 chapters = state.chapters,
+                currentChapter = Chapter.Favourites,
                 onChapterClick = onChapterClick
             )
         },
