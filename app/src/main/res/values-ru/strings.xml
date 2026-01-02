@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Персидская литература</string>
+    <string name="exit_toast_message">Нажмите еще раз, если хотите выйти из приложения</string>
+</resources>

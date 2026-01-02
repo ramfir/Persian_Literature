@@ -1,0 +1,15 @@
+<resources>
+    <string name="authors_list">Рӯйхати муаллифон</string>
+    <string name="favourites">Баргузидаҳо</string>
+    <string name="settings">Танзимот</string>
+    <string name="search_authors">Ҷустуҷӯи муаллифон…</string>
+    <string name="bio">Тарҷумаи ҳол</string>
+    <string name="works">Асарҳо</string>
+    <string name="bio_loading">Боркунии тарҷумаи ҳол…</string>
+    <string name="work_loading">Боркунии асар…</string>
+    <string name="no_works_found">Асарҳо ёфт нашуданд</string>
+    <string name="no_bio_found">Тарҷумаи ҳол ёфт нашуд</string>
+    <string name="published_at">нашр шудааст дар %s</string>
+    <string name="no_favourite_authors">Ҳанӯз муаллифони баргузида нест</string>
+    <string name="no_favourite_works">Ҳанӯз асарҳои баргузида нест</string>
+</resources>
