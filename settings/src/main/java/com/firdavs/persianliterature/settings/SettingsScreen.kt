@@ -1,6 +1,5 @@
-package com.firdavs.persianliterature.app.settings
+package com.firdavs.persianliterature.settings
 
-import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,21 +14,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.firdavs.persianliterature.app.R
 import com.firdavs.persianliterature.core.model.Chapter
+import com.firdavs.persianliterature.settings.api.Language
+import com.firdavs.persianliterature.settings.api.LanguageManager
 import com.firdavs.persianliterature.ui.kit.BaseScreen
 import com.firdavs.persianliterature.ui.kit.H3Text
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
 import kotlinx.coroutines.launch
@@ -53,8 +48,8 @@ fun SettingsEntryPoint(
 private fun SettingsScreen(
     state: SettingsUiState,
     onChapterClick: (Chapter) -> Unit,
-    onLanguageSelected: (LanguageManager.Language) -> Unit,
-    onApplyClick: () -> Unit
+    onLanguageSelected: (Language) -> Unit,
+    onApplyClick: (Language) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -96,7 +91,7 @@ private fun SettingsScreen(
                     text = stringResource(R.string.select_language)
                 )
 
-                LanguageManager.Language.values().forEach { language ->
+                Language.values().forEach { language ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -115,13 +110,7 @@ private fun SettingsScreen(
                 }
 
                 Button(
-                    onClick = {
-                        onApplyClick()
-                        (context as? Activity)?.let { activity ->
-                            LanguageManager.setLanguage(context, state.selectedLanguage)
-                            LanguageManager.restartActivity(activity)
-                        }
-                    },
+                    onClick = { onApplyClick(state.selectedLanguage) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp)

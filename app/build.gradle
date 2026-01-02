@@ -19,6 +19,8 @@ dependencies {
     implementation module.author
     implementation module.util
     implementation module.about_app
+    implementation module.settings_api
+    implementation module.settings
 
     implementation library.activity_compose
     implementation platform(library.firebase_bom)

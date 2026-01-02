@@ -19,8 +19,8 @@ import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import com.firdavs.persianliterature.about_app.ui.AboutAppEntryPoint
 import com.firdavs.persianliterature.app.R
-import com.firdavs.persianliterature.app.settings.SettingsEntryPoint
 import com.firdavs.persianliterature.app.ui.MainActivityUiState
+import com.firdavs.persianliterature.settings.SettingsEntryPoint
 import com.firdavs.persianliterature.author.ui.details.AuthorDetailsEntryPoint
 import com.firdavs.persianliterature.author.ui.favourites.FavouritesEntryPoint
 import com.firdavs.persianliterature.author.ui.list.AuthorsListEntryPoint

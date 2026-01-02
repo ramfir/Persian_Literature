@@ -1,17 +1,22 @@
 package com.firdavs.persianliterature.app.di
 
 import com.firdavs.persianliterature.about_app.di.aboutAppUiModule
-import com.firdavs.persianliterature.app.settings.SettingsViewModel
 import com.firdavs.persianliterature.app.ui.MainViewModel
 import com.firdavs.persianliterature.author.di.authorModule
 import com.firdavs.persianliterature.author.ui.di.authorUiModule
+import com.firdavs.persianliterature.settings.SettingsViewModel
+import com.firdavs.persianliterature.settings.LanguageManagerImpl
+import com.firdavs.persianliterature.settings.api.LanguageManager
 import com.firdavs.persianliterature.util.di.utilModule
 import org.koin.core.module.dsl.viewModelOf
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val appModule = module {
     viewModelOf(::MainViewModel)
     viewModelOf(::SettingsViewModel)
+    singleOf(::LanguageManagerImpl) bind LanguageManager::class
 
     includes(
         authorUiModule,
