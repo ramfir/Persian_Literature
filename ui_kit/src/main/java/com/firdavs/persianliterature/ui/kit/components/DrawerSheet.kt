@@ -37,7 +37,10 @@ fun DrawerSheet(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable(enabled = !isCurrentChapter) { onChapterClick(chapter) }
-                        .background(color = colors.primary, shape = RoundedCornerShape(8.dp))
+                        .background(
+                            color = if (isCurrentChapter) colors.primary.copy(alpha = 0.5f) else colors.primary,
+                            shape = RoundedCornerShape(8.dp)
+                        )
                         .padding(8.dp),
                     res = chapter.titleRes
                 )
