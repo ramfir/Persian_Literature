@@ -13,6 +13,7 @@ android {
 }
 
 dependencies {
+    implementation module.author_api
     implementation module.core
     implementation module.ui_kit
     implementation module.author_ui
