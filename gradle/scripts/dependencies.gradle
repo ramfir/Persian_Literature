@@ -4,6 +4,8 @@ ext {
     library = [
             core_ktx               : ("androidx.core:core-ktx:$core_ktx_version"),
             activity_compose       : ("androidx.activity:activity-compose:$activity_compose_version"),
+            appcompat              : ("androidx.appcompat:appcompat:$appcompat_version"), // for locale change
+
             lifecycle_ktx          : ("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"),
             lifecycle_compose      : ("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"),
             lifecycle_navigation   : ("androidx.lifecycle:lifecycle-viewmodel-navigation3:$navigation_version"),

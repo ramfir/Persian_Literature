@@ -1,0 +1,15 @@
+<resources>
+    <string name="authors_list">Список авторов</string>
+    <string name="favourites">Избранное</string>
+    <string name="settings">Настройки</string>
+    <string name="search_authors">Поиск авторов…</string>
+    <string name="bio">Биография</string>
+    <string name="works">Произведения</string>
+    <string name="bio_loading">Загрузка биографии…</string>
+    <string name="work_loading">Загрузка произведения…</string>
+    <string name="no_works_found">Произведения не найдены</string>
+    <string name="no_bio_found">Биография не найдена</string>
+    <string name="published_at">опубликовано %s</string>
+    <string name="no_favourite_authors">Нет избранных авторов</string>
+    <string name="no_favourite_works">Нет избранных произведений</string>
+</resources>

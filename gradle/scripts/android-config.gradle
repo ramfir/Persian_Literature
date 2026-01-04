@@ -23,7 +23,7 @@ android {
 
         vectorDrawables.useSupportLibrary true
         multiDexEnabled true
-        resourceConfigurations += ['ru']
+        resourceConfigurations += ['en', 'ru', 'tg']
 
     }
     buildFeatures {

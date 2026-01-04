@@ -1,5 +1,10 @@
 package com.firdavs.persianliterature.settings
 
+import android.app.LocaleManager
+import android.content.Context
+import android.os.Build
+import android.os.LocaleList
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,10 +14,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,13 +25,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.os.LocaleListCompat
 import com.firdavs.persianliterature.core.model.Chapter
 import com.firdavs.persianliterature.settings.api.Language
-import com.firdavs.persianliterature.settings.api.LanguageManager
+import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.BaseScreen
 import com.firdavs.persianliterature.ui.kit.H3Text
-import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
+import com.firdavs.persianliterature.ui.kit.components.buttons.PrimaryButton
+import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import kotlinx.coroutines.launch
 import com.firdavs.persianliterature.core.R as UiR
 
@@ -34,12 +41,27 @@ import com.firdavs.persianliterature.core.R as UiR
 fun SettingsEntryPoint(
     onChapterClick: (Chapter) -> Unit
 ) {
+    val context = LocalContext.current
     BaseEntryPoint(SettingsViewModel::class) { state, viewModel ->
         SettingsScreen(
             state = state,
             onChapterClick = onChapterClick,
             onLanguageSelected = viewModel::onLanguageSelected,
-            onApplyClick = viewModel::onApplyClick
+            onApplyClick = { language ->
+                viewModel.onApplyClick(language)
+                changeLocale(language.code, context)
+            }
+        )
+    }
+}
+
+private fun changeLocale(languageCode: String, context: Context) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        context.getSystemService(LocaleManager::class.java)
+            .applicationLocales = LocaleList.forLanguageTags(languageCode)
+    } else {
+        AppCompatDelegate.setApplicationLocales(
+            LocaleListCompat.forLanguageTags(languageCode)
         )
     }
 }
@@ -51,8 +73,7 @@ private fun SettingsScreen(
     onLanguageSelected: (Language) -> Unit,
     onApplyClick: (Language) -> Unit
 ) {
-    val context = LocalContext.current
-
+    val colors = LocalColors.current
     BaseScreen(
         drawerContent = {
             DrawerSheet(
@@ -91,7 +112,7 @@ private fun SettingsScreen(
                     text = stringResource(R.string.select_language)
                 )
 
-                Language.values().forEach { language ->
+                Language.entries.forEach { language ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -100,7 +121,10 @@ private fun SettingsScreen(
                     ) {
                         RadioButton(
                             selected = state.selectedLanguage == language,
-                            onClick = { onLanguageSelected(language) }
+                            onClick = { onLanguageSelected(language) },
+                            colors = RadioButtonDefaults.colors().copy(
+                                selectedColor = colors.primary
+                            )
                         )
                         H3Text(
                             modifier = Modifier.padding(start = 8.dp),
@@ -108,15 +132,13 @@ private fun SettingsScreen(
                         )
                     }
                 }
-
-                Button(
-                    onClick = { onApplyClick(state.selectedLanguage) },
+                PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp)
-                ) {
-                    H3Text(text = stringResource(R.string.apply))
-                }
+                        .padding(top = 16.dp),
+                    text = stringResource(R.string.apply),
+                    onClick = { onApplyClick(state.selectedLanguage) }
+                )
             }
         }
     )
