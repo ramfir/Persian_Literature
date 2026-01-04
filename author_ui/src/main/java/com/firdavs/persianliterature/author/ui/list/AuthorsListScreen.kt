@@ -31,10 +31,13 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
@@ -161,6 +164,8 @@ private fun TopBar(
     onExitSearchClick: () -> Unit,
     filterAuthorsList: () -> Unit
 ) {
+    val focusRequester = remember { FocusRequester() }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -181,15 +186,20 @@ private fun TopBar(
                 Icon(Icons.Default.Menu, "Open drawer")
             }
         }
-        if (isSearchActive) {
-            LaunchedEffect(searchQuery) {
-                snapshotFlow {
-                    searchQuery
+        LaunchedEffect(searchQuery) {
+            snapshotFlow {
+                searchQuery
+            }
+                .debounce(SEARCH_DEBOUNCE)
+                .collect {
+                    filterAuthorsList()
                 }
-                    .debounce(SEARCH_DEBOUNCE)
-                    .collect {
-                        filterAuthorsList()
-                    }
+        }
+        if (isSearchActive) {
+            LaunchedEffect(Unit) {
+                if (isSearchActive) {
+                    focusRequester.requestFocus()
+                }
             }
             TextField(
                 value = searchQuery,
@@ -198,7 +208,8 @@ private fun TopBar(
                 modifier = Modifier
                     .padding(start = 32.dp)
                     .fillMaxWidth()
-                    .align(Alignment.CenterVertically),
+                    .align(Alignment.CenterVertically)
+                    .focusRequester(focusRequester),
                 placeholder = {
                     H3Text(stringResource(R.string.search_authors))
                 },
