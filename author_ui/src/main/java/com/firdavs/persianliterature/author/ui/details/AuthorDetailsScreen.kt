@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,6 +44,7 @@ import com.firdavs.persianliterature.ui.kit.H2Text
 import com.firdavs.persianliterature.ui.kit.H3Text
 import com.firdavs.persianliterature.ui.kit.H4Text
 import com.firdavs.persianliterature.ui.kit.H5Text
+import com.firdavs.persianliterature.ui.kit.components.ProgressIndicator
 import com.firdavs.persianliterature.ui.kit.theme.AppPreviewTheme
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import com.rajat.pdfviewer.PdfRendererView
@@ -131,7 +131,7 @@ fun AuthorDetailsScreen(
                     .fillMaxSize()
             ) {
                 if (state.isLoading) {
-                    CircularProgressIndicator(
+                    ProgressIndicator(
                         modifier = Modifier
                             .align(Alignment.Center)
                     )
@@ -193,7 +193,7 @@ private fun BioChapter(
         horizontalAlignment = CenterHorizontally
     ) {
         if (isLoadingFile) {
-            CircularProgressIndicator()
+            ProgressIndicator()
             H4Text(text = stringResource(R.string.bio_loading))
         } else {
             bioFile?.let { bioFile ->
