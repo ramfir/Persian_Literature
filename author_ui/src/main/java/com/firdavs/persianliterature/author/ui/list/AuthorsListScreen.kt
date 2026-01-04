@@ -186,17 +186,17 @@ private fun TopBar(
                 Icon(Icons.Default.Menu, "Open drawer")
             }
         }
-        if (isSearchActive) {
-            LaunchedEffect(searchQuery) {
-                snapshotFlow {
-                    searchQuery
-                }
-                    .debounce(SEARCH_DEBOUNCE)
-                    .collect {
-                        filterAuthorsList()
-                    }
+        LaunchedEffect(searchQuery) {
+            snapshotFlow {
+                searchQuery
             }
-            LaunchedEffect(isSearchActive) {
+                .debounce(SEARCH_DEBOUNCE)
+                .collect {
+                    filterAuthorsList()
+                }
+        }
+        if (isSearchActive) {
+            LaunchedEffect(Unit) {
                 if (isSearchActive) {
                     focusRequester.requestFocus()
                 }

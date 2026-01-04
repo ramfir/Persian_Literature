@@ -63,6 +63,7 @@ class AuthorsListViewModel(
 
     fun onExitSearchClick() {
         post { it.copy(isSearchActive = false) }
+        onClearSearchQueryClick()
     }
 
     fun onSearchQueryChange(value: String) {
