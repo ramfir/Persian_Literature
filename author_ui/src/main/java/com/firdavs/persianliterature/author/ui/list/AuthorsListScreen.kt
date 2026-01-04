@@ -21,7 +21,6 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -53,6 +52,7 @@ import com.firdavs.persianliterature.ui.kit.BaseScreen
 import com.firdavs.persianliterature.ui.kit.H3Text
 import com.firdavs.persianliterature.ui.kit.T1Text
 import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
+import com.firdavs.persianliterature.ui.kit.components.ProgressIndicator
 import com.firdavs.persianliterature.ui.kit.theme.AppPreviewTheme
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import com.firdavs.persianliterature.ui.kit.theme.LocalTypography
@@ -122,7 +122,7 @@ private fun AuthorsListScreen(
                     .fillMaxSize()
             ) {
                 if (state.isLoading) {
-                    CircularProgressIndicator(
+                    ProgressIndicator(
                         modifier = Modifier
                             .align(Alignment.Center)
                     )
@@ -279,7 +279,7 @@ fun AuthorItem(
                         .size(70.dp)
                         .clip(RoundedCornerShape(8.dp)),
                     loading = {
-                        CircularProgressIndicator(
+                        ProgressIndicator(
                             modifier = Modifier
                                 .size(50.dp)
                         )
