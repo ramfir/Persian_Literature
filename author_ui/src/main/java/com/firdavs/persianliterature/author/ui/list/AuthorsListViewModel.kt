@@ -22,44 +22,12 @@ class AuthorsListViewModel(
     }
 
     private var allAuthors: List<AuthorUiModel> = emptyList()
-    private var hasInitiallyFetched = false
 
-    override fun onViewResumed() {
-        if (!hasInitiallyFetched) {
-            hasInitiallyFetched = true
-            fetchAuthors()
-            fetchWorks()
-        }
-    }
     private fun observeAuthors() {
         viewModelScope.launch {
             authorRepository.getAuthors().collect { authors ->
                 allAuthors = authorUiMapper.map(authors)
-                post { it.copy(authors = allAuthors) }
-            }
-        }
-    }
-
-    private fun fetchAuthors() {
-        post { it.copy(isLoading = true) }
-        viewModelScope.launch {
-            runCatching {
-                authorRepository.fetchAuthors()
-            }.onFailure {
-                Log.e(TAG, "getAuthors error ", it)
-                post { it.copy(isLoading = false) }
-            }.onSuccess {
-                post { it.copy(isLoading = false) }
-            }
-        }
-    }
-
-    private fun fetchWorks() {
-        viewModelScope.launch {
-            runCatching {
-                worksRepository.fetchWorks()
-            }.onFailure {
-                Log.e(TAG, "fetchWorks error ", it)
+                post { it.copy(authors = allAuthors, isLoading = false) }
             }
         }
     }
