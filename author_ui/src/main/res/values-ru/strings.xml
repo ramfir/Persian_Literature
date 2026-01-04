@@ -12,4 +12,5 @@
     <string name="published_at">опубликовано %s</string>
     <string name="no_favourite_authors">Нет избранных авторов</string>
     <string name="no_favourite_works">Нет избранных произведений</string>
+    <string name="authors_fetched">Список авторов обновлен</string>
 </resources>

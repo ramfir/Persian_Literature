@@ -12,4 +12,5 @@
     <string name="published_at">published at %s</string>
     <string name="no_favourite_authors">No favourite authors yet</string>
     <string name="no_favourite_works">No favourite works yet</string>
+    <string name="authors_fetched">Authors fetched successfully</string>
 </resources>

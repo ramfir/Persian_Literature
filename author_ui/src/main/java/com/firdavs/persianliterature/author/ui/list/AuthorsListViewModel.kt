@@ -62,6 +62,10 @@ class AuthorsListViewModel(
         }
     }
 
+    fun resetShowToastFlag() {
+        post { it.copy(showToast = false) }
+    }
+
     fun onRefreshClick() {
         post { it.copy(isRefreshing = true) }
         viewModelScope.launch {
@@ -73,6 +77,7 @@ class AuthorsListViewModel(
                 post { it.copy(isRefreshing = false) }
             }.onSuccess {
                 post { it.copy(isRefreshing = false) }
+                post { it.copy(showToast = true) }
             }
         }
     }
