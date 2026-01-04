@@ -19,11 +19,18 @@ class AuthorsListViewModel(
     BaseViewModel<AuthorsListUiState>(AuthorsListUiState()) {
     init {
         observeAuthors()
-        fetchAuthors()
-        fetchWorks()
     }
 
     private var allAuthors: List<AuthorUiModel> = emptyList()
+    private var hasInitiallyFetched = false
+
+    override fun onViewResumed() {
+        if (!hasInitiallyFetched) {
+            hasInitiallyFetched = true
+            fetchAuthors()
+            fetchWorks()
+        }
+    }
     private fun observeAuthors() {
         viewModelScope.launch {
             authorRepository.getAuthors().collect { authors ->
@@ -84,6 +91,21 @@ class AuthorsListViewModel(
     fun onToggleFavourite(authorId: String, isFavourite: Boolean) {
         viewModelScope.launch {
             favouritesRepository.toggleAuthorFavourite(authorId, isFavourite)
+        }
+    }
+
+    fun onRefreshClick() {
+        post { it.copy(isRefreshing = true) }
+        viewModelScope.launch {
+            runCatching {
+                authorRepository.fetchAuthors()
+                worksRepository.fetchWorks()
+            }.onFailure {
+                Log.e(TAG, "onRefreshClick error ", it)
+                post { it.copy(isRefreshing = false) }
+            }.onSuccess {
+                post { it.copy(isRefreshing = false) }
+            }
         }
     }
 

@@ -19,6 +19,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
@@ -74,7 +75,8 @@ fun AuthorsListEntryPoint(
             onAuthorClick = onAuthorClick,
             filterAuthorsList = viewModel::filterAuthorsList,
             onChapterClick = onChapterClick,
-            onToggleFavourite = viewModel::onToggleFavourite
+            onToggleFavourite = viewModel::onToggleFavourite,
+            onRefreshClick = viewModel::onRefreshClick
         )
     }
 }
@@ -90,7 +92,8 @@ private fun AuthorsListScreen(
     onAuthorClick: (String) -> Unit,
     filterAuthorsList: () -> Unit,
     onChapterClick: (Chapter) -> Unit,
-    onToggleFavourite: (String, Boolean) -> Unit
+    onToggleFavourite: (String, Boolean) -> Unit,
+    onRefreshClick: () -> Unit
 ) {
     BaseScreen(
         drawerContent = {
@@ -110,7 +113,9 @@ private fun AuthorsListScreen(
                 onClearSearchQueryClick = onClearSearchQueryClick,
                 onSearchClick = onSearchClick,
                 onExitSearchClick = onExitSearchClick,
-                filterAuthorsList = filterAuthorsList
+                filterAuthorsList = filterAuthorsList,
+                isRefreshing = state.isRefreshing,
+                onRefreshClick = onRefreshClick
             )
         },
         mainContent = {
@@ -159,7 +164,9 @@ private fun TopBar(
     onClearSearchQueryClick: () -> Unit,
     onSearchClick: () -> Unit,
     onExitSearchClick: () -> Unit,
-    filterAuthorsList: () -> Unit
+    filterAuthorsList: () -> Unit,
+    isRefreshing: Boolean,
+    onRefreshClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -225,6 +232,15 @@ private fun TopBar(
             Spacer(Modifier.weight(1f))
             H3Text(text = stringResource(R.string.authors_list))
             Spacer(Modifier.weight(1f))
+            IconButton(
+                onClick = onRefreshClick,
+                enabled = !isRefreshing
+            ) {
+                Icon(
+                    Icons.Default.Refresh,
+                    contentDescription = "Refresh"
+                )
+            }
             IconButton(onClick = onSearchClick) {
                 Icon(
                     Icons.Default.Search,
@@ -332,7 +348,8 @@ private fun AuthorsListScreenPreview(
             onAuthorClick = {},
             filterAuthorsList = {},
             onChapterClick = {},
-            onToggleFavourite = { _, _ -> }
+            onToggleFavourite = { _, _ -> },
+            onRefreshClick = {}
         )
     }
 }
