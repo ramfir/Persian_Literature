@@ -1,5 +1,6 @@
 package com.firdavs.persianliterature.author.ui.list
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.DrawerState
@@ -38,6 +40,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -77,7 +80,9 @@ fun AuthorsListEntryPoint(
             onAuthorClick = onAuthorClick,
             filterAuthorsList = viewModel::filterAuthorsList,
             onChapterClick = onChapterClick,
-            onToggleFavourite = viewModel::onToggleFavourite
+            onToggleFavourite = viewModel::onToggleFavourite,
+            onRefreshClick = viewModel::onRefreshClick,
+            resetShowToastFlag = viewModel::resetShowToastFlag
         )
     }
 }
@@ -93,8 +98,21 @@ private fun AuthorsListScreen(
     onAuthorClick: (String) -> Unit,
     filterAuthorsList: () -> Unit,
     onChapterClick: (Chapter) -> Unit,
-    onToggleFavourite: (String, Boolean) -> Unit
+    onToggleFavourite: (String, Boolean) -> Unit,
+    onRefreshClick: () -> Unit,
+    resetShowToastFlag: () -> Unit
 ) {
+    val context = LocalContext.current
+    LaunchedEffect(state.showToast) {
+        if (state.showToast) {
+            Toast.makeText(
+                context,
+                R.string.authors_fetched,
+                Toast.LENGTH_SHORT
+            ).show()
+            resetShowToastFlag()
+        }
+    }
     BaseScreen(
         drawerContent = {
             DrawerSheet(
@@ -113,7 +131,9 @@ private fun AuthorsListScreen(
                 onClearSearchQueryClick = onClearSearchQueryClick,
                 onSearchClick = onSearchClick,
                 onExitSearchClick = onExitSearchClick,
-                filterAuthorsList = filterAuthorsList
+                filterAuthorsList = filterAuthorsList,
+                isRefreshing = state.isRefreshing,
+                onRefreshClick = onRefreshClick
             )
         },
         mainContent = {
@@ -162,7 +182,9 @@ private fun TopBar(
     onClearSearchQueryClick: () -> Unit,
     onSearchClick: () -> Unit,
     onExitSearchClick: () -> Unit,
-    filterAuthorsList: () -> Unit
+    filterAuthorsList: () -> Unit,
+    isRefreshing: Boolean,
+    onRefreshClick: () -> Unit
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -236,6 +258,15 @@ private fun TopBar(
             Spacer(Modifier.weight(1f))
             H3Text(text = stringResource(R.string.authors_list))
             Spacer(Modifier.weight(1f))
+            IconButton(
+                onClick = onRefreshClick,
+                enabled = !isRefreshing
+            ) {
+                Icon(
+                    Icons.Default.Refresh,
+                    contentDescription = "Refresh"
+                )
+            }
             IconButton(onClick = onSearchClick) {
                 Icon(
                     Icons.Default.Search,
@@ -343,7 +374,9 @@ private fun AuthorsListScreenPreview(
             onAuthorClick = {},
             filterAuthorsList = {},
             onChapterClick = {},
-            onToggleFavourite = { _, _ -> }
+            onToggleFavourite = { _, _ -> },
+            onRefreshClick = {},
+            resetShowToastFlag = {}
         )
     }
 }

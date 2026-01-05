@@ -12,4 +12,5 @@
     <string name="published_at">нашр шуд дар %s</string>
     <string name="no_favourite_authors">Муаллифони интихобшуда нест</string>
     <string name="no_favourite_works">Асарҳои интихобшуда нест</string>
+    <string name="authors_fetched">Рӯйхати муаллифон аз нав гирифта шуд</string>
 </resources>

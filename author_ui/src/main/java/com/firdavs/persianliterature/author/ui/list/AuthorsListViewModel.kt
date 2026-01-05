@@ -19,40 +19,15 @@ class AuthorsListViewModel(
     BaseViewModel<AuthorsListUiState>(AuthorsListUiState()) {
     init {
         observeAuthors()
-        fetchAuthors()
-        fetchWorks()
     }
 
     private var allAuthors: List<AuthorUiModel> = emptyList()
+
     private fun observeAuthors() {
         viewModelScope.launch {
             authorRepository.getAuthors().collect { authors ->
                 allAuthors = authorUiMapper.map(authors)
-                post { it.copy(authors = allAuthors) }
-            }
-        }
-    }
-
-    private fun fetchAuthors() {
-        post { it.copy(isLoading = true) }
-        viewModelScope.launch {
-            runCatching {
-                authorRepository.fetchAuthors()
-            }.onFailure {
-                Log.e(TAG, "getAuthors error ", it)
-                post { it.copy(isLoading = false) }
-            }.onSuccess {
-                post { it.copy(isLoading = false) }
-            }
-        }
-    }
-
-    private fun fetchWorks() {
-        viewModelScope.launch {
-            runCatching {
-                worksRepository.fetchWorks()
-            }.onFailure {
-                Log.e(TAG, "fetchWorks error ", it)
+                post { it.copy(authors = allAuthors, isLoading = false) }
             }
         }
     }
@@ -85,6 +60,26 @@ class AuthorsListViewModel(
     fun onToggleFavourite(authorId: String, isFavourite: Boolean) {
         viewModelScope.launch {
             favouritesRepository.toggleAuthorFavourite(authorId, isFavourite)
+        }
+    }
+
+    fun resetShowToastFlag() {
+        post { it.copy(showToast = false) }
+    }
+
+    fun onRefreshClick() {
+        post { it.copy(isRefreshing = true) }
+        viewModelScope.launch {
+            runCatching {
+                authorRepository.fetchAuthors()
+                worksRepository.fetchWorks()
+            }.onFailure {
+                Log.e(TAG, "onRefreshClick error ", it)
+                post { it.copy(isRefreshing = false) }
+            }.onSuccess {
+                post { it.copy(isRefreshing = false) }
+                post { it.copy(showToast = true) }
+            }
         }
     }
 
