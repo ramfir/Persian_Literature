@@ -1,4 +1,5 @@
 <resources>
+    <string name="author">Муаллиф</string>
     <string name="authors_list">Рӯйхати муаллифон</string>
     <string name="favourites">Интихобшуда</string>
     <string name="settings">Танзимот</string>

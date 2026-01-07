@@ -245,7 +245,9 @@ private fun FavouriteWorkItem(
     ) {
         Column(modifier = Modifier.weight(1f)) {
             H4Text(text = work.title)
-            H5Text(text = stringResource(R.string.published_at, work.publishYear))
+            work.publishYear?.let { year ->
+                H5Text(text = stringResource(R.string.published_at, year))
+            }
         }
         IconButton(
             onClick = { onRemoveFromFavourites(work.id) }

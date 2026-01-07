@@ -19,8 +19,6 @@ val authorUiModule = module {
     viewModel {
             (args: Array<Any?>) -> AuthorDetailsViewModel(
         args.first() as String,
-        androidContext(),
-        get(),
         get(),
         get(),
         get()

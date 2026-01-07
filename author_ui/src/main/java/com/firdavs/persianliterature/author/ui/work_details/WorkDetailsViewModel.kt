@@ -43,10 +43,10 @@ class WorkDetailsViewModel(
                 }
                 // Handle PDF download (existing logic)
                 work.fileUrl?.let {
-                    val workFilePath = context.filesDir.toString() + "/${work.title}"
+                    val workFilePath = context.filesDir.toString() + "/${work.id}"
                     val workFile = File(workFilePath)
                     if (workFile.exists().not()) {
-                        downloadPdf(it, work.title)
+                        downloadPdf(it, work.id)
                     } else {
                         post { it.copy(workFile = workFile, isLoading = false) }
                     }

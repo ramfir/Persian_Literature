@@ -14,9 +14,7 @@ data class AuthorDTO(
     @get:PropertyName("died") @set:PropertyName("died")
     var died: String = "",
     @get:PropertyName("place") @set:PropertyName("place")
-    var place: String = "",
-    @get:PropertyName("bioUrl") @set:PropertyName("bioUrl")
-    var bioUrl: String? = null
+    var place: String = ""
 )
 
 fun List<AuthorDTO>.toDb() = map { it.toDb() }
@@ -27,6 +25,5 @@ fun AuthorDTO.toDb() = AuthorEntity(
     imageUrl = imageUrl,
     born = born,
     died = died,
-    place = place,
-    bioUrl = bioUrl
+    place = place
 )

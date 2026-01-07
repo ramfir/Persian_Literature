@@ -23,7 +23,7 @@ fun WorkDTO.toDb() = WorkEntity(
     id = id,
     authorId = authorId,
     title = title,
-    publishYear = publishYear ?: "",
+    publishYear = publishYear,
     fileUrl = fileUrl,
     audioUrl = audioUrl
 )

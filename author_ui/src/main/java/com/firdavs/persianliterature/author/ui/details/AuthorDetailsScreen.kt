@@ -1,6 +1,5 @@
 package com.firdavs.persianliterature.author.ui.details
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,17 +14,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -47,10 +40,6 @@ import com.firdavs.persianliterature.ui.kit.H5Text
 import com.firdavs.persianliterature.ui.kit.components.ProgressIndicator
 import com.firdavs.persianliterature.ui.kit.theme.AppPreviewTheme
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
-import com.rajat.pdfviewer.PdfRendererView
-import com.rajat.pdfviewer.compose.PdfRendererViewCompose
-import com.rajat.pdfviewer.util.PdfSource
-import java.io.File
 
 @Composable
 fun AuthorDetailsEntryPoint(
@@ -62,7 +51,6 @@ fun AuthorDetailsEntryPoint(
         AuthorDetailsScreen(
             state = state,
             onWorkClick = onWorkClick,
-            onChapterClick = viewModel::onChapterClick,
             onBackClick = onBackClick,
             onToggleAuthorFavourite = viewModel::onToggleAuthorFavourite,
             onToggleWorkFavourite = viewModel::onToggleWorkFavourite
@@ -73,7 +61,6 @@ fun AuthorDetailsEntryPoint(
 @Composable
 fun AuthorDetailsScreen(
     state: AuthorDetailsUiState,
-    onChapterClick: (Chapter) -> Unit,
     onWorkClick: (String) -> Unit,
     onBackClick: () -> Unit,
     onToggleAuthorFavourite: (Boolean) -> Unit = {},
@@ -97,30 +84,28 @@ fun AuthorDetailsScreen(
                 H2Text(
                     modifier = Modifier
                         .align(Alignment.Center),
-                    text = stringResource(state.chapter.getStringRes()),
+                    res = R.string.author,
                     textAlign = TextAlign.Center
                 )
-                if (state.chapter == Chapter.Bio) {
-                    state.author?.let { author ->
-                        IconButton(
-                            modifier = Modifier
-                                .align(Alignment.CenterEnd),
-                            onClick = { onToggleAuthorFavourite(!author.isFavourite) }
-                        ) {
-                            Icon(
-                                imageVector = if (author.isFavourite) {
-                                    Icons.Filled.Favorite
-                                } else {
-                                    Icons.Outlined.FavoriteBorder
-                                },
-                                contentDescription = null,
-                                tint = if (author.isFavourite) {
-                                    LocalColors.current.primary
-                                } else {
-                                    LocalColors.current.onPrimary
-                                }
-                            )
-                        }
+                state.author?.let { author ->
+                    IconButton(
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd),
+                        onClick = { onToggleAuthorFavourite(!author.isFavourite) }
+                    ) {
+                        Icon(
+                            imageVector = if (author.isFavourite) {
+                                Icons.Filled.Favorite
+                            } else {
+                                Icons.Outlined.FavoriteBorder
+                            },
+                            contentDescription = null,
+                            tint = if (author.isFavourite) {
+                                LocalColors.current.primary
+                            } else {
+                                LocalColors.current.onPrimary
+                            }
+                        )
                     }
                 }
             }
@@ -136,98 +121,34 @@ fun AuthorDetailsScreen(
                             .align(Alignment.Center)
                     )
                 } else if (state.author != null) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        horizontalAlignment = CenterHorizontally
-                    ) {
-                        when (state.chapter) {
-                            Chapter.Bio -> {
-                                BioChapter(
-                                    author = state.author,
-                                    isLoadingFile = state.isLoadingFile,
-                                    bioFile = state.bioFile
-                                )
-                            }
-                            Chapter.Works -> {
-                                WorksChapter(
-                                    works = state.works,
-                                    onWorkClick = onWorkClick,
-                                    onToggleWorkFavourite = onToggleWorkFavourite
-                                )
-                            }
-                        }
-                    }
+                    AuthorWithWorksContent(
+                        author = state.author,
+                        works = state.works,
+                        onWorkClick = onWorkClick,
+                        onToggleWorkFavourite = onToggleWorkFavourite
+                    )
                 }
             }
-        },
-        footerContent = {
-            AuthorDetailsFooter(
-                onChapterClick = onChapterClick
-            )
         }
     )
 }
 
 @Composable
-private fun BioChapter(
+private fun AuthorWithWorksContent(
     author: AuthorUiModel,
-    isLoadingFile: Boolean,
-    bioFile: File?
-) {
-    var isHeaderVisible by remember { mutableStateOf(true) }
-    AnimatedVisibility(isHeaderVisible) {
-        Column(
-            horizontalAlignment = CenterHorizontally
-        ) {
-            AuthorItem(
-                author = author,
-                onAuthorClick = {}
-            )
-        }
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = CenterHorizontally
-    ) {
-        if (isLoadingFile) {
-            ProgressIndicator()
-            H4Text(text = stringResource(R.string.bio_loading))
-        } else {
-            bioFile?.let { bioFile ->
-                PdfRendererViewCompose(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    source = PdfSource.LocalFile(bioFile),
-                    statusCallBack = object : PdfRendererView.StatusCallBack {
-                        override fun onPageChanged(currentPage: Int, totalPage: Int) {
-                            super.onPageChanged(currentPage, totalPage)
-                            if (currentPage == 1) {
-                                isHeaderVisible = true
-                            } else {
-                                isHeaderVisible = false
-                            }
-                        }
-                    }
-                )
-            } ?: H3Text(text = stringResource(R.string.no_bio_found))
-        }
-    }
-}
-
-@Composable
-private fun WorksChapter(
     works: List<Work>,
     onWorkClick: (String) -> Unit,
     onToggleWorkFavourite: (String, Boolean) -> Unit
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = CenterHorizontally
     ) {
         if (works.isEmpty()) {
+            AuthorItem(
+                author = author,
+                onAuthorClick = {}
+            )
             Spacer(Modifier.weight(1f))
             H3Text(
                 modifier = Modifier
@@ -239,10 +160,16 @@ private fun WorksChapter(
         } else {
             LazyColumn(
                 modifier = Modifier
-                    .padding(top = 16.dp)
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = CenterHorizontally
             ) {
+                item {
+                    AuthorItem(
+                        author = author,
+                        onAuthorClick = {}
+                    )
+                }
                 items(works) { work ->
                     WorkItem(
                         work = work,
@@ -278,7 +205,9 @@ private fun WorkItem(
     ) {
         Column(modifier = Modifier.weight(1f)) {
             H4Text(text = work.title)
-            H5Text(text = stringResource(R.string.published_at, work.publishYear))
+            work.publishYear?.let { year ->
+                H5Text(text = stringResource(R.string.published_at, year))
+            }
         }
         IconButton(
             onClick = { onToggleFavourite(work.id, !work.isFavourite) }
@@ -300,44 +229,6 @@ private fun WorkItem(
     }
 }
 
-@Composable
-private fun AuthorDetailsFooter(
-    onChapterClick: (Chapter) -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        IconButton(
-            modifier = Modifier
-                .weight(1f),
-            onClick = {
-                onChapterClick.invoke(Chapter.Bio)
-            }
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.AccountCircle,
-                contentDescription = null,
-                tint = LocalColors.current.onPrimary
-            )
-        }
-        IconButton(
-            modifier = Modifier
-                .weight(1f),
-            onClick = {
-                onChapterClick.invoke(Chapter.Works)
-            }
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.DateRange,
-                contentDescription = null,
-                tint = LocalColors.current.onPrimary
-            )
-        }
-    }
-}
-
 @Preview
 @Composable
 private fun AuthorDetailsScreenPreview(
@@ -346,7 +237,6 @@ private fun AuthorDetailsScreenPreview(
     AppPreviewTheme {
         AuthorDetailsScreen(
             state = state,
-            onChapterClick = {},
             onWorkClick = {},
             onBackClick = {}
         )
