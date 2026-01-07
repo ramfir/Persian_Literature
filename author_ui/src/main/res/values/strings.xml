@@ -1,4 +1,5 @@
 <resources>
+    <string name="author">Author</string>
     <string name="authors_list">Authors list</string>
     <string name="favourites">Favourites</string>
     <string name="settings">Settings</string>

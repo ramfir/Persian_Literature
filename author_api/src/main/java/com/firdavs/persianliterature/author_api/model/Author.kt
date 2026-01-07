@@ -7,6 +7,5 @@ data class Author(
     val born: String,
     val died: String,
     val place: String,
-    val bioUrl: String?,
     val isFavourite: Boolean = false
 )

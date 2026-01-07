@@ -1,32 +1,19 @@
 package com.firdavs.persianliterature.author.ui.details
 
-import android.annotation.SuppressLint
-import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.firdavs.persianliterature.author.ui.mapper.toUi
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
 import com.firdavs.persianliterature.author_api.repository.FavouritesRepository
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import com.firdavs.persianliterature.core.presentation.BaseViewModel
-import com.firdavs.persianliterature.util.coroutines.runWithRetry
-import com.firdavs.persianliterature.util.pdfdownloader.PdfDownloader
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.io.File
 
-@SuppressLint("StaticFieldLeak")
 class AuthorDetailsViewModel(
     private val id: String,
-    private val context: Context,
     private val authorRepository: AuthorRepository,
     private val worksRepository: WorksRepository,
-    private val pdfDownloader: PdfDownloader,
     private val favouritesRepository: FavouritesRepository
 ) : BaseViewModel<AuthorDetailsUiState>(AuthorDetailsUiState(null)) {
-
-    private val downloadPdfScope = CoroutineScope(Job() + Dispatchers.IO)
 
     init {
         observeAuthor()
@@ -39,15 +26,6 @@ class AuthorDetailsViewModel(
                 post {
                     it.copy(author = author.toUi(), isLoading = false)
                 }
-                author.bioUrl?.let {
-                    val bioFilePath = context.filesDir.toString() + "/${author.name}"
-                    val bioFile = File(bioFilePath)
-                    if (bioFile.exists().not()) {
-                        downloadPdf(it, author.name)
-                    } else {
-                        post { it.copy(bioFile = bioFile, isLoadingFile = false) }
-                    }
-                } ?: post { it.copy(isLoadingFile = false) }
             }
         }
     }
@@ -58,25 +36,6 @@ class AuthorDetailsViewModel(
                 post { it.copy(works = works) }
             }
         }
-    }
-    private fun downloadPdf(url: String, fileName: String) {
-        downloadPdfScope.launch {
-            post { it.copy(isLoadingFile = true) }
-            runWithRetry(maxAttempts = 5) { tryDownloadPdf(url, fileName) }?.let {
-                post { it.copy(isLoadingFile = false) }
-            }
-        }
-    }
-
-    private suspend fun tryDownloadPdf(url: String, fileName: String) {
-        pdfDownloader.downloadPdfFile(pdfUrl = url, fileName = fileName) { pdfFile ->
-            post { it.copy(isLoadingFile = false) }
-            post { it.copy(bioFile = pdfFile) }
-        }
-    }
-
-    fun onChapterClick(chapter: Chapter) {
-        post { it.copy(chapter = chapter) }
     }
 
     fun onToggleAuthorFavourite(isFavourite: Boolean) {
@@ -89,9 +48,5 @@ class AuthorDetailsViewModel(
         viewModelScope.launch {
             favouritesRepository.toggleWorkFavourite(workId, isFavourite)
         }
-    }
-
-    companion object {
-        private const val TAG = "AuthorDetailsViewModel"
     }
 }
