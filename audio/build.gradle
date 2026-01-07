@@ -1,0 +1,14 @@
+apply from: "$rootDir/gradle/scripts/compose-module.gradle"
+
+android {
+    namespace 'com.firdavs.persianliterature.audio'
+}
+
+dependencies {
+    implementation module.audio_api
+
+    implementation library.media3_exoplayer
+    implementation library.media3_common
+
+    implementation library.koin
+}

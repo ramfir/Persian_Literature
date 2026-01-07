@@ -6,5 +6,8 @@ data class Work(
     val title: String,
     val publishYear: String,
     val fileUrl: String?,
+    val audioUrl: String? = null,
+    val audioDownloadStatus: AudioDownloadStatus = AudioDownloadStatus.NOT_DOWNLOADED,
+    val audioLocalPath: String? = null,
     val isFavourite: Boolean = false
 )

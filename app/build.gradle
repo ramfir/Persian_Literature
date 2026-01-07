@@ -22,6 +22,8 @@ dependencies {
     implementation module.about_app
     implementation module.settings_api
     implementation module.settings
+    implementation module.audio_api
+    implementation module.audio
 
     implementation library.activity_compose
     implementation library.appcompat

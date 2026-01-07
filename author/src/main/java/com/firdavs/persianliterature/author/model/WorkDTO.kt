@@ -12,7 +12,9 @@ data class WorkDTO(
     @get:PropertyName("publishYear") @set:PropertyName("publishYear")
     var publishYear: String? = null,
     @get:PropertyName("fileUrl") @set:PropertyName("fileUrl")
-    var fileUrl: String = ""
+    var fileUrl: String = "",
+    @get:PropertyName("audioUrl") @set:PropertyName("audioUrl")
+    var audioUrl: String? = null
 )
 
 fun List<WorkDTO>.toDb() = map { it.toDb() }
@@ -22,5 +24,6 @@ fun WorkDTO.toDb() = WorkEntity(
     authorId = authorId,
     title = title,
     publishYear = publishYear ?: "",
-    fileUrl = fileUrl
+    fileUrl = fileUrl,
+    audioUrl = audioUrl
 )

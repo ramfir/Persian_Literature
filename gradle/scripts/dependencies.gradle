@@ -49,7 +49,10 @@ ext {
 
             coroutines_play_services: ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_play_services_version"),
 
-            pdf_viewer             : ("io.github.afreakyelf:Pdf-Viewer:$pdf_viewer_version")
+            pdf_viewer             : ("io.github.afreakyelf:Pdf-Viewer:$pdf_viewer_version"),
+
+            media3_exoplayer       : ("androidx.media3:media3-exoplayer:$media3_version"),
+            media3_common          : ("androidx.media3:media3-common:$media3_version")
     ]
     module = [
             core            : project(":core"),
@@ -60,7 +63,9 @@ ext {
             util            : project(":util"),
             about_app       : project(":about_app"),
             settings_api    : project(":settings_api"),
-            settings        : project(":settings")
+            settings        : project(":settings"),
+            audio_api       : project(":audio_api"),
+            audio           : project(":audio")
     ]
     groups = [
             compose      : [

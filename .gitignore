@@ -11,4 +11,6 @@ local.properties
 /signing/signing.properties
 /.kotlin/
 /app/google-services.json
+/audio/build
+/audio_api/build
 

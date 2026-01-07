@@ -13,4 +13,12 @@
     <string name="no_favourite_authors">No favourite authors yet</string>
     <string name="no_favourite_works">No favourite works yet</string>
     <string name="authors_fetched">Authors fetched successfully</string>
+    <string name="download_audio">Download Audio</string>
+    <string name="downloading_audio">Downloading… %d%%</string>
+    <string name="play_audio">Play</string>
+    <string name="pause_audio">Pause</string>
+    <string name="stop_audio">Stop</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="download_failed">Download Failed</string>
+    <string name="retry_download">Retry</string>
 </resources>

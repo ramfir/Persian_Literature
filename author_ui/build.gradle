@@ -8,6 +8,7 @@ dependencies {
     implementation module.core
     implementation module.ui_kit
     implementation module.author_api
+    implementation module.audio_api
     implementation module.util
 
     implementation library.glide
