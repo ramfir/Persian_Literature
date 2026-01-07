@@ -3,6 +3,7 @@ package com.firdavs.persianliterature.author.db.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.firdavs.persianliterature.author.db.AuthorsDb
+import com.firdavs.persianliterature.author_api.model.AudioDownloadStatus
 import com.firdavs.persianliterature.author_api.model.Work
 
 @Entity(tableName = AuthorsDb.WORKS)
@@ -12,6 +13,9 @@ data class WorkEntity(
     val title: String,
     val publishYear: String,
     val fileUrl: String?,
+    val audioUrl: String? = null,
+    val audioDownloadStatus: AudioDownloadStatus = AudioDownloadStatus.NOT_DOWNLOADED,
+    val audioLocalPath: String? = null,
     val isFavourite: Boolean = false
 )
 
@@ -23,5 +27,8 @@ fun WorkEntity.toDomain() = Work(
     title = title,
     publishYear = publishYear,
     fileUrl = fileUrl,
+    audioUrl = audioUrl,
+    audioDownloadStatus = audioDownloadStatus,
+    audioLocalPath = audioLocalPath,
     isFavourite = isFavourite
 )

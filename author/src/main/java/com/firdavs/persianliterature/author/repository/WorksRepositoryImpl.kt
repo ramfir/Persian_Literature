@@ -5,6 +5,7 @@ import com.firdavs.persianliterature.author.db.model.WorkEntity
 import com.firdavs.persianliterature.author.db.model.toDomain
 import com.firdavs.persianliterature.author.model.WorkDTO
 import com.firdavs.persianliterature.author.model.toDb
+import com.firdavs.persianliterature.author_api.model.AudioDownloadStatus
 import com.firdavs.persianliterature.author_api.model.Work
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import com.google.firebase.Firebase
@@ -13,13 +14,12 @@ import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
-import java.util.Locale
 
 class WorksRepositoryImpl(
     private val worksDao: WorksDao
 ) : WorksRepository {
     override suspend fun fetchWorks() {
-        val lang = Locale.getDefault().language
+        val lang = "en" // Locale.getDefault().language
         val worksCollection = Firebase.firestore.collection("works_$lang")
         val snapshot = worksCollection.get(Source.SERVER).await()
         val worksDTO = snapshot.documents.mapNotNull { document ->
@@ -28,10 +28,19 @@ class WorksRepositoryImpl(
         }
         // Preserve existing favourite status
         val existingFavouriteIds = worksDao.getFavouriteIds().toSet()
-        val worksWithFavourites = worksDTO.toDb().map { work ->
-            work.copy(isFavourite = work.id in existingFavouriteIds)
+
+        // Preserve existing audio download info
+        val existingAudioInfo = worksDao.getDownloadedAudioInfo().associateBy { it.id }
+
+        val worksWithPreservedData = worksDTO.toDb().map { work ->
+            val audioInfo = existingAudioInfo[work.id]
+            work.copy(
+                isFavourite = work.id in existingFavouriteIds,
+                audioDownloadStatus = audioInfo?.audioDownloadStatus ?: work.audioDownloadStatus,
+                audioLocalPath = audioInfo?.audioLocalPath ?: work.audioLocalPath
+            )
         }
-        worksDao.insert(worksWithFavourites)
+        worksDao.insert(worksWithPreservedData)
     }
 
     override fun getWorksByAuthorId(authorId: String): Flow<List<Work>> {
@@ -43,6 +52,24 @@ class WorksRepositoryImpl(
     override fun getWork(id: String): Flow<Work> {
         return worksDao.getByIdFlow(id).map {
             it.toDomain()
+        }
+    }
+
+    override suspend fun updateAudioDownloadStatus(
+        workId: String,
+        status: AudioDownloadStatus,
+        localPath: String?
+    ) {
+        if (localPath != null) {
+            worksDao.updateAudioDownloadStatus(workId, status, localPath)
+        } else {
+            worksDao.updateAudioDownloadStatusOnly(workId, status)
+        }
+    }
+
+    override fun getWorksWithDownloadedAudio(): Flow<List<Work>> {
+        return worksDao.getWorksWithDownloadedAudio().map { works ->
+            works.toDomain()
         }
     }
 }

@@ -32,6 +32,8 @@ val authorUiModule = module {
         androidContext(),
         get(),
         get(),
+        get(),
+        get(),
         get()
     )
     }

@@ -13,4 +13,12 @@
     <string name="no_favourite_authors">Нет избранных авторов</string>
     <string name="no_favourite_works">Нет избранных произведений</string>
     <string name="authors_fetched">Список авторов обновлен</string>
+    <string name="download_audio">Скачать Аудио</string>
+    <string name="downloading_audio">Загрузка… %d%%</string>
+    <string name="play_audio">Воспроизвести</string>
+    <string name="pause_audio">Пауза</string>
+    <string name="stop_audio">Стоп</string>
+    <string name="now_playing">Воспроизведение</string>
+    <string name="download_failed">Ошибка Загрузки</string>
+    <string name="retry_download">Повторить</string>
 </resources>

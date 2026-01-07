@@ -13,4 +13,12 @@
     <string name="no_favourite_authors">Муаллифони интихобшуда нест</string>
     <string name="no_favourite_works">Асарҳои интихобшуда нест</string>
     <string name="authors_fetched">Рӯйхати муаллифон аз нав гирифта шуд</string>
+    <string name="download_audio">Зеркашии Аудио</string>
+    <string name="downloading_audio">Зеркашӣ шуда истодааст… %d%%</string>
+    <string name="play_audio">Пахш</string>
+    <string name="pause_audio">Таваққуф</string>
+    <string name="stop_audio">Истодан</string>
+    <string name="now_playing">Дар ҳоли пахш</string>
+    <string name="download_failed">Зеркашӣ ноком шуд</string>
+    <string name="retry_download">Аз нав кӯшиш кунед</string>
 </resources>
