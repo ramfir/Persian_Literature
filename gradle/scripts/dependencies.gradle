@@ -52,7 +52,9 @@ ext {
             pdf_viewer             : ("io.github.afreakyelf:Pdf-Viewer:$pdf_viewer_version"),
 
             media3_exoplayer       : ("androidx.media3:media3-exoplayer:$media3_version"),
-            media3_common          : ("androidx.media3:media3-common:$media3_version")
+            media3_common          : ("androidx.media3:media3-common:$media3_version"),
+            media3_session         : ("androidx.media3:media3-session:$media3_version"),
+            media3_ui              : ("androidx.media3:media3-ui:$media3_version")
     ]
     module = [
             core            : project(":core"),

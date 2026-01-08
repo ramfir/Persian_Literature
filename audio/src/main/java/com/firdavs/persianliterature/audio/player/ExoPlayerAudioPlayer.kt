@@ -78,6 +78,7 @@ class ExoPlayerAudioPlayer(
         )
     }
 
+    @Suppress("MagicNumber")
     private fun startPositionUpdates() {
         stopPositionUpdates()
         positionUpdateJob = scope.launch {

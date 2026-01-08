@@ -1,0 +1,4 @@
+<resources>
+    <string name="notification_channel_name">Воспроизведение аудио</string>
+    <string name="notification_channel_description">Управление воспроизведением аудио</string>
+</resources>
