@@ -204,18 +204,32 @@ class WorkDetailsViewModel(
         audioPlayer.pause()
     }
 
-    // Stop audio
-    fun onStopAudio() {
-        audioPlayer.stop()
-    }
-
     // Seek to position
     fun onSeekTo(positionMs: Long) {
         audioPlayer.seekTo(positionMs)
     }
 
+    // Skip 10 seconds backward
+    fun onSkipBackward() {
+        val currentPosition = state.value.playbackState.currentPosition
+        val newPosition = (currentPosition - SKIP_DURATION_MS).coerceAtLeast(0)
+        audioPlayer.seekTo(newPosition)
+    }
+
+    // Skip 10 seconds forward
+    fun onSkipForward() {
+        val currentPosition = state.value.playbackState.currentPosition
+        val duration = state.value.playbackState.duration
+        val newPosition = (currentPosition + SKIP_DURATION_MS).coerceAtMost(duration)
+        audioPlayer.seekTo(newPosition)
+    }
+
     override fun onCleared() {
         super.onCleared()
         audioPlayer.release()
+    }
+
+    companion object {
+        private const val SKIP_DURATION_MS = 10000L
     }
 }

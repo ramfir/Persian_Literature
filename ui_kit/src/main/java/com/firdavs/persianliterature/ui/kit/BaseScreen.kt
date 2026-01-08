@@ -1,6 +1,5 @@
 package com.firdavs.persianliterature.ui.kit
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -23,7 +22,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.unit.dp
-import com.firdavs.persianliterature.ui.kit.theme.AppTheme
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import com.firdavs.persianliterature.ui.kit.util.thenIfNotNull
 import kotlinx.coroutines.CoroutineScope
@@ -65,10 +63,6 @@ fun BaseScreen(
                     if (footerContent != null) {
                         Box(
                             modifier = Modifier
-                                .background(
-                                    color = AppTheme.colors.primary,
-                                    shape = AppTheme.shapes.medium
-                                )
                                 .fillMaxWidth(),
                             content = footerContent
                         )
