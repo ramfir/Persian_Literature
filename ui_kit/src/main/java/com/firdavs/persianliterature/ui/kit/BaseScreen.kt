@@ -33,7 +33,8 @@ fun BaseScreen(
     drawerContent: (@Composable () -> Unit)? = null,
     topBar: (@Composable (DrawerState, CoroutineScope) -> Unit)? = null,
     mainContent: @Composable () -> Unit,
-    footerContent: (@Composable BoxScope.() -> Unit)? = null
+    footerContent: (@Composable BoxScope.() -> Unit)? = null,
+    applyTopPadding: Boolean = true
 ) {
     val backgroundColor = LocalColors.current.background
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -54,7 +55,7 @@ fun BaseScreen(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth()
-                            .padding(top = innerPadding.calculateTopPadding())
+                            .padding(top = if (applyTopPadding) innerPadding.calculateTopPadding() else 0.dp)
                             .thenIfNotNull(footerContent) { drawShadow() }
                     ) {
                         mainContent()

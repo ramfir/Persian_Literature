@@ -87,6 +87,7 @@ fun WorkDetailsScreen(
     var isBarsVisible by remember { mutableStateOf(true) }
 
     BaseScreen(
+        applyTopPadding = isBarsVisible,
         topBar = { drawerState, scope ->
             AnimatedVisibility(isBarsVisible) {
                 Box(
