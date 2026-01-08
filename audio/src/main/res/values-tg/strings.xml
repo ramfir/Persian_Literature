@@ -1,0 +1,4 @@
+<resources>
+    <string name="notification_channel_name">Пахш кардани аудио</string>
+    <string name="notification_channel_description">Идораи пахш кардани аудио</string>
+</resources>

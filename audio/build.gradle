@@ -9,6 +9,8 @@ dependencies {
 
     implementation library.media3_exoplayer
     implementation library.media3_common
+    implementation library.media3_session
+    implementation library.media3_ui
 
     implementation library.koin
 }

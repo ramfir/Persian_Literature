@@ -14,5 +14,6 @@ data class WorkDetailsUiState(
     val isDownloadingAudio: Boolean = false,
     val audioDownloadProgress: Float = 0f,
     val audioDownloadError: String? = null,
-    val playbackState: PlaybackState = PlaybackState()
+    val playbackState: PlaybackState = PlaybackState(),
+    val currentlyPreparedAudioPath: String? = null
 ) : UiState()

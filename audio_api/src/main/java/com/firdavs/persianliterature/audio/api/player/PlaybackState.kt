@@ -8,7 +8,11 @@ data class PlaybackState(
     val isPreparing: Boolean = false,
     val currentPosition: Long = 0L,
     val duration: Long = 0L,
-    val error: String? = null
+    val error: String? = null,
+    val workTitle: String? = null,
+    val authorName: String? = null,
+    val artworkUrl: String? = null,
+    val audioUrl: String? = null
 ) {
     /**
      * Returns the progress as a fraction between 0.0 and 1.0
