@@ -6,7 +6,7 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.firdavs.persianliterature.ui.kit.H3Text
+import com.firdavs.persianliterature.ui.kit.H4Text
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 
 @Composable
@@ -28,8 +28,8 @@ fun PrimaryButton(
         enabled = enabled,
         contentPadding = contentPadding,
         colors = buttonColors,
-        onClick = onClick,
+        onClick = onClick
     ) {
-        H3Text(text = text)
+        H4Text(text = text)
     }
 }
