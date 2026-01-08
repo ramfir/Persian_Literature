@@ -115,6 +115,17 @@ class WorkDetailsViewModel(
                     val currentAudioPath = it.audioFile?.absolutePath
                     val isThisWorkPlaying = playbackState.audioUrl == currentAudioPath
 
+                    // Track if we've completed initial preparation
+                    val hasCompletedPreparation = if (isThisWorkPlaying &&
+                        !playbackState.isPreparing &&
+                        playbackState.duration > 0) {
+                        true
+                    } else if (!isThisWorkPlaying) {
+                        false // Reset when switching to different audio
+                    } else {
+                        it.hasCompletedInitialPreparation
+                    }
+
                     it.copy(
                         playbackState = if (isThisWorkPlaying) {
                             playbackState
@@ -126,7 +137,8 @@ class WorkDetailsViewModel(
                             playbackState.error
                         } else {
                             it.audioDownloadError
-                        }
+                        },
+                        hasCompletedInitialPreparation = hasCompletedPreparation
                     )
                 }
             }
