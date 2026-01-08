@@ -72,4 +72,10 @@ class WorksRepositoryImpl(
             works.toDomain()
         }
     }
+
+    override fun getWorksWithAudio(): Flow<List<Work>> {
+        return worksDao.getWorksWithAudio().map { works ->
+            works.toDomain()
+        }
+    }
 }

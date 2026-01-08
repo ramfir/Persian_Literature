@@ -21,6 +21,7 @@ import com.firdavs.persianliterature.about_app.ui.AboutAppEntryPoint
 import com.firdavs.persianliterature.app.R
 import com.firdavs.persianliterature.app.ui.MainActivityUiState
 import com.firdavs.persianliterature.settings.SettingsEntryPoint
+import com.firdavs.persianliterature.author.ui.audio_books.AudioBooksEntryPoint
 import com.firdavs.persianliterature.author.ui.details.AuthorDetailsEntryPoint
 import com.firdavs.persianliterature.author.ui.favourites.FavouritesEntryPoint
 import com.firdavs.persianliterature.author.ui.list.AuthorsListEntryPoint
@@ -71,6 +72,7 @@ fun Navigator(
                     onAuthorClick = { backStack.next(Route.AuthorDetails(it)) },
                     onChapterClick = { chapter ->
                         when (chapter) {
+                            Chapter.AudioBooks -> backStack.startNewRoot(Route.AudioBooks)
                             Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
                             Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
                             Chapter.Settings -> backStack.startNewRoot(Route.Settings)
@@ -92,11 +94,26 @@ fun Navigator(
                     onBackClick = onBack
                 )
             }
+            entry<Route.AudioBooks> {
+                AudioBooksEntryPoint(
+                    onChapterClick = { chapter ->
+                        when (chapter) {
+                            Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
+                            Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
+                            Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
+                            Chapter.Settings -> backStack.startNewRoot(Route.Settings)
+                            else -> {}
+                        }
+                    },
+                    onWorkClick = { backStack.next(Route.WorkDetails(it)) }
+                )
+            }
             entry<Route.AboutApp> {
                 AboutAppEntryPoint(
                     onChapterClick = { chapter ->
                         when (chapter) {
                             Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
+                            Chapter.AudioBooks -> backStack.startNewRoot(Route.AudioBooks)
                             Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
                             Chapter.Settings -> backStack.startNewRoot(Route.Settings)
                             else -> {}
@@ -109,6 +126,7 @@ fun Navigator(
                     onChapterClick = { chapter ->
                         when (chapter) {
                             Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
+                            Chapter.AudioBooks -> backStack.startNewRoot(Route.AudioBooks)
                             Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
                             Chapter.Settings -> backStack.startNewRoot(Route.Settings)
                             else -> {}
@@ -123,6 +141,7 @@ fun Navigator(
                     onChapterClick = { chapter ->
                         when (chapter) {
                             Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
+                            Chapter.AudioBooks -> backStack.startNewRoot(Route.AudioBooks)
                             Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
                             Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
                             else -> {}

@@ -16,4 +16,5 @@ interface WorksRepository {
         localPath: String? = null
     )
     fun getWorksWithDownloadedAudio(): Flow<List<Work>>
+    fun getWorksWithAudio(): Flow<List<Work>>
 }
