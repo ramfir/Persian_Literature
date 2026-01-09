@@ -49,6 +49,7 @@ import com.firdavs.persianliterature.ui.kit.H5Text
 import com.firdavs.persianliterature.ui.kit.components.ProgressIndicator
 import com.firdavs.persianliterature.ui.kit.components.buttons.PrimaryButton
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
+import com.firdavs.persianliterature.ui.kit.theme.Parchment
 import com.rajat.pdfviewer.compose.PdfRendererViewCompose
 import com.rajat.pdfviewer.util.PdfSource
 
@@ -92,6 +93,7 @@ fun WorkDetailsScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .background(Parchment)
                 ) {
                     IconButton(
                         modifier = Modifier
