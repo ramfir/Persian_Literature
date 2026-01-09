@@ -1,5 +1,6 @@
 package com.firdavs.persianliterature.author.ui.favourites
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,6 +37,7 @@ import com.firdavs.persianliterature.ui.kit.H4Text
 import com.firdavs.persianliterature.ui.kit.H5Text
 import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
+import com.firdavs.persianliterature.ui.kit.theme.Parchment
 import kotlinx.coroutines.launch
 
 @Composable
@@ -79,6 +81,7 @@ private fun FavouritesScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .background(Parchment)
                     .padding(horizontal = 8.dp)
             ) {
                 IconButton(

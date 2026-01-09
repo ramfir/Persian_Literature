@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Build
 import android.os.LocaleList
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,6 +35,7 @@ import com.firdavs.persianliterature.ui.kit.H3Text
 import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
 import com.firdavs.persianliterature.ui.kit.components.buttons.PrimaryButton
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
+import com.firdavs.persianliterature.ui.kit.theme.Parchment
 import kotlinx.coroutines.launch
 import com.firdavs.persianliterature.core.R as UiR
 
@@ -86,6 +88,7 @@ private fun SettingsScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .background(Parchment)
                     .padding(horizontal = 8.dp)
             ) {
                 IconButton(
