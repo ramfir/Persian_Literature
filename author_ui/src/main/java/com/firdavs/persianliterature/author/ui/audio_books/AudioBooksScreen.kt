@@ -1,5 +1,6 @@
 package com.firdavs.persianliterature.author.ui.audio_books
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -64,6 +65,7 @@ private fun AudioBooksScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .background(LocalColors.current.primary)
                     .padding(horizontal = 8.dp)
             ) {
                 IconButton(
