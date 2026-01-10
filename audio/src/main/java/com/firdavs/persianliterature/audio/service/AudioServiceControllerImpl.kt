@@ -84,7 +84,9 @@ class AudioServiceControllerImpl(
     }
 
     override fun syncPlaybackState() {
-        updatePlaybackState()
+        if (playbackState.value.isPlaying) {
+            startPositionUpdates()
+        }
     }
 
     override fun prepareAudio(url: String, workTitle: String, authorName: String) {
