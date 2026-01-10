@@ -1,6 +1,7 @@
 <resources>
     <string name="select_language">Select Language</string>
     <string name="apply">Apply</string>
+    <string name="change_language">Change Language</string>
 
     <!-- Notification Strings -->
     <string name="enable_notifications">Enable Daily Notifications</string>

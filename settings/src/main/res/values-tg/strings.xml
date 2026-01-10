@@ -1,6 +1,7 @@
 <resources>
     <string name="select_language">Забонро интихоб кунед</string>
     <string name="apply">Татбиқ кунед</string>
+    <string name="change_language">Забонро тағйир диҳед</string>
 
     <!-- Notification Strings -->
     <string name="enable_notifications">Фаъол кардани огоҳиҳои ҳаррӯза</string>
