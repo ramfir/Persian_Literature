@@ -83,6 +83,10 @@ class AudioServiceControllerImpl(
         controllerFuture = null
     }
 
+    override fun syncPlaybackState() {
+        updatePlaybackState()
+    }
+
     override fun prepareAudio(url: String, workTitle: String, authorName: String) {
         ensureServiceStarted()
 

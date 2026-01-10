@@ -37,6 +37,12 @@ class WorkDetailsViewModel(
         observeAudioPlayback()
     }
 
+    override fun onViewResumed() {
+        // Sync playback state when screen becomes visible
+        // This ensures the slider position is updated immediately
+        audioServiceController.syncPlaybackState()
+    }
+
     private fun observeWork() {
         viewModelScope.launch {
             worksRepository.getWork(id).collect { work ->

@@ -58,4 +58,10 @@ interface AudioServiceController {
      * Disconnect from service (called when no longer needed)
      */
     fun disconnect()
+
+    /**
+     * Force an immediate sync of playback state
+     * (useful when returning to a screen to update UI immediately)
+     */
+    fun syncPlaybackState()
 }
