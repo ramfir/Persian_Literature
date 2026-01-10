@@ -6,5 +6,6 @@ import com.firdavs.persianliterature.settings.api.Language
 
 data class SettingsUiState(
     val chapters: List<Chapter> = Chapter.all,
-    val selectedLanguage: Language = Language.ENGLISH
+    val selectedLanguage: Language = Language.ENGLISH,
+    val notificationsEnabled: Boolean = false
 ) : UiState()

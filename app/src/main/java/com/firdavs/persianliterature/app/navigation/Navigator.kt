@@ -28,6 +28,7 @@ import com.firdavs.persianliterature.author.ui.list.AuthorsListEntryPoint
 import com.firdavs.persianliterature.author.ui.work_details.WorkDetailsEntryPoint
 import com.firdavs.persianliterature.core.model.Chapter
 
+@Suppress("MagicNumber")
 @Composable
 fun Navigator(
     state: MainActivityUiState,

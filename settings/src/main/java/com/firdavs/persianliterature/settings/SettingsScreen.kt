@@ -1,9 +1,12 @@
 package com.firdavs.persianliterature.settings
 
+import android.Manifest
 import android.app.LocaleManager
 import android.content.Context
 import android.os.Build
 import android.os.LocaleList
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,8 +20,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,7 +50,16 @@ fun SettingsEntryPoint(
     onChapterClick: (Chapter) -> Unit
 ) {
     val context = LocalContext.current
+
     BaseEntryPoint(SettingsViewModel::class) { state, viewModel ->
+        val permissionLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
+            if (isGranted) {
+                viewModel.onNotificationToggle(true)
+            }
+        }
+
         SettingsScreen(
             state = state,
             onChapterClick = onChapterClick,
@@ -51,6 +67,13 @@ fun SettingsEntryPoint(
             onApplyClick = { language ->
                 viewModel.onApplyClick(language)
                 changeLocale(language.code, context)
+            },
+            onNotificationToggle = { enabled ->
+                if (enabled && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                } else {
+                    viewModel.onNotificationToggle(enabled)
+                }
             }
         )
     }
@@ -72,7 +95,8 @@ private fun SettingsScreen(
     state: SettingsUiState,
     onChapterClick: (Chapter) -> Unit,
     onLanguageSelected: (Language) -> Unit,
-    onApplyClick: (Language) -> Unit
+    onApplyClick: (Language) -> Unit,
+    onNotificationToggle: (Boolean) -> Unit
 ) {
     val colors = LocalColors.current
     BaseScreen(
@@ -141,6 +165,35 @@ private fun SettingsScreen(
                     text = stringResource(R.string.apply),
                     onClick = { onApplyClick(state.selectedLanguage) }
                 )
+
+                H3Text(
+                    modifier = Modifier.padding(top = 24.dp),
+                    text = stringResource(R.string.enable_notifications)
+                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        H3Text(text = stringResource(R.string.enable_notifications))
+                        Text(
+                            text = stringResource(R.string.notification_description),
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                    Switch(
+                        checked = state.notificationsEnabled,
+                        onCheckedChange = onNotificationToggle,
+                        colors = SwitchDefaults.colors().copy(
+                            checkedThumbColor = colors.primary,
+                            checkedTrackColor = colors.primary.copy(alpha = 0.5f)
+                        )
+                    )
+                }
             }
         }
     )

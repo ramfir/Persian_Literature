@@ -38,6 +38,7 @@ ext {
             koin_core_coroutines   : ("io.insert-koin:koin-core-coroutines:$koin_version"),
             koin_test              : ("io.insert-koin:koin-test-junit4:$koin_version"),
             koin_compose           : ("io.insert-koin:koin-androidx-compose:$koin_version"),
+            koin_workmanager       : ("io.insert-koin:koin-androidx-workmanager:$koin_version"),
 
             datastore              : ("androidx.datastore:datastore-preferences:$datastore_version"),
             room_runtime           : ("androidx.room:room-runtime:$room_version"),
@@ -54,7 +55,9 @@ ext {
             media3_exoplayer       : ("androidx.media3:media3-exoplayer:$media3_version"),
             media3_common          : ("androidx.media3:media3-common:$media3_version"),
             media3_session         : ("androidx.media3:media3-session:$media3_version"),
-            media3_ui              : ("androidx.media3:media3-ui:$media3_version")
+            media3_ui              : ("androidx.media3:media3-ui:$media3_version"),
+
+            work_runtime           : ("androidx.work:work-runtime-ktx:$work_version")
     ]
     module = [
             core            : project(":core"),

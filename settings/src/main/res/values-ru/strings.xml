@@ -1,4 +1,13 @@
 <resources>
     <string name="select_language">Выберите язык</string>
     <string name="apply">Применить</string>
+
+    <!-- Notification Strings -->
+    <string name="enable_notifications">Включить ежедневные уведомления</string>
+    <string name="notification_description">Получайте ежедневное стихотворение в 10:00</string>
+    <string name="notification_permission_required">Требуется разрешение на уведомления</string>
+    <string name="notification_channel_name">Ежедневное стихотворение</string>
+    <string name="notification_channel_description">Уведомления о поэзии</string>
+    <string name="notification_title">Стихотворение дня</string>
+    <string name="notification_text">Я люблю персидскую поэзию</string>
 </resources>
