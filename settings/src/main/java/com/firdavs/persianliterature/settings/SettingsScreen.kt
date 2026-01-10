@@ -35,7 +35,6 @@ import com.firdavs.persianliterature.ui.kit.H3Text
 import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
 import com.firdavs.persianliterature.ui.kit.components.buttons.PrimaryButton
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
-import com.firdavs.persianliterature.ui.kit.theme.Parchment
 import kotlinx.coroutines.launch
 import com.firdavs.persianliterature.core.R as UiR
 
@@ -88,7 +87,7 @@ private fun SettingsScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Parchment)
+                    .background(LocalColors.current.primary)
                     .padding(horizontal = 8.dp)
             ) {
                 IconButton(

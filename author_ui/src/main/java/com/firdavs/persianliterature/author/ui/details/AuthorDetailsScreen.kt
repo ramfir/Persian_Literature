@@ -41,7 +41,6 @@ import com.firdavs.persianliterature.ui.kit.H5Text
 import com.firdavs.persianliterature.ui.kit.components.ProgressIndicator
 import com.firdavs.persianliterature.ui.kit.theme.AppPreviewTheme
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
-import com.firdavs.persianliterature.ui.kit.theme.Parchment
 
 @Composable
 fun AuthorDetailsEntryPoint(
@@ -73,7 +72,7 @@ fun AuthorDetailsScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Parchment)
+                    .background(LocalColors.current.primary)
             ) {
                 IconButton(
                     modifier = Modifier
