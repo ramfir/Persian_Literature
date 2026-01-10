@@ -8,5 +8,6 @@ dependencies {
     implementation module.settings_api
     implementation module.core
     implementation module.ui_kit
+    implementation module.author
     implementation library.work_runtime
 }

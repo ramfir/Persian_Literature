@@ -12,12 +12,14 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.firdavs.persianliterature.author.db.AuthorsDb
 import com.firdavs.persianliterature.settings.api.NotificationManager as NotificationManagerApi
 
 class DailyNotificationWorker(
     private val context: Context,
     params: WorkerParameters,
-    private val notificationManager: NotificationManagerApi
+    private val notificationManager: NotificationManagerApi,
+    private val authorsDb: AuthorsDb
 ) : CoroutineWorker(context, params) {
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
@@ -48,7 +50,10 @@ class DailyNotificationWorker(
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
-    private fun showNotification() {
+    private suspend fun showNotification() {
+        // Get a random author from the database
+        val randomAuthor = authorsDb.getAuthorsDao().getRandomAuthor()
+
         val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
@@ -66,10 +71,14 @@ class DailyNotificationWorker(
             pendingIntentFlags
         )
 
+        // Use random author data if available, otherwise use default strings
+        val notificationTitle = randomAuthor?.name ?: context.getString(R.string.notification_title)
+        val notificationText = randomAuthor?.place ?: context.getString(R.string.notification_text)
+
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle(context.getString(R.string.notification_title))
-            .setContentText(context.getString(R.string.notification_text))
+            .setContentTitle(notificationTitle)
+            .setContentText(notificationText)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)

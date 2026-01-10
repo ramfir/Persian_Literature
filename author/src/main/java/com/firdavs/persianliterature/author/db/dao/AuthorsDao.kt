@@ -31,4 +31,7 @@ interface AuthorsDao {
 
     @Query("SELECT id FROM ${AuthorsDb.AUTHORS} WHERE isFavourite = 1")
     suspend fun getFavouriteIds(): List<String>
+
+    @Query("SELECT * FROM ${AuthorsDb.AUTHORS} ORDER BY RANDOM() LIMIT 1")
+    suspend fun getRandomAuthor(): AuthorEntity?
 }
