@@ -26,7 +26,7 @@ import com.firdavs.persianliterature.ui.kit.BaseScreen
 import com.firdavs.persianliterature.ui.kit.H3Text
 import com.firdavs.persianliterature.ui.kit.T2Text
 import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
-import com.firdavs.persianliterature.ui.kit.theme.Parchment
+import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import kotlinx.coroutines.launch
 import com.firdavs.persianliterature.core.R as UiR
 
@@ -59,7 +59,7 @@ private fun AboutAppScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Parchment)
+                    .background(LocalColors.current.primary)
                     .padding(horizontal = 8.dp)
             ) {
                 IconButton(

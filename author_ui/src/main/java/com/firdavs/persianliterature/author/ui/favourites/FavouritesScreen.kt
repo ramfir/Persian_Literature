@@ -37,7 +37,6 @@ import com.firdavs.persianliterature.ui.kit.H4Text
 import com.firdavs.persianliterature.ui.kit.H5Text
 import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
-import com.firdavs.persianliterature.ui.kit.theme.Parchment
 import kotlinx.coroutines.launch
 
 @Composable
@@ -81,7 +80,7 @@ private fun FavouritesScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Parchment)
+                    .background(LocalColors.current.primary)
                     .padding(horizontal = 8.dp)
             ) {
                 IconButton(
