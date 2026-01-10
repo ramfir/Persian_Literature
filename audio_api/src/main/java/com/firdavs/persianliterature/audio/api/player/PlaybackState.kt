@@ -11,7 +11,6 @@ data class PlaybackState(
     val error: String? = null,
     val workTitle: String? = null,
     val authorName: String? = null,
-    val artworkUrl: String? = null,
     val audioUrl: String? = null
 ) {
     /**

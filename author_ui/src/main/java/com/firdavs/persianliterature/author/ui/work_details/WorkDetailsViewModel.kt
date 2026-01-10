@@ -37,6 +37,12 @@ class WorkDetailsViewModel(
         observeAudioPlayback()
     }
 
+    override fun onViewResumed() {
+        // Sync playback state when screen becomes visible
+        // This ensures the slider position is updated immediately
+        audioServiceController.syncPlaybackState()
+    }
+
     private fun observeWork() {
         viewModelScope.launch {
             worksRepository.getWork(id).collect { work ->
@@ -111,9 +117,18 @@ class WorkDetailsViewModel(
         viewModelScope.launch {
             audioServiceController.playbackState.collect { playbackState ->
                 post {
-                    // Only show playback state if it matches this work's audio
+                    // Check if this work's audio is playing by comparing audio paths
+                    // We need to check both the current audio file and any expected audio path
                     val currentAudioPath = it.audioFile?.absolutePath
-                    val isThisWorkPlaying = playbackState.audioUrl == currentAudioPath
+                    val expectedAudioPath = it.work?.audioLocalPath
+
+                    // Consider it "this work" if the playback URL matches either path
+                    val isThisWorkPlaying = when {
+                        playbackState.audioUrl == null -> false
+                        currentAudioPath != null && playbackState.audioUrl == currentAudioPath -> true
+                        expectedAudioPath != null && playbackState.audioUrl == expectedAudioPath -> true
+                        else -> false
+                    }
 
                     // Track if we've completed initial preparation
                     val hasCompletedPreparation = if (isThisWorkPlaying &&
@@ -126,8 +141,10 @@ class WorkDetailsViewModel(
                         it.hasCompletedInitialPreparation
                     }
 
+                    println("mmmm collect playbackState=$playbackState")
                     it.copy(
-                        playbackState = if (isThisWorkPlaying) {
+                        playbackState = if (isThisWorkPlaying || playbackState.audioUrl == null) {
+                            // Show playback state if it's this work OR no audio is playing
                             playbackState
                         } else {
                             // Reset to default state if a different work is playing
@@ -137,6 +154,12 @@ class WorkDetailsViewModel(
                             playbackState.error
                         } else {
                             it.audioDownloadError
+                        },
+                        // Update the currently prepared path when we receive playback state
+                        currentlyPreparedAudioPath = if (isThisWorkPlaying) {
+                            playbackState.audioUrl
+                        } else {
+                            it.currentlyPreparedAudioPath
                         },
                         hasCompletedInitialPreparation = hasCompletedPreparation
                     )
@@ -218,11 +241,14 @@ class WorkDetailsViewModel(
     fun onPlayAudio() {
         val audioFile = state.value.audioFile
         val work = state.value.work
-        val currentPreparedPath = state.value.currentlyPreparedAudioPath
+        val currentPlaybackState = state.value.playbackState
 
         if (audioFile != null && audioFile.exists() && work != null) {
+            // Check if the service already has this audio prepared
+            val isAlreadyPrepared = currentPlaybackState.audioUrl == audioFile.absolutePath
+
             // Only prepare if this is a different audio file or nothing is prepared yet
-            if (audioFile.absolutePath != currentPreparedPath) {
+            if (!isAlreadyPrepared) {
                 audioServiceController.prepareAudio(
                     audioFile.absolutePath,
                     work.title,
