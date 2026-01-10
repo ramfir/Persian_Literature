@@ -58,10 +58,13 @@ interface WorksDao {
 
     @Query(
         """
-        SELECT * 
-        FROM ${AuthorsDb.WORKS} 
+        SELECT *
+        FROM ${AuthorsDb.WORKS}
         WHERE audioUrl IS NOT NULL AND audioDownloadStatus = 'DOWNLOADED'
         """
     )
     fun getWorksWithDownloadedAudio(): Flow<List<WorkEntity>>
+
+    @Query("SELECT * FROM ${AuthorsDb.WORKS} WHERE audioUrl IS NOT NULL")
+    fun getWorksWithAudio(): Flow<List<WorkEntity>>
 }
