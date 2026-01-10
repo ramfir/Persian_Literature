@@ -250,8 +250,8 @@ fun AudioControlsSection(
                 }
             }
             state.work?.audioDownloadStatus == AudioDownloadStatus.DOWNLOADED -> {
-                if (state.playbackState.isPreparing) {
-                    // Show loading indicator while preparing
+                if (state.playbackState.isPreparing && !state.hasCompletedInitialPreparation) {
+                    // Show loading indicator only during initial preparation
                     Column(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = CenterHorizontally
