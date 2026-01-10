@@ -37,33 +37,6 @@ class WorkDetailsViewModel(
         observeAudioPlayback()
     }
 
-    override fun onViewResumed() {
-        super.onViewResumed()
-        // Force immediate state sync when returning to screen
-        syncPlaybackState()
-    }
-
-    private fun syncPlaybackState() {
-        viewModelScope.launch {
-            val currentPlaybackState = audioServiceController.playbackState.value
-            val currentAudioPath = state.value.audioFile?.absolutePath
-            val expectedAudioPath = state.value.work?.audioLocalPath
-
-            // Check if this work's audio is currently playing
-            val isThisWorkPlaying = when {
-                currentPlaybackState.audioUrl == null -> false
-                currentAudioPath != null && currentPlaybackState.audioUrl == currentAudioPath -> true
-                expectedAudioPath != null && currentPlaybackState.audioUrl == expectedAudioPath -> true
-                else -> false
-            }
-
-            // Update state with current playback position
-            if (isThisWorkPlaying) {
-                post { it.copy(playbackState = currentPlaybackState) }
-            }
-        }
-    }
-
     private fun observeWork() {
         viewModelScope.launch {
             worksRepository.getWork(id).collect { work ->
