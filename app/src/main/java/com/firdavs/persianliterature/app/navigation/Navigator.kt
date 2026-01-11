@@ -7,9 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entry
 import androidx.navigation3.runtime.entryProvider
@@ -27,6 +30,9 @@ import com.firdavs.persianliterature.author.ui.favourites.FavouritesEntryPoint
 import com.firdavs.persianliterature.author.ui.list.AuthorsListEntryPoint
 import com.firdavs.persianliterature.author.ui.work_details.WorkDetailsEntryPoint
 import com.firdavs.persianliterature.core.model.Chapter
+import com.firdavs.persianliterature.quiz.ui.list.QuizListEntryPoint
+import com.firdavs.persianliterature.quiz.ui.play.QuizPlayEntryPoint
+import com.firdavs.persianliterature.quiz.ui.result.QuizResultEntryPoint
 
 @Suppress("MagicNumber")
 @Composable
@@ -36,6 +42,7 @@ fun Navigator(
 ) {
     val backStack = rememberNavBackStack(Route.AuthorsList)
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
     var lastBackPressed by remember { mutableLongStateOf(0L) }
 
     val onBack: () -> Unit = {
@@ -74,6 +81,7 @@ fun Navigator(
                     onChapterClick = { chapter ->
                         when (chapter) {
                             Chapter.AudioBooks -> backStack.startNewRoot(Route.AudioBooks)
+                            Chapter.Quiz -> backStack.startNewRoot(Route.Quiz)
                             Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
                             Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
                             Chapter.Settings -> backStack.startNewRoot(Route.Settings)
@@ -100,6 +108,7 @@ fun Navigator(
                     onChapterClick = { chapter ->
                         when (chapter) {
                             Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
+                            Chapter.Quiz -> backStack.startNewRoot(Route.Quiz)
                             Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
                             Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
                             Chapter.Settings -> backStack.startNewRoot(Route.Settings)
@@ -109,12 +118,54 @@ fun Navigator(
                     onWorkClick = { backStack.next(Route.WorkDetails(it)) }
                 )
             }
+            entry<Route.Quiz> {
+                QuizListEntryPoint(
+                    onQuizClick = { backStack.next(Route.QuizPlay(it)) },
+                    onChapterClick = { chapter ->
+                        when (chapter) {
+                            Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
+                            Chapter.AudioBooks -> backStack.startNewRoot(Route.AudioBooks)
+                            Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
+                            Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
+                            Chapter.Settings -> backStack.startNewRoot(Route.Settings)
+                            else -> {}
+                        }
+                    }
+                )
+            }
+            entry<Route.QuizPlay> {
+                QuizPlayEntryPoint(
+                    quizId = it.id,
+                    onBackClick = onBack,
+                    onQuizComplete = { progressId ->
+                        backStack.next(Route.QuizResult(progressId))
+                    }
+                )
+            }
+            entry<Route.QuizResult> {
+                QuizResultEntryPoint(
+                    progressId = it.progressId,
+                    onRetryClick = { quizId ->
+                        coroutineScope.launch {
+                            backStack.back()
+                            delay(50)
+                            backStack.back()
+                            delay(50)
+                            backStack.next(Route.QuizPlay(quizId))
+                        }
+                    },
+                    onBackToListClick = {
+                        backStack.startNewRoot(Route.Quiz)
+                    }
+                )
+            }
             entry<Route.AboutApp> {
                 AboutAppEntryPoint(
                     onChapterClick = { chapter ->
                         when (chapter) {
                             Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
                             Chapter.AudioBooks -> backStack.startNewRoot(Route.AudioBooks)
+                            Chapter.Quiz -> backStack.startNewRoot(Route.Quiz)
                             Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
                             Chapter.Settings -> backStack.startNewRoot(Route.Settings)
                             else -> {}
@@ -128,6 +179,7 @@ fun Navigator(
                         when (chapter) {
                             Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
                             Chapter.AudioBooks -> backStack.startNewRoot(Route.AudioBooks)
+                            Chapter.Quiz -> backStack.startNewRoot(Route.Quiz)
                             Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
                             Chapter.Settings -> backStack.startNewRoot(Route.Settings)
                             else -> {}
@@ -143,6 +195,7 @@ fun Navigator(
                         when (chapter) {
                             Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
                             Chapter.AudioBooks -> backStack.startNewRoot(Route.AudioBooks)
+                            Chapter.Quiz -> backStack.startNewRoot(Route.Quiz)
                             Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
                             Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
                             else -> {}

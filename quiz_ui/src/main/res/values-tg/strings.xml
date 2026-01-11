@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="quiz_list_title">Имтиҳони адабиёт</string>
+    <string name="start_quiz">Оғози имтиҳон</string>
+    <string name="retry_quiz">Такрори имтиҳон</string>
+    <string name="your_best_score">Беҳтарин натиҷа: %d%%</string>
+    <string name="question_progress">Савол %d аз %d</string>
+    <string name="submit_answer">Фиристодани ҷавоб</string>
+    <string name="next_question">Саволи навбатӣ</string>
+    <string name="finish_quiz">Анҷоми имтиҳон</string>
+    <string name="quiz_results">Натиҷаҳои имтиҳон</string>
+    <string name="your_score">Натиҷаи шумо: %d%%</string>
+    <string name="title_earned">Унвони гирифташуда: %s</string>
+    <string name="passed">Муваффақият!</string>
+    <string name="failed">Кӯшиш кунед!</string>
+    <string name="explanation">Шарҳ</string>
+    <string name="correct_answer">Ҷавоби дуруст</string>
+    <string name="wrong_answer">Ҷавоби нодуруст</string>
+    <string name="quit_quiz_title">Шумо мутмаин ҳастед, ки мехоҳед аз имтиҳон баромад</string>
+    <string name="yes">Ҳа</string>
+    <string name="no">Не</string>
+    <string name="difficulty_beginner">Ибтидоӣ</string>
+    <string name="difficulty_intermediate">Миёна</string>
+    <string name="difficulty_advanced">Пешрафта</string>
+    <string name="difficulty_expert">Эксперт</string>
+</resources>

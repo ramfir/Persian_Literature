@@ -13,4 +13,7 @@ local.properties
 /app/google-services.json
 /audio/build
 /audio_api/build
+/quiz/build
+/quiz_api/build
+/quiz_ui/build
 

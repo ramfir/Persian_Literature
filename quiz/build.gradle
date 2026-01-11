@@ -1,0 +1,19 @@
+apply from: "$rootDir/gradle/scripts/compose-module.gradle"
+
+android {
+    namespace 'com.firdavs.persianliterature.quiz'
+}
+
+dependencies {
+    implementation module.quiz_api
+
+    implementation platform(library.firebase_bom)
+    implementation library.firestore_ktx
+    implementation library.coroutines_play_services
+
+    implementation library.room_runtime
+    implementation library.room_ktx
+    kapt library.room_compiler
+
+    implementation library.gson
+}

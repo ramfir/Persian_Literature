@@ -141,7 +141,6 @@ class WorkDetailsViewModel(
                         it.hasCompletedInitialPreparation
                     }
 
-                    println("mmmm collect playbackState=$playbackState")
                     it.copy(
                         playbackState = if (isThisWorkPlaying || playbackState.audioUrl == null) {
                             // Show playback state if it's this work OR no audio is playing

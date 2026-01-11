@@ -17,6 +17,15 @@ sealed interface Route : NavKey {
     object AudioBooks : Route
 
     @Serializable
+    object Quiz : Route
+
+    @Serializable
+    data class QuizPlay(val id: String, val sessionId: Long = System.currentTimeMillis()) : Route
+
+    @Serializable
+    data class QuizResult(val progressId: String) : Route
+
+    @Serializable
     object AboutApp : Route
 
     @Serializable

@@ -70,7 +70,10 @@ ext {
             settings_api    : project(":settings_api"),
             settings        : project(":settings"),
             audio_api       : project(":audio_api"),
-            audio           : project(":audio")
+            audio           : project(":audio"),
+            quiz_api        : project(":quiz_api"),
+            quiz            : project(":quiz"),
+            quiz_ui         : project(":quiz_ui")
     ]
     groups = [
             compose      : [
