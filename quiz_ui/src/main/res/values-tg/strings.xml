@@ -23,4 +23,8 @@
     <string name="difficulty_intermediate">Миёна</string>
     <string name="difficulty_advanced">Пешрафта</string>
     <string name="difficulty_expert">Эксперт</string>
+    <string name="correct_answers">Ҷавобҳои дуруст:</string>
+    <string name="time_spent">Вақти сарфшуда:</string>
+    <string name="time_spent_value">%dс</string>
+    <string name="back_to_list">Бозгашт ба рӯйхат</string>
 </resources>

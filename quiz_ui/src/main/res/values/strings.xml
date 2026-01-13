@@ -23,4 +23,8 @@
     <string name="difficulty_intermediate">Intermediate</string>
     <string name="difficulty_advanced">Advanced</string>
     <string name="difficulty_expert">Expert</string>
+    <string name="correct_answers">Correct Answers:</string>
+    <string name="time_spent">Time Spent:</string>
+    <string name="time_spent_value">%ds</string>
+    <string name="back_to_list">Back to List</string>
 </resources>

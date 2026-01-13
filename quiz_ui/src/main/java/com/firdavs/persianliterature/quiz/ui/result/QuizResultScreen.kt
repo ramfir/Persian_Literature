@@ -116,7 +116,7 @@ private fun QuizResultScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            T1Text(text = "Correct Answers:")
+                            T1Text(text = stringResource(R.string.correct_answers))
                             T1Text(
                                 text = "${progress.correctAnswers}/${progress.totalQuestions}",
                                 color = colors.primary
@@ -127,9 +127,9 @@ private fun QuizResultScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            T1Text(text = "Time Spent:")
+                            T1Text(text = stringResource(R.string.time_spent))
                             T1Text(
-                                text = "${progress.timeSpentSeconds}s",
+                                text = stringResource(R.string.time_spent_value, progress.timeSpentSeconds),
                                 color = colors.primary
                             )
                         }
@@ -149,7 +149,7 @@ private fun QuizResultScreen(
                             .padding(16.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        H4Text(text = "Back to List", color = colors.onSecondary)
+                        H4Text(text = stringResource(R.string.back_to_list), color = colors.onSecondary)
                     }
                     Box(
                         modifier = Modifier

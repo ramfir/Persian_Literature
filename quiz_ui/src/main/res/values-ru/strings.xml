@@ -23,4 +23,8 @@
     <string name="difficulty_intermediate">Средний</string>
     <string name="difficulty_advanced">Продвинутый</string>
     <string name="difficulty_expert">Эксперт</string>
+    <string name="correct_answers">Правильные ответы:</string>
+    <string name="time_spent">Затраченное время:</string>
+    <string name="time_spent_value">%dс</string>
+    <string name="back_to_list">Назад к списку</string>
 </resources>
