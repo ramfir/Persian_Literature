@@ -23,6 +23,7 @@ import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import com.firdavs.persianliterature.about_app.ui.AboutAppEntryPoint
 import com.firdavs.persianliterature.app.R
 import com.firdavs.persianliterature.app.ui.MainActivityUiState
+import com.firdavs.persianliterature.settings.LanguageEntryPoint
 import com.firdavs.persianliterature.settings.SettingsEntryPoint
 import com.firdavs.persianliterature.author.ui.audio_books.AudioBooksEntryPoint
 import com.firdavs.persianliterature.author.ui.details.AuthorDetailsEntryPoint
@@ -200,7 +201,13 @@ fun Navigator(
                             Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
                             else -> {}
                         }
-                    }
+                    },
+                    onChangeLanguageClick = { backStack.next(Route.Language) }
+                )
+            }
+            entry<Route.Language> {
+                LanguageEntryPoint(
+                    onBackClick = onBack
                 )
             }
         }

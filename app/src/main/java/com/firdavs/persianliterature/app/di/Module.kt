@@ -9,6 +9,7 @@ import com.firdavs.persianliterature.quiz.di.quizModule
 import com.firdavs.persianliterature.quiz.ui.di.quizUiModule
 import com.firdavs.persianliterature.settings.DailyNotificationWorker
 import com.firdavs.persianliterature.settings.LanguageManagerImpl
+import com.firdavs.persianliterature.settings.LanguageViewModel
 import com.firdavs.persianliterature.settings.NotificationManagerImpl
 import com.firdavs.persianliterature.settings.SettingsViewModel
 import com.firdavs.persianliterature.settings.api.LanguageManager
@@ -23,6 +24,7 @@ import org.koin.dsl.module
 val appModule = module {
     viewModelOf(::MainViewModel)
     viewModelOf(::SettingsViewModel)
+    viewModelOf(::LanguageViewModel)
     singleOf(::LanguageManagerImpl) bind LanguageManager::class
     singleOf(::NotificationManagerImpl) bind NotificationManager::class
 

@@ -1,6 +1,7 @@
 <resources>
     <string name="select_language">Выберите язык</string>
     <string name="apply">Применить</string>
+    <string name="change_language">Изменить язык</string>
 
     <!-- Notification Strings -->
     <string name="enable_notifications">Включить ежедневные уведомления</string>
