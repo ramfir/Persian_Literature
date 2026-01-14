@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import com.firdavs.persianliterature.core.presentation.BaseViewModel
+import com.firdavs.persianliterature.quiz_api.repository.QuestionRepository
+import com.firdavs.persianliterature.quiz_api.repository.QuizRepository
 import com.firdavs.persianliterature.settings.api.Language
 import com.firdavs.persianliterature.settings.api.LanguageManager
 import kotlinx.coroutines.launch
@@ -13,7 +15,9 @@ class LanguageViewModel(
     private val application: Application,
     private val languageManager: LanguageManager,
     private val authorRepository: AuthorRepository,
-    private val worksRepository: WorksRepository
+    private val worksRepository: WorksRepository,
+    private val quizRepository: QuizRepository,
+    private val questionRepository: QuestionRepository
 ) : BaseViewModel<LanguageUiState>(LanguageUiState()) {
 
     init {
@@ -34,6 +38,8 @@ class LanguageViewModel(
         viewModelScope.launch {
             authorRepository.fetchAuthors()
             worksRepository.fetchWorks()
+            quizRepository.fetchQuizzes()
+            questionRepository.fetchQuestions()
         }
     }
 }

@@ -9,6 +9,7 @@ dependencies {
     implementation module.core
     implementation module.ui_kit
     implementation module.author
+    implementation module.quiz_api
     implementation library.work_runtime
     implementation library.room_runtime
 }

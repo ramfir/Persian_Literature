@@ -17,8 +17,20 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val quizModule = module {
-    singleOf(::QuizRepositoryImpl) bind QuizRepository::class
-    singleOf(::QuestionRepositoryImpl) bind QuestionRepository::class
+    single<QuizRepository> {
+        QuizRepositoryImpl(
+            quizDao = get(),
+            languageManager = get(),
+            context = androidContext()
+        )
+    }
+    single<QuestionRepository> {
+        QuestionRepositoryImpl(
+            questionDao = get(),
+            languageManager = get(),
+            context = androidContext()
+        )
+    }
     singleOf(::QuizProgressRepositoryImpl) bind QuizProgressRepository::class
 
     single<QuizDb> {
