@@ -18,8 +18,21 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val authorModule = module {
-    singleOf(::AuthorRepositoryImpl) bind AuthorRepository::class
-    singleOf(::WorksRepositoryImpl) bind WorksRepository::class
+    single<AuthorRepository> {
+        AuthorRepositoryImpl(
+            authorsDao = get(),
+            authorsEntityToDomainMapper = get(),
+            languageManager = get(),
+            context = androidContext()
+        )
+    }
+    single<WorksRepository> {
+        WorksRepositoryImpl(
+            worksDao = get(),
+            languageManager = get(),
+            context = androidContext()
+        )
+    }
     singleOf(::FavouritesRepositoryImpl) bind FavouritesRepository::class
     single<AuthorsDb> {
         Room.databaseBuilder(

@@ -33,7 +33,6 @@ import com.firdavs.persianliterature.ui.kit.BaseScreen
 import com.firdavs.persianliterature.ui.kit.H3Text
 import com.firdavs.persianliterature.ui.kit.components.buttons.PrimaryButton
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
-import com.firdavs.persianliterature.core.R as UiR
 
 @Composable
 fun LanguageEntryPoint(

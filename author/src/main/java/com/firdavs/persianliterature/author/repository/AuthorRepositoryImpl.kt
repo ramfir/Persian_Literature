@@ -1,5 +1,6 @@
 package com.firdavs.persianliterature.author.repository
 
+import android.content.Context
 import com.firdavs.persianliterature.author.db.dao.AuthorsDao
 import com.firdavs.persianliterature.author.db.mapper.AuthorsEntityToDomainMapper
 import com.firdavs.persianliterature.author.db.mapper.toDomain
@@ -7,6 +8,7 @@ import com.firdavs.persianliterature.author.model.AuthorDTO
 import com.firdavs.persianliterature.author.model.toDb
 import com.firdavs.persianliterature.author_api.model.Author
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
+import com.firdavs.persianliterature.settings.api.LanguageManager
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.firestore
@@ -16,11 +18,13 @@ import kotlinx.coroutines.tasks.await
 
 class AuthorRepositoryImpl(
     private val authorsDao: AuthorsDao,
-    private val authorsEntityToDomainMapper: AuthorsEntityToDomainMapper
+    private val authorsEntityToDomainMapper: AuthorsEntityToDomainMapper,
+    private val languageManager: LanguageManager,
+    private val context: Context
 ) : AuthorRepository {
 
     override suspend fun fetchAuthors() {
-        val lang = "en" // Locale.getDefault().language for test purpose
+        val lang = languageManager.getSavedLanguage(context).firebaseCode
         val authorsCollection = Firebase.firestore.collection("authors_$lang")
         val snapshot = authorsCollection.get(Source.SERVER).await()
         val authorsDTO = snapshot.documents.mapNotNull { document ->

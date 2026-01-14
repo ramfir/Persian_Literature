@@ -1,5 +1,6 @@
 package com.firdavs.persianliterature.author.repository
 
+import android.content.Context
 import com.firdavs.persianliterature.author.db.dao.WorksDao
 import com.firdavs.persianliterature.author.db.model.WorkEntity
 import com.firdavs.persianliterature.author.db.model.toDomain
@@ -8,6 +9,7 @@ import com.firdavs.persianliterature.author.model.toDb
 import com.firdavs.persianliterature.author_api.model.AudioDownloadStatus
 import com.firdavs.persianliterature.author_api.model.Work
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
+import com.firdavs.persianliterature.settings.api.LanguageManager
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.firestore
@@ -16,10 +18,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 
 class WorksRepositoryImpl(
-    private val worksDao: WorksDao
+    private val worksDao: WorksDao,
+    private val languageManager: LanguageManager,
+    private val context: Context
 ) : WorksRepository {
     override suspend fun fetchWorks() {
-        val lang = "en" // Locale.getDefault().language
+        val lang = languageManager.getSavedLanguage(context).firebaseCode
         val worksCollection = Firebase.firestore.collection("works_$lang")
         val snapshot = worksCollection.get(Source.SERVER).await()
         val worksDTO = snapshot.documents.mapNotNull { document ->
