@@ -12,8 +12,6 @@ import com.firdavs.persianliterature.quiz_api.repository.QuizRepository
 import com.firdavs.persianliterature.quiz_api.repository.QuestionRepository
 import com.firdavs.persianliterature.quiz_api.repository.QuizProgressRepository
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val quizModule = module {
@@ -31,7 +29,13 @@ val quizModule = module {
             context = androidContext()
         )
     }
-    singleOf(::QuizProgressRepositoryImpl) bind QuizProgressRepository::class
+    single<QuizProgressRepository> {
+        QuizProgressRepositoryImpl(
+            quizProgressDao = get(),
+            quizDao = get(),
+            context = androidContext()
+        )
+    }
 
     single<QuizDb> {
         Room.databaseBuilder(

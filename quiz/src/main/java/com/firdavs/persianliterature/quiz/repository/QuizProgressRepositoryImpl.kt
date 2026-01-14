@@ -1,5 +1,7 @@
 package com.firdavs.persianliterature.quiz.repository
 
+import android.content.Context
+import com.firdavs.persianliterature.quiz.R
 import com.firdavs.persianliterature.quiz.db.dao.QuizDao
 import com.firdavs.persianliterature.quiz.db.dao.QuizProgressDao
 import com.firdavs.persianliterature.quiz.db.model.QuizProgressEntity
@@ -14,7 +16,8 @@ import kotlinx.coroutines.flow.map
 
 class QuizProgressRepositoryImpl(
     private val quizProgressDao: QuizProgressDao,
-    private val quizDao: QuizDao
+    private val quizDao: QuizDao,
+    private val context: Context
 ) : QuizProgressRepository {
 
     override suspend fun saveProgress(progress: QuizProgress) {
@@ -72,30 +75,30 @@ class QuizProgressRepositoryImpl(
     override fun determineTitleEarned(score: Int, difficulty: String): String {
         return when (difficulty) {
             "BEGINNER" -> when {
-                score >= 90 -> "Poetry Enthusiast"
-                score >= 70 -> "Aspiring Reader"
-                score >= 60 -> "Curious Learner"
-                else -> "Novice"
+                score >= 90 -> context.getString(R.string.title_beginner_master)
+                score >= 70 -> context.getString(R.string.title_beginner_advanced)
+                score >= 60 -> context.getString(R.string.title_beginner_intermediate)
+                else -> context.getString(R.string.title_beginner_basic)
             }
             "INTERMEDIATE" -> when {
-                score >= 90 -> "Literary Scholar"
-                score >= 75 -> "Devoted Reader"
-                score >= 60 -> "Poetry Lover"
-                else -> "Learning Student"
+                score >= 90 -> context.getString(R.string.title_intermediate_master)
+                score >= 75 -> context.getString(R.string.title_intermediate_advanced)
+                score >= 60 -> context.getString(R.string.title_intermediate_intermediate)
+                else -> context.getString(R.string.title_intermediate_basic)
             }
             "ADVANCED" -> when {
-                score >= 95 -> "Master Poet"
-                score >= 85 -> "True Connoisseur"
-                score >= 70 -> "Skilled Scholar"
-                else -> "Determined Student"
+                score >= 95 -> context.getString(R.string.title_advanced_master)
+                score >= 85 -> context.getString(R.string.title_advanced_advanced)
+                score >= 70 -> context.getString(R.string.title_advanced_intermediate)
+                else -> context.getString(R.string.title_advanced_basic)
             }
             "EXPERT" -> when {
-                score >= 95 -> "Literary Genius"
-                score >= 90 -> "Grand Master"
-                score >= 80 -> "Expert Analyst"
-                else -> "Ambitious Scholar"
+                score >= 95 -> context.getString(R.string.title_expert_master)
+                score >= 90 -> context.getString(R.string.title_expert_advanced)
+                score >= 80 -> context.getString(R.string.title_expert_intermediate)
+                else -> context.getString(R.string.title_expert_basic)
             }
-            else -> "Poetry Novice"
+            else -> context.getString(R.string.title_default)
         }
     }
 }
