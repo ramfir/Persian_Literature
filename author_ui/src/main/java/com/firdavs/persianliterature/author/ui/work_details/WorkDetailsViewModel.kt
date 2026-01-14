@@ -9,6 +9,7 @@ import com.firdavs.persianliterature.author_api.model.AudioDownloadStatus
 import com.firdavs.persianliterature.author_api.repository.FavouritesRepository
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import com.firdavs.persianliterature.core.presentation.BaseViewModel
+import com.firdavs.persianliterature.settings.api.LanguageManager
 import com.firdavs.persianliterature.util.audiodownloader.AudioDownloader
 import com.firdavs.persianliterature.util.coroutines.runWithRetry
 import com.firdavs.persianliterature.util.pdfdownloader.PdfDownloader
@@ -26,7 +27,8 @@ class WorkDetailsViewModel(
     private val pdfDownloader: PdfDownloader,
     private val audioDownloader: AudioDownloader,
     private val audioServiceController: AudioServiceController,
-    private val favouritesRepository: FavouritesRepository
+    private val favouritesRepository: FavouritesRepository,
+    private val languageManager: LanguageManager
 ) : BaseViewModel<WorkDetailsUiState>(WorkDetailsUiState(null)) {
     private val downloadPdfScope = CoroutineScope(Job() + Dispatchers.IO)
     private val downloadAudioScope = CoroutineScope(Job() + Dispatchers.IO)
@@ -51,10 +53,12 @@ class WorkDetailsViewModel(
                 }
                 // Handle PDF download (existing logic)
                 work.fileUrl?.let {
-                    val workFilePath = context.filesDir.toString() + "/${work.id}"
+                    val languageCode = languageManager.getSavedLanguage(context).firebaseCode
+                    val fileName = "${work.id}_$languageCode"
+                    val workFilePath = context.filesDir.toString() + "/$fileName"
                     val workFile = File(workFilePath)
                     if (workFile.exists().not()) {
-                        downloadPdf(it, work.id)
+                        downloadPdf(it, fileName)
                     } else {
                         post { it.copy(workFile = workFile, isLoading = false) }
                     }

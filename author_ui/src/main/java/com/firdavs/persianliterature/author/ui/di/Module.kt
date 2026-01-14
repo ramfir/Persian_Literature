@@ -34,6 +34,7 @@ val authorUiModule = module {
         get(),
         get(),
         get(),
+        get(),
         get()
     )
     }
