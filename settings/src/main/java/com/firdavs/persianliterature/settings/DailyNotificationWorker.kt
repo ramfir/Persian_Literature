@@ -54,7 +54,9 @@ class DailyNotificationWorker(
         // Get a random poem from the database
         val randomPoem = poemsDao.getRandomPoem()
 
-        val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
+        // Create explicit intent to MainActivity
+        val intent = Intent().apply {
+            setClassName(context.packageName, "com.firdavs.persianliterature.app.ui.MainActivity")
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
             // Add poem ID as extra so MainActivity can navigate to it
             randomPoem?.id?.let { putExtra(EXTRA_POEM_ID, it) }
