@@ -3,6 +3,7 @@ package com.firdavs.persianliterature.settings
 import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
+import com.firdavs.persianliterature.author_api.repository.PoemRepository
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import com.firdavs.persianliterature.core.presentation.BaseViewModel
 import com.firdavs.persianliterature.quiz_api.repository.QuestionRepository
@@ -17,7 +18,8 @@ class LanguageViewModel(
     private val authorRepository: AuthorRepository,
     private val worksRepository: WorksRepository,
     private val quizRepository: QuizRepository,
-    private val questionRepository: QuestionRepository
+    private val questionRepository: QuestionRepository,
+    private val poemRepository: PoemRepository
 ) : BaseViewModel<LanguageUiState>(LanguageUiState()) {
 
     init {
@@ -40,6 +42,7 @@ class LanguageViewModel(
             worksRepository.fetchWorks()
             quizRepository.fetchQuizzes()
             questionRepository.fetchQuestions()
+            poemRepository.fetchPoems()
         }
     }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Beginner titles -->
+    <string name="title_beginner_master">Любитель поэзии</string>
+    <string name="title_beginner_advanced">Начинающий читатель</string>
+    <string name="title_beginner_intermediate">Любознательный ученик</string>
+    <string name="title_beginner_basic">Новичок</string>
+
+    <!-- Intermediate titles -->
+    <string name="title_intermediate_master">Литературовед</string>
+    <string name="title_intermediate_advanced">Преданный читатель</string>
+    <string name="title_intermediate_intermediate">Ценитель поэзии</string>
+    <string name="title_intermediate_basic">Обучающийся студент</string>
+
+    <!-- Advanced titles -->
+    <string name="title_advanced_master">Мастер поэзии</string>
+    <string name="title_advanced_advanced">Истинный знаток</string>
+    <string name="title_advanced_intermediate">Опытный учёный</string>
+    <string name="title_advanced_basic">Целеустремлённый студент</string>
+
+    <!-- Expert titles -->
+    <string name="title_expert_master">Литературный гений</string>
+    <string name="title_expert_advanced">Гроссмейстер</string>
+    <string name="title_expert_intermediate">Эксперт-аналитик</string>
+    <string name="title_expert_basic">Амбициозный учёный</string>
+
+    <!-- Default title -->
+    <string name="title_default">Новичок в поэзии</string>
+</resources>

@@ -4,6 +4,7 @@
     <string name="favourites">Избранное</string>
     <string name="settings">Настройки</string>
     <string name="authors">Авторы</string>
+    <string name="poem_of_day">Стих дня</string>
     <string name="audio_books">Аудиокниги</string>
     <string name="quiz">Викторина</string>
 </resources>

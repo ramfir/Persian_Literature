@@ -4,6 +4,7 @@
     <string name="favourites">Favourites</string>
     <string name="settings">Settings</string>
     <string name="authors">Authors</string>
+    <string name="poem_of_day">Poem of the Day</string>
     <string name="audio_books">Audio books</string>
     <string name="quiz">Quiz</string>
 </resources>

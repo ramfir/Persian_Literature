@@ -23,4 +23,7 @@
     <string name="download_failed">Download Failed</string>
     <string name="retry_download">Retry</string>
     <string name="no_audio_books_found">No audio books available yet</string>
+    <string name="poems_refreshed">Poems refreshed successfully</string>
+    <string name="new_poem">New Poem</string>
+    <string name="no_poems_available">No poems available yet</string>
 </resources>
