@@ -19,6 +19,9 @@ interface PoemsDao {
     @Query("SELECT * FROM ${AuthorsDb.POEMS} ORDER BY RANDOM() LIMIT 1")
     suspend fun getRandomPoem(): PoemEntity?
 
+    @Query("SELECT * FROM ${AuthorsDb.POEMS} WHERE id = :id")
+    suspend fun getPoemById(id: String): PoemEntity?
+
     @Query("SELECT * FROM ${AuthorsDb.POEMS}")
     fun getAllFlow(): Flow<List<PoemEntity>>
 }

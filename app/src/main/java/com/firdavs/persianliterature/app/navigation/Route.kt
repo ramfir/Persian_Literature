@@ -14,7 +14,7 @@ sealed interface Route : NavKey {
     data class WorkDetails(val id: String) : Route
 
     @Serializable
-    object PoemOfDay : Route
+    data class PoemOfDay(val poemId: String? = null) : Route
 
     @Serializable
     object AudioBooks : Route

@@ -76,6 +76,14 @@ class MainViewModel(
         }
     }
 
+    fun setNotificationPoemId(poemId: String?) {
+        post { it.copy(notificationPoemId = poemId) }
+    }
+
+    fun clearNotificationPoemId() {
+        post { it.copy(notificationPoemId = null) }
+    }
+
     companion object {
         private const val TAG = "MainViewModel"
     }

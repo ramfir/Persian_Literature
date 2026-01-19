@@ -1,9 +1,14 @@
 package com.firdavs.persianliterature.poem_of_day.di
 
 import com.firdavs.persianliterature.poem_of_day.PoemOfDayViewModel
-import org.koin.core.module.dsl.viewModelOf
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val poemOfDayModule = module {
-    viewModelOf(::PoemOfDayViewModel)
+    viewModel { (args: Array<Any?>) ->
+        PoemOfDayViewModel(
+            poemId = args.firstOrNull() as? String,
+            poemRepository = get()
+        )
+    }
 }

@@ -43,9 +43,10 @@ import com.firdavs.persianliterature.core.R as UiR
 
 @Composable
 fun PoemOfDayEntryPoint(
+    poemId: String?,
     onChapterClick: (Chapter) -> Unit
 ) {
-    BaseEntryPoint(PoemOfDayViewModel::class) { state, viewModel ->
+    BaseEntryPoint(PoemOfDayViewModel::class, poemId) { state, viewModel ->
         PoemOfDayScreen(
             state = state,
             onChapterClick = onChapterClick,

@@ -7,16 +7,21 @@ import com.firdavs.persianliterature.core.presentation.BaseViewModel
 import kotlinx.coroutines.launch
 
 class PoemOfDayViewModel(
+    private val poemId: String?,
     private val poemRepository: PoemRepository
 ) : BaseViewModel<PoemOfDayUiState>(PoemOfDayUiState()) {
 
     init {
-        loadRandomPoem()
+        loadPoem()
     }
 
-    private fun loadRandomPoem() {
+    private fun loadPoem() {
         viewModelScope.launch {
-            val poem = poemRepository.getRandomPoem()
+            val poem = if (poemId != null) {
+                poemRepository.getPoemById(poemId)
+            } else {
+                poemRepository.getRandomPoem()
+            }
             post { it.copy(poem = poem, isLoading = false) }
         }
     }

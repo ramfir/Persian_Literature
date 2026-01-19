@@ -33,4 +33,8 @@ class PoemRepositoryImpl(
     override suspend fun getRandomPoem(): Poem? {
         return poemsDao.getRandomPoem()?.toDomain()
     }
+
+    override suspend fun getPoemById(id: String): Poem? {
+        return poemsDao.getPoemById(id)?.toDomain()
+    }
 }
