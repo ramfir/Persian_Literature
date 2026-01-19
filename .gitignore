@@ -16,4 +16,5 @@ local.properties
 /quiz/build
 /quiz_api/build
 /quiz_ui/build
+/poem_of_day/build
 

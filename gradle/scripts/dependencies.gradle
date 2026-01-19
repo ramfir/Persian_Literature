@@ -73,7 +73,8 @@ ext {
             audio           : project(":audio"),
             quiz_api        : project(":quiz_api"),
             quiz            : project(":quiz"),
-            quiz_ui         : project(":quiz_ui")
+            quiz_ui         : project(":quiz_ui"),
+            poem_of_day     : project(":poem_of_day")
     ]
     groups = [
             compose      : [

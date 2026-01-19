@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Beginner titles -->
+    <string name="title_beginner_master">Poetry Enthusiast</string>
+    <string name="title_beginner_advanced">Aspiring Reader</string>
+    <string name="title_beginner_intermediate">Curious Learner</string>
+    <string name="title_beginner_basic">Novice</string>
+
+    <!-- Intermediate titles -->
+    <string name="title_intermediate_master">Literary Scholar</string>
+    <string name="title_intermediate_advanced">Devoted Reader</string>
+    <string name="title_intermediate_intermediate">Poetry Lover</string>
+    <string name="title_intermediate_basic">Learning Student</string>
+
+    <!-- Advanced titles -->
+    <string name="title_advanced_master">Master Poet</string>
+    <string name="title_advanced_advanced">True Connoisseur</string>
+    <string name="title_advanced_intermediate">Skilled Scholar</string>
+    <string name="title_advanced_basic">Determined Student</string>
+
+    <!-- Expert titles -->
+    <string name="title_expert_master">Literary Genius</string>
+    <string name="title_expert_advanced">Grand Master</string>
+    <string name="title_expert_intermediate">Expert Analyst</string>
+    <string name="title_expert_basic">Ambitious Scholar</string>
+
+    <!-- Default title -->
+    <string name="title_default">Poetry Novice</string>
+</resources>

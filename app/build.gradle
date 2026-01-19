@@ -27,6 +27,7 @@ dependencies {
     implementation module.quiz_api
     implementation module.quiz
     implementation module.quiz_ui
+    implementation module.poem_of_day
 
     implementation library.activity_compose
     implementation library.appcompat

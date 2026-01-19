@@ -12,14 +12,14 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.firdavs.persianliterature.author.db.AuthorsDb
+import com.firdavs.persianliterature.author.db.dao.PoemsDao
 import com.firdavs.persianliterature.settings.api.NotificationManager as NotificationManagerApi
 
 class DailyNotificationWorker(
     private val context: Context,
     params: WorkerParameters,
     private val notificationManager: NotificationManagerApi,
-    private val authorsDb: AuthorsDb
+    private val poemsDao: PoemsDao
 ) : CoroutineWorker(context, params) {
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
@@ -51,11 +51,15 @@ class DailyNotificationWorker(
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private suspend fun showNotification() {
-        // Get a random author from the database
-        val randomAuthor = authorsDb.getAuthorsDao().getRandomAuthor()
+        // Get a random poem from the database
+        val randomPoem = poemsDao.getRandomPoem()
 
-        val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
+        // Create explicit intent to MainActivity
+        val intent = Intent().apply {
+            setClassName(context.packageName, "com.firdavs.persianliterature.app.ui.MainActivity")
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            // Add poem ID as extra so MainActivity can navigate to it
+            randomPoem?.id?.let { putExtra(EXTRA_POEM_ID, it) }
         }
 
         val pendingIntentFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -71,14 +75,17 @@ class DailyNotificationWorker(
             pendingIntentFlags
         )
 
-        // Use random author data if available, otherwise use default strings
-        val notificationTitle = randomAuthor?.name ?: context.getString(R.string.notification_title)
-        val notificationText = randomAuthor?.place ?: context.getString(R.string.notification_text)
+        // Use random poem data if available, otherwise use default strings
+        val notificationTitle = randomPoem?.author ?: context.getString(R.string.notification_title)
+        val notificationText = randomPoem?.text?.take(MAX_TEXT_LENGTH)?.plus(
+            if ((randomPoem?.text?.length ?: 0) > MAX_TEXT_LENGTH) "..." else ""
+        ) ?: context.getString(R.string.notification_text)
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentTitle(notificationTitle)
             .setContentText(notificationText)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
@@ -89,6 +96,8 @@ class DailyNotificationWorker(
 
     companion object {
         const val CHANNEL_ID = "daily_poem_channel"
+        const val EXTRA_POEM_ID = "poem_id"
         private const val NOTIFICATION_ID = 1001
+        private const val MAX_TEXT_LENGTH = 100
     }
 }
