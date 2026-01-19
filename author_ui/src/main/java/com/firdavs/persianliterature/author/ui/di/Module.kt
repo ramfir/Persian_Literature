@@ -6,7 +6,6 @@ import com.firdavs.persianliterature.author.ui.favourites.FavouritesViewModel
 import com.firdavs.persianliterature.author.ui.list.AuthorsListViewModel
 import com.firdavs.persianliterature.author.ui.mapper.AuthorUiMapper
 import com.firdavs.persianliterature.author.ui.mapper.AuthorUiMapperImpl
-import com.firdavs.persianliterature.author.ui.poem_of_day.PoemOfDayViewModel
 import com.firdavs.persianliterature.author.ui.work_details.WorkDetailsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
@@ -19,7 +18,6 @@ val authorUiModule = module {
     viewModelOf(::AuthorsListViewModel)
     viewModelOf(::FavouritesViewModel)
     viewModelOf(::AudioBooksViewModel)
-    viewModelOf(::PoemOfDayViewModel)
     viewModel {
             (args: Array<Any?>) -> AuthorDetailsViewModel(
         args.first() as String,

@@ -1,4 +1,4 @@
-package com.firdavs.persianliterature.author.ui.poem_of_day
+package com.firdavs.persianliterature.poem_of_day
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -28,7 +28,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.firdavs.persianliterature.author.ui.R
 import com.firdavs.persianliterature.core.model.Chapter
 import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.BaseScreen

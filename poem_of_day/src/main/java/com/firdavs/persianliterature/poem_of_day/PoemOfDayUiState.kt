@@ -1,4 +1,4 @@
-package com.firdavs.persianliterature.author.ui.poem_of_day
+package com.firdavs.persianliterature.poem_of_day
 
 import com.firdavs.persianliterature.author_api.model.Poem
 import com.firdavs.persianliterature.core.model.Chapter

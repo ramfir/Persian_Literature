@@ -23,7 +23,4 @@
     <string name="download_failed">Зеркашӣ ноком шуд</string>
     <string name="retry_download">Аз нав кӯшиш кунед</string>
     <string name="no_audio_books_found">Китобҳои аудиоӣ ҳанӯз дастрас нестанд</string>
-    <string name="poems_refreshed">Шеърҳо бомуваффақият навсозӣ шуданд</string>
-    <string name="new_poem">Шеъри нав</string>
-    <string name="no_poems_available">Шеърҳо ҳанӯз дастрас нестанд</string>
 </resources>

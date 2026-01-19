@@ -1,4 +1,4 @@
-package com.firdavs.persianliterature.author.ui.poem_of_day
+package com.firdavs.persianliterature.poem_of_day
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope

@@ -29,8 +29,8 @@ import com.firdavs.persianliterature.author.ui.audio_books.AudioBooksEntryPoint
 import com.firdavs.persianliterature.author.ui.details.AuthorDetailsEntryPoint
 import com.firdavs.persianliterature.author.ui.favourites.FavouritesEntryPoint
 import com.firdavs.persianliterature.author.ui.list.AuthorsListEntryPoint
-import com.firdavs.persianliterature.author.ui.poem_of_day.PoemOfDayEntryPoint
 import com.firdavs.persianliterature.author.ui.work_details.WorkDetailsEntryPoint
+import com.firdavs.persianliterature.poem_of_day.PoemOfDayEntryPoint
 import com.firdavs.persianliterature.core.model.Chapter
 import com.firdavs.persianliterature.quiz.ui.list.QuizListEntryPoint
 import com.firdavs.persianliterature.quiz.ui.play.QuizPlayEntryPoint
