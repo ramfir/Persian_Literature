@@ -7,6 +7,7 @@ import com.firdavs.persianliterature.author.db.dao.PoemsDao
 import com.firdavs.persianliterature.author.db.dao.WorksDao
 import com.firdavs.persianliterature.author.db.mapper.AuthorsEntityToDomainMapper
 import com.firdavs.persianliterature.author.db.mapper.AuthorsEntityToDomainMapperImpl
+import com.firdavs.persianliterature.author.db.migration.MIGRATION_1_2
 import com.firdavs.persianliterature.author.repository.AuthorRepositoryImpl
 import com.firdavs.persianliterature.author.repository.FavouritesRepositoryImpl
 import com.firdavs.persianliterature.author.repository.PoemRepositoryImpl
@@ -42,7 +43,8 @@ val authorModule = module {
             androidContext(),
             AuthorsDb::class.java,
             AuthorsDb.DATABASE_NAME
-        ).build()
+        ).addMigrations(MIGRATION_1_2)
+            .build()
     }
     single<AuthorsDao> { get<AuthorsDb>().getAuthorsDao() }
     single<WorksDao> { get<AuthorsDb>().getWorksDao() }

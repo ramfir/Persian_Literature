@@ -90,45 +90,62 @@ fun WorkDetailsScreen(
         applyTopPadding = isBarsVisible,
         topBar = { drawerState, scope ->
             AnimatedVisibility(isBarsVisible) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(LocalColors.current.primary)
-                ) {
-                    IconButton(
+                Column {
+                    Box(
                         modifier = Modifier
-                            .align(Alignment.CenterStart),
-                        onClick = onBackClick
+                            .fillMaxWidth()
+                            .background(LocalColors.current.primary)
                     ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                    H2Text(
-                        modifier = Modifier
-                            .align(Alignment.Center),
-                        text = state.work?.title ?: "",
-                        textAlign = TextAlign.Center
-                    )
-                    state.work?.let { work ->
                         IconButton(
                             modifier = Modifier
-                                .align(Alignment.CenterEnd),
-                            onClick = { onToggleFavourite(!work.isFavourite) }
+                                .align(Alignment.CenterStart),
+                            onClick = onBackClick
                         ) {
                             Icon(
-                                imageVector = if (work.isFavourite) {
-                                    Icons.Filled.Favorite
-                                } else {
-                                    Icons.Outlined.FavoriteBorder
-                                },
-                                contentDescription = null,
-                                tint = if (work.isFavourite) {
-                                    LocalColors.current.primary
-                                } else {
-                                    LocalColors.current.onPrimary
-                                }
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back"
+                            )
+                        }
+                        H2Text(
+                            modifier = Modifier
+                                .align(Alignment.Center),
+                            text = state.work?.title ?: "",
+                            textAlign = TextAlign.Center
+                        )
+                        state.work?.let { work ->
+                            IconButton(
+                                modifier = Modifier
+                                    .align(Alignment.CenterEnd),
+                                onClick = { onToggleFavourite(!work.isFavourite) }
+                            ) {
+                                Icon(
+                                    imageVector = if (work.isFavourite) {
+                                        Icons.Filled.Favorite
+                                    } else {
+                                        Icons.Outlined.FavoriteBorder
+                                    },
+                                    contentDescription = null,
+                                    tint = if (work.isFavourite) {
+                                        LocalColors.current.primary
+                                    } else {
+                                        LocalColors.current.onPrimary
+                                    }
+                                )
+                            }
+                        }
+                    }
+
+                    // Display description if available
+                    state.work?.description?.let { description ->
+                        if (description.isNotBlank()) {
+                            Text(
+                                text = description,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(LocalColors.current.primary)
+                                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = LocalColors.current.onPrimary
                             )
                         }
                     }
