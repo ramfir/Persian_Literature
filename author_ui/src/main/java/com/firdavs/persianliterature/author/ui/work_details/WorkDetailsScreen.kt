@@ -90,62 +90,45 @@ fun WorkDetailsScreen(
         applyTopPadding = isBarsVisible,
         topBar = { drawerState, scope ->
             AnimatedVisibility(isBarsVisible) {
-                Column {
-                    Box(
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(LocalColors.current.primary)
+                ) {
+                    IconButton(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .background(LocalColors.current.primary)
+                            .align(Alignment.CenterStart),
+                        onClick = onBackClick
                     ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                    H2Text(
+                        modifier = Modifier
+                            .align(Alignment.Center),
+                        text = state.work?.title ?: "",
+                        textAlign = TextAlign.Center
+                    )
+                    state.work?.let { work ->
                         IconButton(
                             modifier = Modifier
-                                .align(Alignment.CenterStart),
-                            onClick = onBackClick
+                                .align(Alignment.CenterEnd),
+                            onClick = { onToggleFavourite(!work.isFavourite) }
                         ) {
                             Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back"
-                            )
-                        }
-                        H2Text(
-                            modifier = Modifier
-                                .align(Alignment.Center),
-                            text = state.work?.title ?: "",
-                            textAlign = TextAlign.Center
-                        )
-                        state.work?.let { work ->
-                            IconButton(
-                                modifier = Modifier
-                                    .align(Alignment.CenterEnd),
-                                onClick = { onToggleFavourite(!work.isFavourite) }
-                            ) {
-                                Icon(
-                                    imageVector = if (work.isFavourite) {
-                                        Icons.Filled.Favorite
-                                    } else {
-                                        Icons.Outlined.FavoriteBorder
-                                    },
-                                    contentDescription = null,
-                                    tint = if (work.isFavourite) {
-                                        LocalColors.current.primary
-                                    } else {
-                                        LocalColors.current.onPrimary
-                                    }
-                                )
-                            }
-                        }
-                    }
-
-                    // Display description if available
-                    state.work?.description?.let { description ->
-                        if (description.isNotBlank()) {
-                            Text(
-                                text = description,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(LocalColors.current.primary)
-                                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = LocalColors.current.onPrimary
+                                imageVector = if (work.isFavourite) {
+                                    Icons.Filled.Favorite
+                                } else {
+                                    Icons.Outlined.FavoriteBorder
+                                },
+                                contentDescription = null,
+                                tint = if (work.isFavourite) {
+                                    LocalColors.current.primary
+                                } else {
+                                    LocalColors.current.onPrimary
+                                }
                             )
                         }
                     }
@@ -153,51 +136,70 @@ fun WorkDetailsScreen(
             }
         },
         mainContent = {
-            Box(
+            Column(
                 modifier = Modifier.fillMaxSize()
             ) {
-                if (state.isLoading) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .align(Alignment.Center),
-                        horizontalAlignment = CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        ProgressIndicator()
-                        H4Text(text = stringResource(R.string.work_loading))
-                    }
-                } else if (state.work != null) {
-                    // Show PDF viewer with tap-to-toggle
-                    state.workFile?.let { workFile ->
-                        PdfRendererViewCompose(
+                // Display description if available
+                state.work?.description?.let { description ->
+                    if (description.isNotBlank()) {
+                        Text(
+                            text = description,
                             modifier = Modifier
-                                .fillMaxSize(),
-                            source = PdfSource.LocalFile(workFile)
+                                .fillMaxWidth()
+                                .background(LocalColors.current.surface)
+                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = LocalColors.current.onSurface
                         )
-                        IconButton(
+                    }
+                }
+
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    if (state.isLoading) {
+                        Column(
                             modifier = Modifier
-                                .padding(8.dp)
-                                .background(
-                                    color = LocalColors.current.primary,
-                                    shape = CircleShape
-                                )
-                                .align(Alignment.BottomStart),
-                            onClick = { isBarsVisible = !isBarsVisible }
+                                .fillMaxSize()
+                                .align(Alignment.Center),
+                            horizontalAlignment = CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
                         ) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_hide),
-                                contentDescription = null
-                            )
+                            ProgressIndicator()
+                            H4Text(text = stringResource(R.string.work_loading))
                         }
-                    } ?: Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .align(Alignment.Center),
-                        horizontalAlignment = CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        H3Text(text = stringResource(R.string.no_works_found))
+                    } else if (state.work != null) {
+                        // Show PDF viewer with tap-to-toggle
+                        state.workFile?.let { workFile ->
+                            PdfRendererViewCompose(
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                source = PdfSource.LocalFile(workFile)
+                            )
+                            IconButton(
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .background(
+                                        color = LocalColors.current.primary,
+                                        shape = CircleShape
+                                    )
+                                    .align(Alignment.BottomStart),
+                                onClick = { isBarsVisible = !isBarsVisible }
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_hide),
+                                    contentDescription = null
+                                )
+                            }
+                        } ?: Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .align(Alignment.Center),
+                            horizontalAlignment = CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            H3Text(text = stringResource(R.string.no_works_found))
+                        }
                     }
                 }
             }
