@@ -4,6 +4,7 @@ data class Work(
     val id: String,
     val authorId: String,
     val title: String,
+    val description: String? = null,
     val publishYear: String?,
     val fileUrl: String?,
     val audioUrl: String? = null,

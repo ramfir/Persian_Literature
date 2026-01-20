@@ -60,9 +60,9 @@ class WorkDetailsViewModel(
                     if (workFile.exists().not()) {
                         downloadPdf(it, fileName)
                     } else {
-                        post { it.copy(workFile = workFile, isLoading = false) }
+                        post { it.copy(workFile = workFile, isDownloadingPdf = false) }
                     }
-                } ?: post { it.copy(isLoading = false) }
+                } ?: post { it.copy(isDownloadingPdf = false) }
 
                 // Handle audio file checking
                 work.audioUrl?.let { audioUrl ->
@@ -96,18 +96,39 @@ class WorkDetailsViewModel(
 
     private fun downloadPdf(url: String, fileName: String) {
         downloadPdfScope.launch {
-            post { it.copy(isLoading = true) }
+            post {
+                it.copy(
+                    isDownloadingPdf = true,
+                    pdfDownloadProgress = 0f
+                )
+            }
             runWithRetry(maxAttempts = 5) { tryDownloadPdf(url, fileName) }?.let {
-                post { it.copy(isLoading = false) }
+                post {
+                    it.copy(
+                        isDownloadingPdf = false
+                    )
+                }
             }
         }
     }
 
     private suspend fun tryDownloadPdf(url: String, fileName: String) {
-        pdfDownloader.downloadPdfFile(pdfUrl = url, fileName = fileName) { pdfFile ->
-            post { it.copy(isLoading = false) }
-            post { it.copy(workFile = pdfFile) }
-        }
+        pdfDownloader.downloadPdfFile(
+            pdfUrl = url,
+            fileName = fileName,
+            onProgress = { progress ->
+                post { it.copy(pdfDownloadProgress = progress) }
+            },
+            doOnSuccess = { pdfFile ->
+                post {
+                    it.copy(
+                        isDownloadingPdf = false,
+                        workFile = pdfFile,
+                        pdfDownloadProgress = 1f
+                    )
+                }
+            }
+        )
     }
 
     fun onToggleFavourite(isFavourite: Boolean) {

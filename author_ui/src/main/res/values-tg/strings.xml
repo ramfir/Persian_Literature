@@ -7,7 +7,6 @@
     <string name="bio">Тарҷумаи ҳол</string>
     <string name="works">Асарҳо</string>
     <string name="bio_loading">Боркунии тарҷумаи ҳол…</string>
-    <string name="work_loading">Боркунии асар…</string>
     <string name="no_works_found">Асарҳо ёфт нашуданд</string>
     <string name="no_bio_found">Тарҷумаи ҳол ёфт нашуд</string>
     <string name="published_at">нашр шуд дар %s</string>
@@ -16,6 +15,7 @@
     <string name="authors_fetched">Рӯйхати муаллифон аз нав гирифта шуд</string>
     <string name="download_audio">Зеркашии Аудио</string>
     <string name="downloading_audio">Зеркашӣ шуда истодааст… %d%%</string>
+    <string name="downloading_pdf">Зеркашии асар… %d%%</string>
     <string name="play_audio">Пахш</string>
     <string name="pause_audio">Таваққуф</string>
     <string name="stop_audio">Истодан</string>

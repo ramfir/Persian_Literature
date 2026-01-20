@@ -21,6 +21,7 @@ class AudioDownloaderImpl(private val context: Context) : AudioDownloader {
         }
     }
 
+    @Suppress("NestedBlockDepth")
     private fun downloadToFile(
         audioUrl: String,
         downloadedFileName: String,
