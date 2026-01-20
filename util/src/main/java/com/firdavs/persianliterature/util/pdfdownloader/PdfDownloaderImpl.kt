@@ -12,28 +12,46 @@ class PdfDownloaderImpl(private val context: Context) : PdfDownloader {
     override suspend fun downloadPdfFile(
         pdfUrl: String,
         fileName: String,
+        onProgress: (Float) -> Unit,
         doOnSuccess: (File) -> Unit
     ) {
-        val filePath = downloadToFile(pdfUrl, fileName)
+        val filePath = downloadToFile(pdfUrl, fileName, onProgress)
         withContext(Dispatchers.Main) {
             doOnSuccess(File(filePath))
         }
     }
 
-    private fun downloadToFile(pdfUrl: String, downloadedFileName: String): String {
+    @Suppress("NestedBlockDepth")
+    private fun downloadToFile(
+        pdfUrl: String,
+        downloadedFileName: String,
+        onProgress: (Float) -> Unit
+    ): String {
         val filePath = context.filesDir.toString() + "/$downloadedFileName"
 
         val url = URL(pdfUrl)
         val connection = url.openConnection()
         connection.connect()
 
-        // download the file
+        val fileLength = connection.contentLength
+
+        // Download with progress tracking
         BufferedInputStream(url.openStream(), bufferSize).use { input ->
-            // Output stream
             FileOutputStream(filePath).use { output ->
-                val data = input.readBytes()
-                output.write(data)
-                // flushing output
+                val data = ByteArray(bufferSize)
+                var total = 0L
+                var count: Int
+
+                while (input.read(data).also { count = it } != -1) {
+                    total += count
+                    output.write(data, 0, count)
+
+                    // Report progress
+                    if (fileLength > 0) {
+                        val progress = total.toFloat() / fileLength.toFloat()
+                        onProgress(progress)
+                    }
+                }
                 output.flush()
             }
         }

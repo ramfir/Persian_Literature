@@ -7,7 +7,6 @@
     <string name="bio">Biography</string>
     <string name="works">Works</string>
     <string name="bio_loading">Loading biography…</string>
-    <string name="work_loading">Loading work…</string>
     <string name="no_works_found">No works found</string>
     <string name="no_bio_found">No bio found</string>
     <string name="published_at">published at %s</string>
@@ -16,6 +15,7 @@
     <string name="authors_fetched">Authors fetched successfully</string>
     <string name="download_audio">Download Audio</string>
     <string name="downloading_audio">Downloading… %d%%</string>
+    <string name="downloading_pdf">Downloading work… %d%%</string>
     <string name="play_audio">Play</string>
     <string name="pause_audio">Pause</string>
     <string name="stop_audio">Stop</string>

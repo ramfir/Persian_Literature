@@ -44,7 +44,6 @@ import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.BaseScreen
 import com.firdavs.persianliterature.ui.kit.H2Text
 import com.firdavs.persianliterature.ui.kit.H3Text
-import com.firdavs.persianliterature.ui.kit.H4Text
 import com.firdavs.persianliterature.ui.kit.H5Text
 import com.firdavs.persianliterature.ui.kit.components.ProgressIndicator
 import com.firdavs.persianliterature.ui.kit.components.buttons.PrimaryButton
@@ -72,6 +71,7 @@ fun WorkDetailsEntryPoint(
     }
 }
 
+@Suppress("LongMethod")
 @Composable
 fun WorkDetailsScreen(
     state: WorkDetailsUiState,
@@ -139,25 +139,25 @@ fun WorkDetailsScreen(
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
-                // Display description if available
-                state.work?.description?.let { description ->
-                    if (description.isNotBlank()) {
-                        Text(
-                            text = description,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(LocalColors.current.surface)
-                                .padding(horizontal = 16.dp, vertical = 8.dp),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = LocalColors.current.onSurface
-                        )
+                AnimatedVisibility(isBarsVisible) {
+                    state.work?.description?.let { description ->
+                        if (description.isNotBlank()) {
+                            Text(
+                                text = description,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = LocalColors.current.onSurface
+                            )
+                        }
                     }
                 }
 
                 Box(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    if (state.isLoading) {
+                    if (state.isDownloadingPdf) {
                         Column(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -165,8 +165,21 @@ fun WorkDetailsScreen(
                             horizontalAlignment = CenterHorizontally,
                             verticalArrangement = Arrangement.Center
                         ) {
-                            ProgressIndicator()
-                            H4Text(text = stringResource(R.string.work_loading))
+                            LinearProgressIndicator(
+                                progress = { state.pdfDownloadProgress },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 32.dp),
+                                color = LocalColors.current.primary
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = stringResource(
+                                    R.string.downloading_pdf,
+                                    (state.pdfDownloadProgress * FULL_PERCENT).toInt()
+                                ),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
                         }
                     } else if (state.work != null) {
                         // Show PDF viewer with tap-to-toggle
