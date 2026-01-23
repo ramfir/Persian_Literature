@@ -21,4 +21,5 @@ ext {
     pdf_viewer_version = "2.3.7"
     media3_version = "1.5.0"
     work_version = "2.10.0"
+    splash_screen_version = "1.0.1"
 }

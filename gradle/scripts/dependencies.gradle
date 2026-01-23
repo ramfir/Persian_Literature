@@ -57,7 +57,8 @@ ext {
             media3_session         : ("androidx.media3:media3-session:$media3_version"),
             media3_ui              : ("androidx.media3:media3-ui:$media3_version"),
 
-            work_runtime           : ("androidx.work:work-runtime-ktx:$work_version")
+            work_runtime           : ("androidx.work:work-runtime-ktx:$work_version"),
+            splash_screen          : ("androidx.core:core-splashscreen:$splash_screen_version")
     ]
     module = [
             core            : project(":core"),
