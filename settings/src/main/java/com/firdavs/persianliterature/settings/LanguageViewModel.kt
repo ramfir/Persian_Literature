@@ -35,9 +35,11 @@ class LanguageViewModel(
         }
     }
 
-    fun onApplyClick(language: Language) {
+    fun onApplyClick() {
+        val language = state.value.selectedLanguage
         languageManager.setLanguage(application, language)
         viewModelScope.launch {
+            // Refresh all data with the new language
             authorRepository.fetchAuthors()
             worksRepository.fetchWorks()
             quizRepository.fetchQuizzes()

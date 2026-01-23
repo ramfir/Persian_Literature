@@ -14,19 +14,21 @@ import com.firdavs.persianliterature.settings.LanguageViewModel
 import com.firdavs.persianliterature.settings.NotificationManagerImpl
 import com.firdavs.persianliterature.settings.SettingsViewModel
 import com.firdavs.persianliterature.settings.api.LanguageManager
+import com.firdavs.persianliterature.settings.api.LocaleHolder
 import com.firdavs.persianliterature.settings.api.NotificationManager
 import com.firdavs.persianliterature.util.di.utilModule
 import org.koin.androidx.workmanager.dsl.workerOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
+import org.koin.dsl.binds
 import org.koin.dsl.module
 
 val appModule = module {
     viewModelOf(::MainViewModel)
     viewModelOf(::SettingsViewModel)
     viewModelOf(::LanguageViewModel)
-    singleOf(::LanguageManagerImpl) bind LanguageManager::class
+    single { LanguageManagerImpl(get()) } binds arrayOf(LanguageManager::class, LocaleHolder::class)
     singleOf(::NotificationManagerImpl) bind NotificationManager::class
 
     workerOf(::DailyNotificationWorker)

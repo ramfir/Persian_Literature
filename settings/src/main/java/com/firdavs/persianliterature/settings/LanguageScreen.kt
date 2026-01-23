@@ -1,10 +1,5 @@
 package com.firdavs.persianliterature.settings
 
-import android.app.LocaleManager
-import android.content.Context
-import android.os.Build
-import android.os.LocaleList
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,46 +15,37 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.os.LocaleListCompat
 import com.firdavs.persianliterature.settings.api.Language
 import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.BaseScreen
 import com.firdavs.persianliterature.ui.kit.H3Text
 import com.firdavs.persianliterature.ui.kit.components.buttons.PrimaryButton
+import com.firdavs.persianliterature.ui.kit.theme.LocalAppLocale
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
+import com.firdavs.persianliterature.ui.kit.theme.stringResource
+import java.util.Locale
 
 @Composable
 fun LanguageEntryPoint(
     onBackClick: () -> Unit
 ) {
-    val context = LocalContext.current
-
     BaseEntryPoint(LanguageViewModel::class) { state, viewModel ->
+        // Update Locale.setDefault when language changes for immediate effect
+        val currentLocale = LocalAppLocale.current
+        LaunchedEffect(currentLocale) {
+            Locale.setDefault(currentLocale)
+        }
+
         LanguageScreen(
             state = state,
             onBackClick = onBackClick,
             onLanguageSelected = viewModel::onLanguageSelected,
-            onApplyClick = { language ->
-                viewModel.onApplyClick(language)
-                changeLocale(language.code, context)
-            }
-        )
-    }
-}
-
-private fun changeLocale(languageCode: String, context: Context) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        context.getSystemService(LocaleManager::class.java)
-            .applicationLocales = LocaleList.forLanguageTags(languageCode)
-    } else {
-        AppCompatDelegate.setApplicationLocales(
-            LocaleListCompat.forLanguageTags(languageCode)
+            onApplyClick = viewModel::onApplyClick
         )
     }
 }
@@ -69,7 +55,7 @@ private fun LanguageScreen(
     state: LanguageUiState,
     onBackClick: () -> Unit,
     onLanguageSelected: (Language) -> Unit,
-    onApplyClick: (Language) -> Unit
+    onApplyClick: () -> Unit
 ) {
     val colors = LocalColors.current
     BaseScreen(
@@ -129,7 +115,7 @@ private fun LanguageScreen(
                         .fillMaxWidth()
                         .padding(top = 16.dp),
                     text = stringResource(R.string.apply),
-                    onClick = { onApplyClick(state.selectedLanguage) }
+                    onClick = onApplyClick
                 )
             }
         }
