@@ -5,6 +5,6 @@
     <string name="authors_list_with_works">Список поэтов и писателей с их произведениями</string>
     <string name="add_favourites">Добавление поэта, писателя или их произведений в избранное</string>
     <string name="languages">Изменение языка на таджикский, английский или русский</string>
-    <string name="app_author">Автор приложения</string>
-    <string name="firdavs">Фирдавс Салимов</string>
+    <string name="app_author">Контакт</string>
+    <string name="firdavs">Если у вас есть вопросы или рекомендации, свяжитесь с автором приложения по электронной почте: firdavs_20111@mail.ru</string>
 </resources>

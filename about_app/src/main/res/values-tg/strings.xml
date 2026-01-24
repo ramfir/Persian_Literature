@@ -5,6 +5,6 @@
     <string name="authors_list_with_works">Рӯйхати шоирон ва нависандагон бо асарҳояшон</string>
     <string name="add_favourites">Илова кардани шоир ё нависанда ё асарҳояшон ба интихобшуда</string>
     <string name="languages">Тағйир додани забон ба тоҷикӣ, англисӣ ё русӣ</string>
-    <string name="app_author">Муаллифи барнома</string>
-    <string name="firdavs">Фирдавс Салимов</string>
+    <string name="app_author">Тамос</string>
+    <string name="firdavs">Агар савол ё тавсияҳое доред, бо муаллифи барнома тавассути почтаи электронӣ тамос гиред: firdavs_20111@mail.ru</string>
 </resources>

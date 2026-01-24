@@ -5,6 +5,6 @@
     <string name="authors_list_with_works">List of poets and writers with their works</string>
     <string name="add_favourites">Adding poet or writer or their works to favourites</string>
     <string name="languages">Changing language to Tajik, English or Russian</string>
-    <string name="app_author">App author</string>
-    <string name="firdavs">Firdavs Salimov</string>
+    <string name="app_author">Contact</string>
+    <string name="firdavs">If you have any questions or recommendations, contact the app\'s author via email: firdavs_20111@mail.ru</string>
 </resources>
