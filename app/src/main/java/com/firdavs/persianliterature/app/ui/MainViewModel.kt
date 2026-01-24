@@ -12,6 +12,7 @@ import com.firdavs.persianliterature.quiz_api.repository.QuestionRepository
 import com.firdavs.persianliterature.quiz_api.repository.QuizRepository
 import com.firdavs.persianliterature.settings.api.Language
 import com.firdavs.persianliterature.settings.api.LanguageManager
+import com.firdavs.persianliterature.settings.api.NotificationManager
 import kotlinx.coroutines.launch
 import androidx.core.content.edit
 
@@ -22,7 +23,8 @@ class MainViewModel(
     private val quizRepository: QuizRepository,
     private val questionRepository: QuestionRepository,
     private val poemRepository: PoemRepository,
-    private val languageManager: LanguageManager
+    private val languageManager: LanguageManager,
+    private val notificationManager: NotificationManager
 ) : BaseViewModel<MainActivityUiState>(MainActivityUiState()) {
 
     init {
@@ -40,10 +42,18 @@ class MainViewModel(
 
         if (isFirstLaunch) {
             languageManager.setLanguage(application, Language.TAJIK)
-            post { it.copy(showWelcomeDialog = true) }
+            post { it.copy(showWelcomeDialog = true, requestNotificationPermission = true) }
 
             prefs.edit { putBoolean(KEY_FIRST_LAUNCH, false) }
         }
+    }
+
+    fun onNotificationPermissionResult(granted: Boolean) {
+        if (granted) {
+            notificationManager.setNotificationEnabled(application, true)
+            notificationManager.scheduleNotification(application)
+        }
+        post { it.copy(requestNotificationPermission = false) }
     }
 
     private fun fetchAuthors() {

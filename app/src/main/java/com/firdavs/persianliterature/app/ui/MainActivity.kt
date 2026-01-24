@@ -1,9 +1,13 @@
 package com.firdavs.persianliterature.app.ui
 
+import android.Manifest
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -46,6 +50,23 @@ class MainActivity : ComponentActivity() {
             val currentLocale by localeHolder.currentLocale.collectAsStateWithLifecycle(
                 initialValue = localeHolder.systemLocale
             )
+
+            // Permission launcher for notifications
+            val notificationPermissionLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.RequestPermission()
+            ) { isGranted ->
+                viewModel.onNotificationPermissionResult(isGranted)
+            }
+
+            // Handle notification permission request
+            LaunchedEffect(state.requestNotificationPermission) {
+                if (state.requestNotificationPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                } else if (state.requestNotificationPermission && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                    // For Android 12 and below, permission is granted at install time
+                    viewModel.onNotificationPermissionResult(true)
+                }
+            }
 
             // Handle notification intent when poem ID changes
             LaunchedEffect(notificationPoemId) {
