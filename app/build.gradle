@@ -31,6 +31,7 @@ dependencies {
 
     implementation library.activity_compose
     implementation library.appcompat
+    implementation library.splash_screen
     implementation platform(library.firebase_bom)
     implementation library.firestore_ktx
     implementation groups.navigation
