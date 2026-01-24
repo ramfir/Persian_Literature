@@ -1,4 +1,4 @@
-package com.firdavs.persianliterature.settings
+package com.firdavs.persianliterature.settings.data
 
 import android.content.Context
 import androidx.core.content.edit
@@ -6,6 +6,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.firdavs.persianliterature.settings.api.NotificationManager
+import com.firdavs.persianliterature.settings.worker.DailyNotificationWorker
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 

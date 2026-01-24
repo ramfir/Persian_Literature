@@ -8,11 +8,11 @@ import com.firdavs.persianliterature.author.ui.di.authorUiModule
 import com.firdavs.persianliterature.poem_of_day.di.poemOfDayModule
 import com.firdavs.persianliterature.quiz.di.quizModule
 import com.firdavs.persianliterature.quiz.ui.di.quizUiModule
-import com.firdavs.persianliterature.settings.DailyNotificationWorker
-import com.firdavs.persianliterature.settings.LanguageManagerImpl
-import com.firdavs.persianliterature.settings.LanguageViewModel
-import com.firdavs.persianliterature.settings.NotificationManagerImpl
-import com.firdavs.persianliterature.settings.SettingsViewModel
+import com.firdavs.persianliterature.settings.data.LanguageManagerImpl
+import com.firdavs.persianliterature.settings.data.NotificationManagerImpl
+import com.firdavs.persianliterature.settings.ui.language.LanguageViewModel
+import com.firdavs.persianliterature.settings.ui.main.SettingsViewModel
+import com.firdavs.persianliterature.settings.worker.DailyNotificationWorker
 import com.firdavs.persianliterature.settings.api.LanguageManager
 import com.firdavs.persianliterature.settings.api.LocaleHolder
 import com.firdavs.persianliterature.settings.api.NotificationManager

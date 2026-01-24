@@ -1,4 +1,4 @@
-package com.firdavs.persianliterature.settings
+package com.firdavs.persianliterature.settings.ui.main
 
 import android.app.Application
 import com.firdavs.persianliterature.core.presentation.BaseViewModel

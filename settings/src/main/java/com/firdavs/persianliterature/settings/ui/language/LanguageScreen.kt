@@ -1,4 +1,4 @@
-package com.firdavs.persianliterature.settings
+package com.firdavs.persianliterature.settings.ui.language
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.firdavs.persianliterature.settings.R
 import com.firdavs.persianliterature.settings.api.Language
 import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.BaseScreen

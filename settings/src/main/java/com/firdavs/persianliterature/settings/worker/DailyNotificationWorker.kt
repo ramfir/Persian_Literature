@@ -1,4 +1,4 @@
-package com.firdavs.persianliterature.settings
+package com.firdavs.persianliterature.settings.worker
 
 import android.Manifest
 import android.app.PendingIntent
@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.firdavs.persianliterature.author.db.dao.PoemsDao
+import com.firdavs.persianliterature.settings.R
 import com.firdavs.persianliterature.settings.api.NotificationManager as NotificationManagerApi
 
 class DailyNotificationWorker(

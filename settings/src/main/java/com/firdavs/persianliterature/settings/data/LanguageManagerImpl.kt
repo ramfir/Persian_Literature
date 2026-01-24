@@ -1,4 +1,4 @@
-package com.firdavs.persianliterature.settings
+package com.firdavs.persianliterature.settings.data
 
 import android.content.Context
 import android.content.SharedPreferences

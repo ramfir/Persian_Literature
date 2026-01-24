@@ -1,4 +1,4 @@
-package com.firdavs.persianliterature.settings
+package com.firdavs.persianliterature.settings.ui.language
 
 import com.firdavs.persianliterature.core.model.Chapter
 import com.firdavs.persianliterature.core.presentation.UiState

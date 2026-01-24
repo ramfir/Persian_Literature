@@ -20,8 +20,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.firdavs.persianliterature.app.navigation.Navigator
-import com.firdavs.persianliterature.settings.DailyNotificationWorker
 import com.firdavs.persianliterature.settings.api.LocaleHolder
+import com.firdavs.persianliterature.settings.worker.DailyNotificationWorker
 import com.firdavs.persianliterature.ui.kit.theme.AppTheme
 import com.firdavs.persianliterature.ui.kit.theme.LocalAppLocale
 import org.koin.androidx.compose.koinViewModel

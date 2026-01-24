@@ -1,4 +1,4 @@
-package com.firdavs.persianliterature.settings
+package com.firdavs.persianliterature.settings.ui.language
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
