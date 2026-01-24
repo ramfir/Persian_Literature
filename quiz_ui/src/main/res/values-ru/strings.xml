@@ -27,4 +27,6 @@
     <string name="time_spent">Затраченное время:</string>
     <string name="time_spent_value">%dс</string>
     <string name="back_to_list">Назад к списку</string>
+    <string name="quizzes_fetched">Викторины успешно загружены</string>
+    <string name="fetch_error">Не удалось загрузить данные. Проверьте подключение к интернету.</string>
 </resources>

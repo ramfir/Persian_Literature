@@ -11,4 +11,5 @@
     <string name="notification_channel_description">Огоҳиҳо дар бораи шеър</string>
     <string name="notification_title">Шеъри рӯз</string>
     <string name="notification_text">Ман шеъри форсиро дӯст медорам</string>
+    <string name="language_change_error">Тағйири пурраи забон ноком шуд. Лутфан пайвасти интернетро санҷед.</string>
 </resources>

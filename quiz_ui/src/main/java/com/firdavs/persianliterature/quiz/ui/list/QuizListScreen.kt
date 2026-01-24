@@ -1,5 +1,6 @@
 package com.firdavs.persianliterature.quiz.ui.list
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,8 +25,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import androidx.compose.ui.unit.dp
 import com.firdavs.persianliterature.core.model.Chapter
@@ -54,7 +57,9 @@ fun QuizListEntryPoint(
             state = state,
             onQuizClick = onQuizClick,
             onChapterClick = onChapterClick,
-            onRefreshClick = viewModel::onRefreshClick
+            onRefreshClick = viewModel::onRefreshClick,
+            resetShowToastFlag = viewModel::resetShowToastFlag,
+            resetShowErrorToastFlag = viewModel::resetShowErrorToastFlag
         )
     }
 }
@@ -65,8 +70,34 @@ private fun QuizListScreen(
     state: QuizListUiState,
     onQuizClick: (String) -> Unit,
     onChapterClick: (Chapter) -> Unit,
-    onRefreshClick: () -> Unit
+    onRefreshClick: () -> Unit,
+    resetShowToastFlag: () -> Unit,
+    resetShowErrorToastFlag: () -> Unit
 ) {
+    val context = LocalContext.current
+
+    LaunchedEffect(state.showToast) {
+        if (state.showToast) {
+            Toast.makeText(
+                context,
+                R.string.quizzes_fetched,
+                Toast.LENGTH_SHORT
+            ).show()
+            resetShowToastFlag()
+        }
+    }
+
+    LaunchedEffect(state.showErrorToast) {
+        if (state.showErrorToast) {
+            Toast.makeText(
+                context,
+                R.string.fetch_error,
+                Toast.LENGTH_LONG
+            ).show()
+            resetShowErrorToastFlag()
+        }
+    }
+
     BaseScreen(
         drawerContent = {
             DrawerSheet(

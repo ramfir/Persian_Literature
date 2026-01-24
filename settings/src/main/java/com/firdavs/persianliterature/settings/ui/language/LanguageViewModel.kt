@@ -1,6 +1,7 @@
 package com.firdavs.persianliterature.settings.ui.language
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
 import com.firdavs.persianliterature.author_api.repository.PoemRepository
@@ -38,13 +39,29 @@ class LanguageViewModel(
     fun onApplyClick() {
         val language = state.value.selectedLanguage
         languageManager.setLanguage(application, language)
+        post { it.copy(isRefreshing = true) }
         viewModelScope.launch {
-            // Refresh all data with the new language
-            authorRepository.fetchAuthors()
-            worksRepository.fetchWorks()
-            quizRepository.fetchQuizzes()
-            questionRepository.fetchQuestions()
-            poemRepository.fetchPoems()
+            runCatching {
+                // Refresh all data with the new language
+                authorRepository.fetchAuthors()
+                worksRepository.fetchWorks()
+                quizRepository.fetchQuizzes()
+                questionRepository.fetchQuestions()
+                poemRepository.fetchPoems()
+            }.onFailure { error ->
+                Log.e(TAG, "onApplyClick error", error)
+                post { it.copy(isRefreshing = false, showErrorToast = true) }
+            }.onSuccess {
+                post { it.copy(isRefreshing = false) }
+            }
         }
+    }
+
+    fun resetShowErrorToastFlag() {
+        post { it.copy(showErrorToast = false) }
+    }
+
+    companion object {
+        private const val TAG = "LanguageViewModel"
     }
 }

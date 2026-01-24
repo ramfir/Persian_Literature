@@ -11,4 +11,5 @@
     <string name="notification_channel_description">Daily poetry notifications</string>
     <string name="notification_title">Poem of the day</string>
     <string name="notification_text">I love persian poetry</string>
+    <string name="language_change_error">Failed to change language completely. Please check your internet connection.</string>
 </resources>

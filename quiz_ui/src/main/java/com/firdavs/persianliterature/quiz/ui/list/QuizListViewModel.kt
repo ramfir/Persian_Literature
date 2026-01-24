@@ -43,10 +43,19 @@ class QuizListViewModel(
                 questionRepository.fetchQuestions()
             }.onFailure { error ->
                 Log.e(TAG, "onRefreshClick error", error)
+                post { it.copy(isRefreshing = false, showErrorToast = true) }
             }.onSuccess {
-                post { it.copy(isRefreshing = false) }
+                post { it.copy(isRefreshing = false, showToast = true) }
             }
         }
+    }
+
+    fun resetShowToastFlag() {
+        post { it.copy(showToast = false) }
+    }
+
+    fun resetShowErrorToastFlag() {
+        post { it.copy(showErrorToast = false) }
     }
 
     companion object {

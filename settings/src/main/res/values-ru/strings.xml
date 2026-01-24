@@ -11,4 +11,5 @@
     <string name="notification_channel_description">Уведомления о поэзии</string>
     <string name="notification_title">Стихотворение дня</string>
     <string name="notification_text">Я люблю персидскую поэзию</string>
+    <string name="language_change_error">Не удалось изменить язык полностью. Проверьте подключение к интернету.</string>
 </resources>

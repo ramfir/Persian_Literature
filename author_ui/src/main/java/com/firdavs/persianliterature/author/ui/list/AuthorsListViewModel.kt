@@ -67,6 +67,10 @@ class AuthorsListViewModel(
         post { it.copy(showToast = false) }
     }
 
+    fun resetShowErrorToastFlag() {
+        post { it.copy(showErrorToast = false) }
+    }
+
     fun onRefreshClick() {
         post { it.copy(isRefreshing = true) }
         viewModelScope.launch {
@@ -75,7 +79,7 @@ class AuthorsListViewModel(
                 worksRepository.fetchWorks()
             }.onFailure {
                 Log.e(TAG, "onRefreshClick error ", it)
-                post { it.copy(isRefreshing = false) }
+                post { it.copy(isRefreshing = false, showErrorToast = true) }
             }.onSuccess {
                 post { it.copy(isRefreshing = false) }
                 post { it.copy(showToast = true) }

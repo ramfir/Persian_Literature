@@ -27,4 +27,6 @@
     <string name="time_spent">Вақти сарфшуда:</string>
     <string name="time_spent_value">%dс</string>
     <string name="back_to_list">Бозгашт ба рӯйхат</string>
+    <string name="quizzes_fetched">Имтиҳонҳо бомуваффақият боргузорӣ шуданд</string>
+    <string name="fetch_error">Боргузорӣ ноком шуд. Лутфан пайвасти интернетро санҷед.</string>
 </resources>

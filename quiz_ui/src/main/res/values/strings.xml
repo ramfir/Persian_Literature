@@ -27,4 +27,6 @@
     <string name="time_spent">Time Spent:</string>
     <string name="time_spent_value">%ds</string>
     <string name="back_to_list">Back to List</string>
+    <string name="quizzes_fetched">Quizzes fetched successfully</string>
+    <string name="fetch_error">Failed to fetch data. Please check your internet connection.</string>
 </resources>

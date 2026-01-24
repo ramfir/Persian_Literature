@@ -11,5 +11,6 @@ data class AuthorsListUiState(
     val isLoading: Boolean = true,
     val isRefreshing: Boolean = false,
     val showToast: Boolean = false,
+    val showErrorToast: Boolean = false,
     val chapters: List<Chapter> = Chapter.all
 ) : UiState()

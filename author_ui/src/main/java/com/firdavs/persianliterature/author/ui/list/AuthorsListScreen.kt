@@ -84,7 +84,8 @@ fun AuthorsListEntryPoint(
             onChapterClick = onChapterClick,
             onToggleFavourite = viewModel::onToggleFavourite,
             onRefreshClick = viewModel::onRefreshClick,
-            resetShowToastFlag = viewModel::resetShowToastFlag
+            resetShowToastFlag = viewModel::resetShowToastFlag,
+            resetShowErrorToastFlag = viewModel::resetShowErrorToastFlag
         )
     }
 }
@@ -102,7 +103,8 @@ private fun AuthorsListScreen(
     onChapterClick: (Chapter) -> Unit,
     onToggleFavourite: (String, Boolean) -> Unit,
     onRefreshClick: () -> Unit,
-    resetShowToastFlag: () -> Unit
+    resetShowToastFlag: () -> Unit,
+    resetShowErrorToastFlag: () -> Unit
 ) {
     val context = LocalContext.current
     LaunchedEffect(state.showToast) {
@@ -113,6 +115,17 @@ private fun AuthorsListScreen(
                 Toast.LENGTH_SHORT
             ).show()
             resetShowToastFlag()
+        }
+    }
+
+    LaunchedEffect(state.showErrorToast) {
+        if (state.showErrorToast) {
+            Toast.makeText(
+                context,
+                R.string.fetch_error,
+                Toast.LENGTH_LONG
+            ).show()
+            resetShowErrorToastFlag()
         }
     }
     BaseScreen(
@@ -381,7 +394,8 @@ private fun AuthorsListScreenPreview(
             onChapterClick = {},
             onToggleFavourite = { _, _ -> },
             onRefreshClick = {},
-            resetShowToastFlag = {}
+            resetShowToastFlag = {},
+            resetShowErrorToastFlag = {}
         )
     }
 }

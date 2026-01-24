@@ -23,4 +23,5 @@
     <string name="download_failed">Download Failed</string>
     <string name="retry_download">Retry</string>
     <string name="no_audio_books_found">No audio books available yet</string>
+    <string name="fetch_error">Failed to fetch data. Please check your internet connection.</string>
 </resources>

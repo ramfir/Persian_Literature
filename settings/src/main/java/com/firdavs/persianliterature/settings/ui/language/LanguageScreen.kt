@@ -1,5 +1,6 @@
 package com.firdavs.persianliterature.settings.ui.language
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.firdavs.persianliterature.settings.R
@@ -46,7 +48,8 @@ fun LanguageEntryPoint(
             state = state,
             onBackClick = onBackClick,
             onLanguageSelected = viewModel::onLanguageSelected,
-            onApplyClick = viewModel::onApplyClick
+            onApplyClick = viewModel::onApplyClick,
+            resetShowErrorToastFlag = viewModel::resetShowErrorToastFlag
         )
     }
 }
@@ -56,9 +59,22 @@ private fun LanguageScreen(
     state: LanguageUiState,
     onBackClick: () -> Unit,
     onLanguageSelected: (Language) -> Unit,
-    onApplyClick: () -> Unit
+    onApplyClick: () -> Unit,
+    resetShowErrorToastFlag: () -> Unit
 ) {
+    val context = LocalContext.current
     val colors = LocalColors.current
+
+    LaunchedEffect(state.showErrorToast) {
+        if (state.showErrorToast) {
+            Toast.makeText(
+                context,
+                R.string.language_change_error,
+                Toast.LENGTH_LONG
+            ).show()
+            resetShowErrorToastFlag()
+        }
+    }
     BaseScreen(
         topBar = { _, _ ->
             Box(
