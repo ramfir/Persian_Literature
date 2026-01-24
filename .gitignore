@@ -9,6 +9,8 @@
 .cxx
 local.properties
 /signing/signing.properties
+/signing/*.jks
+/signing/*.keystore
 /.kotlin/
 /app/google-services.json
 /audio/build

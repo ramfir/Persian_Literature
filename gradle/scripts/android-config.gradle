@@ -26,6 +26,16 @@ android {
         resourceConfigurations += ['en', 'ru', 'tg']
 
     }
+    signingConfigs {
+        release {
+            if (signingProps['storeFile']) {
+                storeFile file("${rootProject.rootDir}/${signingProps['storeFile']}")
+                storePassword signingProps['storePassword']
+                keyAlias signingProps['keyAlias']
+                keyPassword signingProps['keyPassword']
+            }
+        }
+    }
     buildFeatures {
         buildConfig true
         compose true
@@ -46,6 +56,7 @@ android {
                     getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro"
             )
+            signingConfig signingConfigs.release
         }
         debug {
             minifyEnabled false

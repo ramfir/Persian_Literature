@@ -4,7 +4,7 @@
     <string name="start_quiz">Start Quiz</string>
     <string name="retry_quiz">Retry Quiz</string>
     <string name="your_best_score">Best: %d%%</string>
-    <string name="question_progress">Question %d of %d</string>
+    <string name="question_progress">Question %1$d of %2$d</string>
     <string name="submit_answer">Submit Answer</string>
     <string name="next_question">Next Question</string>
     <string name="finish_quiz">Finish Quiz</string>
