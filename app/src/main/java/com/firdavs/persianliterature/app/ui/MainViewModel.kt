@@ -1,5 +1,7 @@
 package com.firdavs.persianliterature.app.ui
 
+import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
@@ -8,22 +10,40 @@ import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import com.firdavs.persianliterature.core.presentation.BaseViewModel
 import com.firdavs.persianliterature.quiz_api.repository.QuestionRepository
 import com.firdavs.persianliterature.quiz_api.repository.QuizRepository
+import com.firdavs.persianliterature.settings.api.Language
+import com.firdavs.persianliterature.settings.api.LanguageManager
 import kotlinx.coroutines.launch
+import androidx.core.content.edit
 
 class MainViewModel(
+    private val application: Application,
     private val authorRepository: AuthorRepository,
     private val worksRepository: WorksRepository,
     private val quizRepository: QuizRepository,
     private val questionRepository: QuestionRepository,
-    private val poemRepository: PoemRepository
+    private val poemRepository: PoemRepository,
+    private val languageManager: LanguageManager
 ) : BaseViewModel<MainActivityUiState>(MainActivityUiState()) {
 
     init {
+        checkFirstLaunch()
         fetchAuthors()
         fetchWorks()
         fetchQuizzes()
         fetchQuestions()
         fetchPoems()
+    }
+
+    private fun checkFirstLaunch() {
+        val prefs = application.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        val isFirstLaunch = prefs.getBoolean(KEY_FIRST_LAUNCH, true)
+
+        if (isFirstLaunch) {
+            languageManager.setLanguage(application, Language.TAJIK)
+            post { it.copy(showWelcomeDialog = true) }
+
+            prefs.edit { putBoolean(KEY_FIRST_LAUNCH, false) }
+        }
     }
 
     private fun fetchAuthors() {
@@ -84,7 +104,13 @@ class MainViewModel(
         post { it.copy(notificationPoemId = null) }
     }
 
+    fun dismissWelcomeDialog() {
+        post { it.copy(showWelcomeDialog = false) }
+    }
+
     companion object {
         private const val TAG = "MainViewModel"
+        private const val PREF_NAME = "app_preferences"
+        private const val KEY_FIRST_LAUNCH = "is_first_launch"
     }
 }

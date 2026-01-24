@@ -62,6 +62,12 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.padding(innerPadding),
                             onNavigationHandled = { viewModel.clearNotificationPoemId() }
                         )
+
+                        if (state.showWelcomeDialog) {
+                            WelcomeDialog(
+                                onDismiss = { viewModel.dismissWelcomeDialog() }
+                            )
+                        }
                     }
                 }
             }
