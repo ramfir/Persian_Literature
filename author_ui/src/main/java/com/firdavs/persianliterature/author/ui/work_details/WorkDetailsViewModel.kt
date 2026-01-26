@@ -32,6 +32,7 @@ class WorkDetailsViewModel(
 ) : BaseViewModel<WorkDetailsUiState>(WorkDetailsUiState(null)) {
     private val downloadPdfScope = CoroutineScope(Job() + Dispatchers.IO)
     private val downloadAudioScope = CoroutineScope(Job() + Dispatchers.IO)
+    private var activeAudioDownloadJob: Job? = null
 
     init {
         audioServiceController.connect()
@@ -83,7 +84,18 @@ class WorkDetailsViewModel(
                             }
                         }
                         AudioDownloadStatus.DOWNLOADING -> {
-                            post { it.copy(isDownloadingAudio = true) }
+                            // Check if there's an active download job
+                            if (activeAudioDownloadJob?.isActive != true) {
+                                // Download was interrupted (user navigated away), reset status
+                                worksRepository.updateAudioDownloadStatus(
+                                    work.id,
+                                    AudioDownloadStatus.NOT_DOWNLOADED,
+                                    null
+                                )
+                            } else {
+                                // Active download in progress, show it
+                                post { it.copy(isDownloadingAudio = true) }
+                            }
                         }
                         else -> {
                             // NOT_DOWNLOADED or FAILED - no action
@@ -202,7 +214,7 @@ class WorkDetailsViewModel(
             return
         }
 
-        downloadAudioScope.launch {
+        activeAudioDownloadJob = downloadAudioScope.launch {
             post {
                 it.copy(
                     isDownloadingAudio = true,
@@ -232,6 +244,9 @@ class WorkDetailsViewModel(
                     AudioDownloadStatus.FAILED
                 )
             }
+
+            // Clear job reference when done
+            activeAudioDownloadJob = null
         }
     }
 
