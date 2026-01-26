@@ -24,6 +24,7 @@ fun DrawerSheet(
 ) {
     val colors = LocalColors.current
     ModalDrawerSheet(
+        modifier = Modifier.fillMaxWidth(0.7f),
         drawerContainerColor = colors.background
     ) {
         LazyColumn(
