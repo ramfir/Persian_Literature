@@ -16,6 +16,7 @@ import com.firdavs.persianliterature.core.model.Chapter
 import com.firdavs.persianliterature.ui.kit.H4Text
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 
+@Suppress("MagicNumber")
 @Composable
 fun DrawerSheet(
     chapters: List<Chapter>,
