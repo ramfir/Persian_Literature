@@ -12,4 +12,5 @@
     <string name="notification_title">Шеъри рӯз</string>
     <string name="notification_text">Ман шеъри форсиро дӯст медорам</string>
     <string name="language_change_error">Тағйири пурраи забон ноком шуд. Лутфан пайвасти интернетро санҷед.</string>
+    <string name="language_change_success">Забон бомуваффақият тағйир ёфт</string>
 </resources>

@@ -52,13 +52,17 @@ class LanguageViewModel(
                 Log.e(TAG, "onApplyClick error", error)
                 post { it.copy(isRefreshing = false, showErrorToast = true) }
             }.onSuccess {
-                post { it.copy(isRefreshing = false) }
+                post { it.copy(isRefreshing = false, showSuccessToast = true) }
             }
         }
     }
 
     fun resetShowErrorToastFlag() {
         post { it.copy(showErrorToast = false) }
+    }
+
+    fun resetShowSuccessToastFlag() {
+        post { it.copy(showSuccessToast = false) }
     }
 
     companion object {
