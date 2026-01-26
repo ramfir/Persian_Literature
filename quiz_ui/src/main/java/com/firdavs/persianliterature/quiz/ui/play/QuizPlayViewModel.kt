@@ -33,7 +33,10 @@ class QuizPlayViewModel(
     private fun loadQuestions() {
         viewModelScope.launch {
             questionRepository.getQuestionsByQuizId(quizId).collect { questions ->
-                post { it.copy(questions = questions.shuffled()) }
+                val shuffledQuestions = questions.shuffled().map { question ->
+                    question.copy(options = question.options.shuffled())
+                }
+                post { it.copy(questions = shuffledQuestions) }
             }
         }
     }
