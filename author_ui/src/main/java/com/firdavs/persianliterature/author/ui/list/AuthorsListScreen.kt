@@ -41,7 +41,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import com.firdavs.persianliterature.ui.kit.theme.stringResource
@@ -61,6 +60,7 @@ import com.firdavs.persianliterature.ui.kit.components.ProgressIndicator
 import com.firdavs.persianliterature.ui.kit.theme.AppPreviewTheme
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import com.firdavs.persianliterature.ui.kit.theme.LocalTypography
+import com.firdavs.persianliterature.ui.kit.theme.localizedContext
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
@@ -106,7 +106,7 @@ private fun AuthorsListScreen(
     resetShowToastFlag: () -> Unit,
     resetShowErrorToastFlag: () -> Unit
 ) {
-    val context = LocalContext.current
+    val context = localizedContext()
     LaunchedEffect(state.showToast) {
         if (state.showToast) {
             Toast.makeText(

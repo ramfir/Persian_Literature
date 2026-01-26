@@ -36,7 +36,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import android.widget.Toast
 import com.firdavs.persianliterature.ui.kit.theme.stringResource
@@ -52,6 +51,7 @@ import com.firdavs.persianliterature.ui.kit.H5Text
 import com.firdavs.persianliterature.ui.kit.components.ProgressIndicator
 import com.firdavs.persianliterature.ui.kit.components.buttons.PrimaryButton
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
+import com.firdavs.persianliterature.ui.kit.theme.localizedContext
 import com.rajat.pdfviewer.compose.PdfRendererViewCompose
 import com.rajat.pdfviewer.util.PdfSource
 
@@ -61,12 +61,11 @@ fun WorkDetailsEntryPoint(
     onBackClick: () -> Unit
 ) {
     BaseEntryPoint(WorkDetailsViewModel::class, id) { state, viewModel ->
-        val context = LocalContext.current
-
+        val toastContext = localizedContext()
         LaunchedEffect(state.showAudioControlToast) {
             if (state.showAudioControlToast) {
                 Toast.makeText(
-                    context,
+                    toastContext,
                     R.string.audio_control_notification_info,
                     Toast.LENGTH_SHORT
                 ).show()

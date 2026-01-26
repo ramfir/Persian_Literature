@@ -28,7 +28,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import androidx.compose.ui.unit.dp
 import com.firdavs.persianliterature.core.model.Chapter
@@ -38,6 +37,7 @@ import com.firdavs.persianliterature.quiz_api.model.QuizAttemptSummary
 import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.BaseScreen
 import com.firdavs.persianliterature.ui.kit.H3Text
+import com.firdavs.persianliterature.ui.kit.theme.localizedContext
 import com.firdavs.persianliterature.ui.kit.H4Text
 import com.firdavs.persianliterature.ui.kit.T1Text
 import com.firdavs.persianliterature.ui.kit.T2Text
@@ -74,7 +74,7 @@ private fun QuizListScreen(
     resetShowToastFlag: () -> Unit,
     resetShowErrorToastFlag: () -> Unit
 ) {
-    val context = LocalContext.current
+    val context = localizedContext()
 
     LaunchedEffect(state.showToast) {
         if (state.showToast) {

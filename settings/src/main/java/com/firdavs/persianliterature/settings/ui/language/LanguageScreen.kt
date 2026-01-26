@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.firdavs.persianliterature.settings.R
@@ -28,6 +27,7 @@ import com.firdavs.persianliterature.settings.api.Language
 import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.BaseScreen
 import com.firdavs.persianliterature.ui.kit.H3Text
+import com.firdavs.persianliterature.ui.kit.theme.localizedContext
 import com.firdavs.persianliterature.ui.kit.components.buttons.PrimaryButton
 import com.firdavs.persianliterature.ui.kit.theme.LocalAppLocale
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
@@ -65,7 +65,7 @@ private fun LanguageScreen(
     resetShowErrorToastFlag: () -> Unit,
     resetShowSuccessToastFlag: () -> Unit
 ) {
-    val context = LocalContext.current
+    val context = localizedContext()
     val colors = LocalColors.current
 
     LaunchedEffect(state.showErrorToast) {

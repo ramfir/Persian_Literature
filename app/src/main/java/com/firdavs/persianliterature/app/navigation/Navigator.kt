@@ -36,6 +36,7 @@ import com.firdavs.persianliterature.core.model.Chapter
 import com.firdavs.persianliterature.quiz.ui.list.QuizListEntryPoint
 import com.firdavs.persianliterature.quiz.ui.play.QuizPlayEntryPoint
 import com.firdavs.persianliterature.quiz.ui.result.QuizResultEntryPoint
+import com.firdavs.persianliterature.ui.kit.theme.localizedContext
 
 @Suppress("MagicNumber", "LongMethod")
 @Composable
@@ -46,6 +47,7 @@ fun Navigator(
 ) {
     val backStack = rememberNavBackStack(Route.AuthorsList)
     val context = LocalContext.current
+    val toastContext = localizedContext()
     val coroutineScope = rememberCoroutineScope()
     var lastBackPressed by remember { mutableLongStateOf(0L) }
 
@@ -66,7 +68,7 @@ fun Navigator(
             } else {
                 lastBackPressed = System.currentTimeMillis()
                 Toast.makeText(
-                    context,
+                    toastContext,
                     R.string.exit_toast_message,
                     Toast.LENGTH_SHORT
                 ).show()

@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -38,6 +37,7 @@ import com.firdavs.persianliterature.ui.kit.T2Text
 import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
 import com.firdavs.persianliterature.ui.kit.components.buttons.PrimaryButton
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
+import com.firdavs.persianliterature.ui.kit.theme.localizedContext
 import kotlinx.coroutines.launch
 import com.firdavs.persianliterature.core.R as UiR
 
@@ -65,7 +65,7 @@ private fun PoemOfDayScreen(
     onNewPoemClick: () -> Unit,
     resetShowToastFlag: () -> Unit
 ) {
-    val context = LocalContext.current
+    val context = localizedContext()
 
     LaunchedEffect(state.showToast) {
         if (state.showToast) {
