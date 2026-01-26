@@ -7,5 +7,6 @@ import com.firdavs.persianliterature.quiz_api.model.Quiz
 data class QuizResultUiState(
     val quiz: Quiz? = null,
     val progress: QuizProgress? = null,
-    val isPassed: Boolean = false
+    val isPassed: Boolean = false,
+    val titleEarnedStringRes: Int? = null
 ) : UiState()

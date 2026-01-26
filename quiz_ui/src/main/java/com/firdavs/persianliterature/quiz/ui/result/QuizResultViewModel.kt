@@ -25,7 +25,15 @@ class QuizResultViewModel(
                         if (progress.id == progressId) {
                             val quiz = quizRepository.getQuiz(progress.quizId).first()
                             val isPassed = progress.score >= quiz.passingScore
-                            post { it.copy(quiz = quiz, progress = progress, isPassed = isPassed) }
+                            val titleStringRes = quizProgressRepository.getTitleStringResource(progress.titleEarned)
+                            post {
+                                it.copy(
+                                    quiz = quiz,
+                                    progress = progress,
+                                    isPassed = isPassed,
+                                    titleEarnedStringRes = titleStringRes
+                                )
+                            }
                         }
                     }
                 }

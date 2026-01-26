@@ -11,4 +11,5 @@ interface QuizProgressRepository {
     fun getAllAttemptSummaries(): Flow<List<QuizAttemptSummary>>
     suspend fun calculateScore(correctAnswers: Int, totalQuestions: Int): Int
     fun determineTitleEarned(score: Int, difficulty: String): String
+    fun getTitleStringResource(titleKey: String): Int
 }

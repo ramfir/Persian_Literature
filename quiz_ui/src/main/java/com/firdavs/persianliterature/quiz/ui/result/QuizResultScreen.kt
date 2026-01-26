@@ -110,7 +110,9 @@ private fun QuizResultScreen(
                     colors = CardDefaults.cardColors(containerColor = colors.surface)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        H4Text(text = stringResource(R.string.title_earned, progress.titleEarned))
+                        state.titleEarnedStringRes?.let { stringRes ->
+                            H4Text(text = stringResource(R.string.title_earned, stringResource(stringRes)))
+                        }
                         Spacer(modifier = Modifier.height(16.dp))
                         Row(
                             modifier = Modifier.fillMaxWidth(),
