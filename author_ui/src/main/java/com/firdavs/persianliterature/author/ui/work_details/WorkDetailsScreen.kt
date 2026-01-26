@@ -28,6 +28,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,7 +36,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import android.widget.Toast
 import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -58,6 +61,19 @@ fun WorkDetailsEntryPoint(
     onBackClick: () -> Unit
 ) {
     BaseEntryPoint(WorkDetailsViewModel::class, id) { state, viewModel ->
+        val context = LocalContext.current
+
+        LaunchedEffect(state.showAudioControlToast) {
+            if (state.showAudioControlToast) {
+                Toast.makeText(
+                    context,
+                    R.string.audio_control_notification_info,
+                    Toast.LENGTH_SHORT
+                ).show()
+                viewModel.resetAudioControlToastFlag()
+            }
+        }
+
         WorkDetailsScreen(
             state = state,
             onBackClick = onBackClick,

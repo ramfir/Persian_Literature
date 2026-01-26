@@ -24,4 +24,5 @@
     <string name="retry_download">Аз нав кӯшиш кунед</string>
     <string name="no_audio_books_found">Китобҳои аудиоӣ ҳанӯз дастрас нестанд</string>
     <string name="fetch_error">Боргузорӣ ноком шуд. Лутфан пайвасти интернетро санҷед.</string>
+    <string name="audio_control_notification_info">Огоҳнома пайдо шуд. Шумо метавонед аудиоро аз он идора кунед.</string>
 </resources>

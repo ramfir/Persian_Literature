@@ -24,4 +24,5 @@
     <string name="retry_download">Retry</string>
     <string name="no_audio_books_found">No audio books available yet</string>
     <string name="fetch_error">Failed to fetch data. Please check your internet connection.</string>
+    <string name="audio_control_notification_info">A notification has appeared. You can control audio playback from it.</string>
 </resources>

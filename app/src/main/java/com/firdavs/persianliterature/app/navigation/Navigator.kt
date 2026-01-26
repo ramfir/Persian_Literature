@@ -37,7 +37,7 @@ import com.firdavs.persianliterature.quiz.ui.list.QuizListEntryPoint
 import com.firdavs.persianliterature.quiz.ui.play.QuizPlayEntryPoint
 import com.firdavs.persianliterature.quiz.ui.result.QuizResultEntryPoint
 
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "LongMethod")
 @Composable
 fun Navigator(
     state: MainActivityUiState,

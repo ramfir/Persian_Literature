@@ -33,6 +33,7 @@ class WorkDetailsViewModel(
     private val downloadPdfScope = CoroutineScope(Job() + Dispatchers.IO)
     private val downloadAudioScope = CoroutineScope(Job() + Dispatchers.IO)
     private var activeAudioDownloadJob: Job? = null
+    private var firstAudioPlay = true
 
     init {
         audioServiceController.connect()
@@ -283,6 +284,13 @@ class WorkDetailsViewModel(
         val currentPlaybackState = state.value.playbackState
 
         if (audioFile != null && audioFile.exists() && work != null) {
+            // Check if this is the first time playing audio
+            if (firstAudioPlay) {
+                // Mark as seen and show toast
+                firstAudioPlay = false
+                post { it.copy(showAudioControlToast = true) }
+            }
+
             // Check if the service already has this audio prepared
             val isAlreadyPrepared = currentPlaybackState.audioUrl == audioFile.absolutePath
 
@@ -319,6 +327,10 @@ class WorkDetailsViewModel(
     // Skip 10 seconds forward
     fun onSkipForward() {
         audioServiceController.skipForward(SKIP_DURATION_MS)
+    }
+
+    fun resetAudioControlToastFlag() {
+        post { it.copy(showAudioControlToast = false) }
     }
 
     override fun onCleared() {

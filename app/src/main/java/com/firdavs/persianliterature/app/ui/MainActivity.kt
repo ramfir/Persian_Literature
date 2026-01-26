@@ -62,7 +62,9 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(state.requestNotificationPermission) {
                 if (state.requestNotificationPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                } else if (state.requestNotificationPermission && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                } else if (
+                    state.requestNotificationPermission && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
+                ) {
                     // For Android 12 and below, permission is granted at install time
                     viewModel.onNotificationPermissionResult(true)
                 }
