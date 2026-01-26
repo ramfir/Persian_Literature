@@ -16,6 +16,7 @@ import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
+import java.io.File
 
 class WorksRepositoryImpl(
     private val worksDao: WorksDao,
@@ -23,6 +24,16 @@ class WorksRepositoryImpl(
     private val context: Context
 ) : WorksRepository {
     override suspend fun fetchWorks() {
+        // Delete all downloaded audio files
+        deleteDownloadedAudioFiles()
+
+        // Delete all downloaded PDF files
+        deleteDownloadedPdfFiles()
+
+        // Clear database
+        worksDao.deleteAll()
+
+        // Fetch and insert new works
         val lang = languageManager.getSavedLanguage(context).firebaseCode
         val worksCollection = Firebase.firestore.collection("works_$lang")
         val snapshot = worksCollection.get(Source.SERVER).await()
@@ -30,21 +41,24 @@ class WorksRepositoryImpl(
             val workDto = document.toObject(WorkDTO::class.java)
             workDto?.copy(id = document.id)
         }
-        // Preserve existing favourite status
-        val existingFavouriteIds = worksDao.getFavouriteIds().toSet()
+        worksDao.insert(worksDTO.toDb())
+    }
 
-        // Preserve existing audio download info
-        val existingAudioInfo = worksDao.getDownloadedAudioInfo().associateBy { it.id }
-
-        val worksWithPreservedData = worksDTO.toDb().map { work ->
-            val audioInfo = existingAudioInfo[work.id]
-            work.copy(
-                isFavourite = work.id in existingFavouriteIds,
-                audioDownloadStatus = audioInfo?.audioDownloadStatus ?: work.audioDownloadStatus,
-                audioLocalPath = audioInfo?.audioLocalPath ?: work.audioLocalPath
-            )
+    private fun deleteDownloadedAudioFiles() {
+        val audioDir = File(context.filesDir, "audio")
+        if (audioDir.exists() && audioDir.isDirectory) {
+            audioDir.listFiles()?.forEach { file ->
+                file.delete()
+            }
         }
-        worksDao.insert(worksWithPreservedData)
+    }
+
+    private fun deleteDownloadedPdfFiles() {
+        context.filesDir.listFiles()?.forEach { file ->
+            if (file.isFile && file.extension.equals("pdf", ignoreCase = true)) {
+                file.delete()
+            }
+        }
     }
 
     override fun getWorksByAuthorId(authorId: String): Flow<List<Work>> {

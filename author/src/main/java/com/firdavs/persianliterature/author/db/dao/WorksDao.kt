@@ -67,4 +67,7 @@ interface WorksDao {
 
     @Query("SELECT * FROM ${AuthorsDb.WORKS} WHERE audioUrl IS NOT NULL")
     fun getWorksWithAudio(): Flow<List<WorkEntity>>
+
+    @Query("DELETE FROM ${AuthorsDb.WORKS}")
+    suspend fun deleteAll()
 }
