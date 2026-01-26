@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -238,6 +239,7 @@ fun WorkDetailsScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Suppress("MagicNumber", "LongMethod")
 @Composable
 fun AudioControlsSection(
@@ -314,7 +316,19 @@ fun AudioControlsSection(
                                     thumbColor = LocalColors.current.primary,
                                     activeTrackColor = LocalColors.current.primary,
                                     inactiveTrackColor = LocalColors.current.primary.copy(alpha = 0.3f)
-                                )
+                                ),
+                                track = { sliderState ->
+                                    SliderDefaults.Track(
+                                        sliderState = sliderState,
+                                        colors = SliderDefaults.colors(
+                                            thumbColor = LocalColors.current.primary,
+                                            activeTrackColor = LocalColors.current.primary,
+                                            inactiveTrackColor = LocalColors.current.primary.copy(alpha = 0.3f)
+                                        ),
+                                        drawStopIndicator = null,
+                                        thumbTrackGapSize = 0.dp
+                                    )
+                                }
                             )
                             H5Text(
                                 text = formatTime(state.playbackState.duration),
