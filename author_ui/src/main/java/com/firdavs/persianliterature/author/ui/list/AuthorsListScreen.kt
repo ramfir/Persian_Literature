@@ -45,6 +45,7 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -272,7 +273,12 @@ private fun TopBar(
             )
         } else {
             Spacer(Modifier.weight(1f))
-            H3Text(text = stringResource(R.string.authors_list))
+            H3Text(
+                text = stringResource(R.string.authors_list),
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
             Spacer(Modifier.weight(1f))
             IconButton(
                 onClick = onRefreshClick,

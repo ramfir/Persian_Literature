@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.firdavs.persianliterature.quiz.ui.R
 import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
@@ -185,7 +186,13 @@ private fun TopBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Spacer(Modifier.weight(1f))
-        H3Text(text = title)
+        H3Text(
+            text = title,
+            modifier = Modifier.padding(horizontal = 8.dp),
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
         Spacer(Modifier.weight(1f))
         IconButton(onClick = onLeaveClick) {
             Icon(

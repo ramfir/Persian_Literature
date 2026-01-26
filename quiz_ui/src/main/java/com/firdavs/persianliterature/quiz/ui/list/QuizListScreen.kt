@@ -29,6 +29,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.firdavs.persianliterature.ui.kit.theme.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.firdavs.persianliterature.core.model.Chapter
 import com.firdavs.persianliterature.quiz.ui.R
@@ -158,7 +160,12 @@ private fun TopBar(
             Icon(Icons.Default.Menu, "Open drawer")
         }
         Spacer(Modifier.weight(1f))
-        H3Text(text = stringResource(R.string.quiz_list_title))
+        H3Text(
+            text = stringResource(R.string.quiz_list_title),
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
         Spacer(Modifier.weight(1f))
         IconButton(onClick = onRefreshClick) {
             Icon(
