@@ -37,6 +37,8 @@ class MainViewModel(
 
         if (isFirstLaunch) {
             post { it.copy(showLanguageSelectionDialog = true) }
+        } else {
+            fetchAllData()
         }
     }
 
@@ -110,14 +112,18 @@ class MainViewModel(
         post { it.copy(showWelcomeDialog = false) }
     }
 
-    fun onLanguageSelected(language: Language) {
-        // Set the selected language
-        languageManager.setLanguage(application, language)
+    private fun fetchAllData() {
         fetchAuthors()
         fetchWorks()
         fetchQuizzes()
         fetchQuestions()
         fetchPoems()
+    }
+
+    fun onLanguageSelected(language: Language) {
+        // Set the selected language
+        languageManager.setLanguage(application, language)
+        fetchAllData()
 
         // Dismiss the language selection dialog
         post { it.copy(showLanguageSelectionDialog = false, requestNotificationPermission = true) }
