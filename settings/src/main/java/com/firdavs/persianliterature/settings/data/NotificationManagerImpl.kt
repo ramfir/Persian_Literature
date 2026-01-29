@@ -27,7 +27,8 @@ class NotificationManagerImpl : NotificationManager {
         val pendingIntent = createNotificationPendingIntent(context)
         val triggerAtMillis = System.currentTimeMillis() + calculateDelayToNextTenAM()
 
-        // Check if we can schedule exact alarms (should always be true with USE_EXACT_ALARM)
+        // Check if we can schedule exact alarms (will be false on Android 12+ without permission)
+        // We use inexact alarms as fallback, which is sufficient for daily notifications
         val canScheduleExactAlarms = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             alarmManager.canScheduleExactAlarms()
         } else {

@@ -17,6 +17,13 @@ android {
             shrinkResources true
         }
     }
+
+    bundle {
+        language {
+            // Disable split but ensure Tajik is always included with the default language
+            enableSplit = false
+        }
+    }
 }
 
 dependencies {
