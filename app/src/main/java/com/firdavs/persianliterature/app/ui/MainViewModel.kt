@@ -41,10 +41,7 @@ class MainViewModel(
         val isFirstLaunch = prefs.getBoolean(KEY_FIRST_LAUNCH, true)
 
         if (isFirstLaunch) {
-            languageManager.setLanguage(application, Language.TAJIK)
-            post { it.copy(showWelcomeDialog = true, requestNotificationPermission = true) }
-
-            prefs.edit { putBoolean(KEY_FIRST_LAUNCH, false) }
+            post { it.copy(showLanguageSelectionDialog = true) }
         }
     }
 
@@ -116,6 +113,18 @@ class MainViewModel(
 
     fun dismissWelcomeDialog() {
         post { it.copy(showWelcomeDialog = false) }
+    }
+
+    fun onLanguageSelected(language: Language) {
+        // Set the selected language
+        languageManager.setLanguage(application, language)
+
+        // Dismiss the language selection dialog
+        post { it.copy(showLanguageSelectionDialog = false, requestNotificationPermission = true) }
+
+        // Mark first launch as completed
+        val prefs = application.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        prefs.edit { putBoolean(KEY_FIRST_LAUNCH, false) }
     }
 
     companion object {
