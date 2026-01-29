@@ -5,5 +5,6 @@ import com.firdavs.persianliterature.core.presentation.UiState
 data class MainActivityUiState(
     val notificationPoemId: String? = null,
     val showWelcomeDialog: Boolean = false,
+    val showLanguageSelectionDialog: Boolean = false,
     val requestNotificationPermission: Boolean = false
 ) : UiState()
