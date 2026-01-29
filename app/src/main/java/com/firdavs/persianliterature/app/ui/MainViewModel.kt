@@ -29,11 +29,6 @@ class MainViewModel(
 
     init {
         checkFirstLaunch()
-        fetchAuthors()
-        fetchWorks()
-        fetchQuizzes()
-        fetchQuestions()
-        fetchPoems()
     }
 
     private fun checkFirstLaunch() {
@@ -118,6 +113,11 @@ class MainViewModel(
     fun onLanguageSelected(language: Language) {
         // Set the selected language
         languageManager.setLanguage(application, language)
+        fetchAuthors()
+        fetchWorks()
+        fetchQuizzes()
+        fetchQuestions()
+        fetchPoems()
 
         // Dismiss the language selection dialog
         post { it.copy(showLanguageSelectionDialog = false, requestNotificationPermission = true) }
