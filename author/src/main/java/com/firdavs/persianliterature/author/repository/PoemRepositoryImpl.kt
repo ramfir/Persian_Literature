@@ -27,6 +27,7 @@ class PoemRepositoryImpl(
             val poemDto = document.toObject(PoemDTO::class.java)
             poemDto?.copy(id = document.id)
         }
+        poemsDao.deleteAll()
         poemsDao.insert(poemsDTO.toDb())
     }
 
