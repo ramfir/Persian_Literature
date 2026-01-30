@@ -195,7 +195,7 @@ fun WorkDetailsScreen(
                             Spacer(modifier = Modifier.height(16.dp))
                             Text(
                                 text = stringResource(
-                                    R.string.downloading_pdf,
+                                    R.string.downloading,
                                     (state.pdfDownloadProgress * FULL_PERCENT).toInt()
                                 ),
                                 style = MaterialTheme.typography.bodyMedium
@@ -296,7 +296,7 @@ fun AudioControlsSection(
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = stringResource(
-                            R.string.downloading_audio,
+                            R.string.downloading,
                             (state.audioDownloadProgress * FULL_PERCENT).toInt()
                         ),
                         style = MaterialTheme.typography.bodySmall

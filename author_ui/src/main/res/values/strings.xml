@@ -14,8 +14,7 @@
     <string name="no_favourite_works">No favourite works yet</string>
     <string name="authors_fetched">Authors fetched successfully</string>
     <string name="download_audio">Download Audio</string>
-    <string name="downloading_audio">Downloading… %d%%</string>
-    <string name="downloading_pdf">Downloading work… %d%%</string>
+    <string name="downloading">Downloading… %d%%</string>
     <string name="play_audio">Play</string>
     <string name="pause_audio">Pause</string>
     <string name="stop_audio">Stop</string>

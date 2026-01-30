@@ -14,8 +14,7 @@
     <string name="no_favourite_works">Асарҳои интихобшуда нест</string>
     <string name="authors_fetched">Рӯйхати муаллифон аз нав гирифта шуд</string>
     <string name="download_audio">Зеркашии Аудио</string>
-    <string name="downloading_audio">Зеркашӣ шуда истодааст… %d%%</string>
-    <string name="downloading_pdf">Зеркашии асар… %d%%</string>
+    <string name="downloading">Зеркашӣ шуда истодааст… %d%%</string>
     <string name="play_audio">Пахш</string>
     <string name="pause_audio">Таваққуф</string>
     <string name="stop_audio">Истодан</string>
