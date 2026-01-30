@@ -29,6 +29,7 @@ class QuizRepositoryImpl(
             val quizDto = document.toObject(QuizDTO::class.java)
             quizDto?.copy(id = document.id)
         }
+        quizDao.deleteAll()
         quizDao.insert(quizzesDTO.toDb())
     }
 
