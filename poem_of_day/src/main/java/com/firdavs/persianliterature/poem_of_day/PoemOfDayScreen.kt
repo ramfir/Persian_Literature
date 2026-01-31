@@ -84,7 +84,9 @@ private fun PoemOfDayScreen(
             DrawerSheet(
                 chapters = state.chapters,
                 currentChapter = Chapter.PoemOfDay,
-                onChapterClick = onChapterClick
+                onChapterClick = onChapterClick,
+                appName = stringResource(UiR.string.app_name),
+                appIconRes = com.firdavs.persianliterature.poem_of_day.R.mipmap.ic_launcher
             )
         },
         topBar = { drawerState, scope ->

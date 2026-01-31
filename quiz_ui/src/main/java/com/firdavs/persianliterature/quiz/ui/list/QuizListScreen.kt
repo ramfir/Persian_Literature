@@ -105,7 +105,9 @@ private fun QuizListScreen(
             DrawerSheet(
                 chapters = state.chapters,
                 currentChapter = Chapter.Quiz,
-                onChapterClick = onChapterClick
+                onChapterClick = onChapterClick,
+                appName = stringResource(com.firdavs.persianliterature.core.R.string.app_name),
+                appIconRes = R.mipmap.ic_launcher
             )
         },
         topBar = { drawerState: DrawerState, scope: CoroutineScope ->

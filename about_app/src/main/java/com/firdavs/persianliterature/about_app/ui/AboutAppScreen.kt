@@ -53,7 +53,9 @@ private fun AboutAppScreen(
             DrawerSheet(
                 chapters = state.chapters,
                 currentChapter = Chapter.AboutApp,
-                onChapterClick = onChapterClick
+                onChapterClick = onChapterClick,
+                appName = stringResource(UiR.string.app_name),
+                appIconRes = R.mipmap.ic_launcher
             )
         },
         topBar = { drawerState, scope ->
