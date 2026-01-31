@@ -9,6 +9,7 @@ data class QuizPlayUiState(
     val questions: List<Question> = emptyList(),
     val currentQuestionIndex: Int = 0,
     val userAnswers: Map<String, String> = emptyMap(),
+    val selectedButUnconfirmedAnswer: String? = null,
     val showExplanation: Boolean = false,
     val isSubmitted: Boolean = false,
     val progressId: String? = null,

@@ -6,6 +6,7 @@
     <string name="your_best_score">Беҳтарин натиҷа: %d%%</string>
     <string name="question_progress">Савол %1$d аз %2$d</string>
     <string name="submit_answer">Фиристодани ҷавоб</string>
+    <string name="confirm_answer">Тасдиқи ҷавоб</string>
     <string name="next_question">Саволи навбатӣ</string>
     <string name="finish_quiz">Анҷоми имтиҳон</string>
     <string name="quiz_results">Натиҷаҳои имтиҳон</string>

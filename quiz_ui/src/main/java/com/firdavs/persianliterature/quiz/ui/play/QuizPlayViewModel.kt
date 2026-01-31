@@ -42,9 +42,20 @@ class QuizPlayViewModel(
     }
 
     fun onAnswerSelected(answer: String) {
+        post { it.copy(selectedButUnconfirmedAnswer = answer) }
+    }
+
+    fun onConfirmAnswer() {
         val currentQuestion = state.value.currentQuestion ?: return
-        val updatedAnswers = state.value.userAnswers + (currentQuestion.id to answer)
-        post { it.copy(userAnswers = updatedAnswers, showExplanation = true) }
+        val selectedAnswer = state.value.selectedButUnconfirmedAnswer ?: return
+        val updatedAnswers = state.value.userAnswers + (currentQuestion.id to selectedAnswer)
+        post {
+            it.copy(
+                userAnswers = updatedAnswers,
+                showExplanation = true,
+                selectedButUnconfirmedAnswer = null
+            )
+        }
     }
 
     fun onNextQuestion() {
@@ -54,6 +65,7 @@ class QuizPlayViewModel(
                 it.copy(
                     currentQuestionIndex = nextIndex,
                     showExplanation = false,
+                    selectedButUnconfirmedAnswer = null,
                     questionStartTime = System.currentTimeMillis()
                 )
             }
