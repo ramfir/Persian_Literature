@@ -6,4 +6,5 @@ interface PoemRepository {
     suspend fun fetchPoems()
     suspend fun getRandomPoem(): Poem?
     suspend fun getPoemById(id: String): Poem?
+    suspend fun getAllPoems(): List<Poem>
 }

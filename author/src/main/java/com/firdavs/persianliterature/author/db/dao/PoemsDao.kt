@@ -24,4 +24,7 @@ interface PoemsDao {
 
     @Query("SELECT * FROM ${AuthorsDb.POEMS}")
     fun getAllFlow(): Flow<List<PoemEntity>>
+
+    @Query("SELECT * FROM ${AuthorsDb.POEMS}")
+    suspend fun getAllPoems(): List<PoemEntity>
 }

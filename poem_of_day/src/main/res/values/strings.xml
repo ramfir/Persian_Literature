@@ -2,5 +2,6 @@
 <resources>
     <string name="poems_refreshed">Poems refreshed successfully</string>
     <string name="new_poem">New Poem</string>
+    <string name="previous_poem">Previous Poem</string>
     <string name="no_poems_available">No poems available yet</string>
 </resources>

@@ -6,6 +6,8 @@ import com.firdavs.persianliterature.core.presentation.UiState
 
 data class PoemOfDayUiState(
     val poem: Poem? = null,
+    val allPoems: List<Poem> = emptyList(),
+    val currentIndex: Int = -1,
     val isLoading: Boolean = true,
     val isRefreshing: Boolean = false,
     val showToast: Boolean = false,

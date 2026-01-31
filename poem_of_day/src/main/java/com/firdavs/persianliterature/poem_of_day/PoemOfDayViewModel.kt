@@ -17,12 +17,19 @@ class PoemOfDayViewModel(
 
     private fun loadPoem() {
         viewModelScope.launch {
-            val poem = if (poemId != null) {
-                poemRepository.getPoemById(poemId)
+            if (poemId != null) {
+                val poem = poemRepository.getPoemById(poemId)
+                post { it.copy(poem = poem, isLoading = false) }
             } else {
-                poemRepository.getRandomPoem()
+                val allPoems = poemRepository.getAllPoems()
+                if (allPoems.isNotEmpty()) {
+                    val randomIndex = allPoems.indices.random()
+                    val poem = allPoems[randomIndex]
+                    post { it.copy(poem = poem, allPoems = allPoems, currentIndex = randomIndex, isLoading = false) }
+                } else {
+                    post { it.copy(isLoading = false) }
+                }
             }
-            post { it.copy(poem = poem, isLoading = false) }
         }
     }
 
@@ -41,10 +48,32 @@ class PoemOfDayViewModel(
     }
 
     fun onNewPoemClick() {
-        post { it.copy(isLoading = true) }
-        viewModelScope.launch {
-            val poem = poemRepository.getRandomPoem()
-            post { it.copy(poem = poem, isLoading = false) }
+        post { currentState ->
+            val allPoems = currentState.allPoems
+            if (allPoems.isEmpty()) {
+                currentState
+            } else {
+                val nextIndex = (currentState.currentIndex + 1) % allPoems.size
+                val nextPoem = allPoems[nextIndex]
+                currentState.copy(poem = nextPoem, currentIndex = nextIndex)
+            }
+        }
+    }
+
+    fun onPreviousPoemClick() {
+        post { currentState ->
+            val allPoems = currentState.allPoems
+            if (allPoems.isEmpty()) {
+                currentState
+            } else {
+                val previousIndex = if (currentState.currentIndex - 1 < 0) {
+                    allPoems.size - 1
+                } else {
+                    currentState.currentIndex - 1
+                }
+                val previousPoem = allPoems[previousIndex]
+                currentState.copy(poem = previousPoem, currentIndex = previousIndex)
+            }
         }
     }
 
