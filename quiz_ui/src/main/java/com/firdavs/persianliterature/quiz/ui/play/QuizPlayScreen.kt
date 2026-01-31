@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
@@ -113,82 +115,91 @@ private fun QuizPlayScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             if (currentQuestion != null) {
-                H3Text(text = currentQuestion.questionText)
-                Spacer(modifier = Modifier.height(24.dp))
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    H3Text(text = currentQuestion.questionText)
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        currentQuestion.options.forEach { option ->
+                            val confirmedAnswer = state.userAnswers[currentQuestion.id]
+                            val isConfirmed = confirmedAnswer == option
+                            val isSelectedButNotConfirmed =
+                                state.selectedButUnconfirmedAnswer == option
+                            val isSelected = isConfirmed || isSelectedButNotConfirmed
+                            val isCorrect = option == currentQuestion.correctAnswer
+                            val showCorrect = state.showExplanation && isCorrect
+                            val showIncorrect = state.showExplanation && isConfirmed && !isCorrect
+                            OptionCard(
+                                text = option,
+                                isSelected = isSelected,
+                                showCorrect = showCorrect,
+                                showIncorrect = showIncorrect,
+                                enabled = !state.showExplanation,
+                                onClick = { onAnswerSelected(option) }
+                            )
+                        }
+                    }
 
-                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    currentQuestion.options.forEach { option ->
-                        val confirmedAnswer = state.userAnswers[currentQuestion.id]
-                        val isConfirmed = confirmedAnswer == option
-                        val isSelectedButNotConfirmed = state.selectedButUnconfirmedAnswer == option
-                        val isSelected = isConfirmed || isSelectedButNotConfirmed
-                        val isCorrect = option == currentQuestion.correctAnswer
-                        val showCorrect = state.showExplanation && isCorrect
-                        val showIncorrect = state.showExplanation && isConfirmed && !isCorrect
+                    if (!state.showExplanation && state.selectedButUnconfirmedAnswer != null) {
+                        Spacer(modifier = Modifier.weight(1f))
+                        PrimaryButton(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.confirm_answer),
+                            onClick = onConfirmAnswer
+                        )
+                    }
 
-                        OptionCard(
-                            text = option,
-                            isSelected = isSelected,
-                            showCorrect = showCorrect,
-                            showIncorrect = showIncorrect,
-                            enabled = !state.showExplanation,
-                            onClick = { onAnswerSelected(option) }
+                    if (state.showExplanation) {
+                        Spacer(modifier = Modifier.height(24.dp))
+                        val isCorrect =
+                            state.userAnswers[currentQuestion.id] == currentQuestion.correctAnswer
+                        H4Text(
+                            text = stringResource(
+                                if (isCorrect) R.string.correct_answer else R.string.wrong_answer
+                            ),
+                            color = if (isCorrect) colors.tertiary else colors.error
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.cardColors(containerColor = colors.surface)
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                H4Text(text = stringResource(R.string.explanation))
+                                Spacer(modifier = Modifier.height(8.dp))
+                                T2Text(text = currentQuestion.explanation)
+                            }
+                        }
+                    }
+
+                    if (state.showExplanation) {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        PrimaryButton(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = if (state.isLastQuestion) {
+                                stringResource(R.string.finish_quiz)
+                            } else {
+                                stringResource(R.string.next_question)
+                            },
+                            onClick = onNextQuestion
                         )
                     }
                 }
-
-                if (!state.showExplanation && state.selectedButUnconfirmedAnswer != null) {
-                    Spacer(modifier = Modifier.weight(1f))
-                    PrimaryButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.confirm_answer),
-                        onClick = onConfirmAnswer
-                    )
-                }
-
-                if (state.showExplanation) {
-                    Spacer(modifier = Modifier.height(24.dp))
-                    val isCorrect = state.userAnswers[currentQuestion.id] == currentQuestion.correctAnswer
-                    H4Text(
-                        text = stringResource(
-                            if (isCorrect) R.string.correct_answer else R.string.wrong_answer
-                        ),
-                        color = if (isCorrect) colors.tertiary else colors.error
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(containerColor = colors.surface)
-                    ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            H4Text(text = stringResource(R.string.explanation))
-                            Spacer(modifier = Modifier.height(8.dp))
-                            T2Text(text = currentQuestion.explanation)
-                        }
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    PrimaryButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = if (state.isLastQuestion) {
-                            stringResource(R.string.finish_quiz)
-                        } else {
-                            stringResource(R.string.next_question)
-                        },
-                        onClick = onNextQuestion
-                    )
-                }
             }
         }
-    }
 
-    if (state.showQuitDialog) {
-        QuitQuizDialog(
-            onDismiss = onDismissQuitDialog,
-            onConfirm = {
-                onDismissQuitDialog()
-                onBackClick()
-            }
-        )
+        if (state.showQuitDialog) {
+            QuitQuizDialog(
+                onDismiss = onDismissQuitDialog,
+                onConfirm = {
+                    onDismissQuitDialog()
+                    onBackClick()
+                }
+            )
+        }
     }
 }
 
