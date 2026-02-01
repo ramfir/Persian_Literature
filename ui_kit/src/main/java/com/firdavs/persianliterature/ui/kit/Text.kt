@@ -38,7 +38,8 @@ fun H4Text(
     color: Color? = null,
     textAlign: TextAlign? = null,
     maxLines: Int = Int.MAX_VALUE,
-    overflow: TextOverflow = TextOverflow.Clip
+    overflow: TextOverflow = TextOverflow.Clip,
+    fontSize: androidx.compose.ui.unit.TextUnit = androidx.compose.ui.unit.TextUnit.Unspecified
 ) =
     AppTheme.typography.h4TextStyle.asText(
         text,
@@ -46,7 +47,8 @@ fun H4Text(
         color,
         textAlign,
         maxLines,
-        overflow
+        overflow,
+        fontSize
     )
 
 @Composable
@@ -272,11 +274,14 @@ private fun TextStyle.asText(
     color: Color? = null,
     textAlign: TextAlign? = null,
     maxLines: Int = Int.MAX_VALUE,
-    overflow: TextOverflow = TextOverflow.Clip
+    overflow: TextOverflow = TextOverflow.Clip,
+    fontSize: androidx.compose.ui.unit.TextUnit = androidx.compose.ui.unit.TextUnit.Unspecified
 ) = Text(
     text = text,
     modifier = modifier,
-    style = this.applyIfNotNull(color),
+    style = this.applyIfNotNull(color).let {
+        if (fontSize != androidx.compose.ui.unit.TextUnit.Unspecified) it.copy(fontSize = fontSize) else it
+    },
     textAlign = textAlign,
     maxLines = maxLines,
     overflow = overflow

@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.firdavs.persianliterature.core.model.Chapter
 import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.BaseScreen
@@ -193,6 +194,7 @@ private fun PoemOfDayScreen(
                             enabled = !state.isLoading && state.allPoems.isNotEmpty(),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
+                            fontSize = 14.sp,
                             onClick = onPreviousPoemClick
                         )
                         PrimaryButton(
@@ -201,6 +203,7 @@ private fun PoemOfDayScreen(
                             enabled = !state.isLoading && state.allPoems.isNotEmpty(),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
+                            fontSize = 14.sp,
                             onClick = onNewPoemClick
                         )
                     }
