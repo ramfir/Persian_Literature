@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.firdavs.persianliterature.author.db.AuthorsDb
 import com.firdavs.persianliterature.author.db.model.WorkEntity
+import com.firdavs.persianliterature.author_api.model.AudioCacheStatus
 import com.firdavs.persianliterature.author_api.model.AudioDownloadStatus
 import kotlinx.coroutines.flow.Flow
 
@@ -67,6 +68,32 @@ interface WorksDao {
 
     @Query("SELECT * FROM ${AuthorsDb.WORKS} WHERE audioUrl IS NOT NULL")
     fun getWorksWithAudio(): Flow<List<WorkEntity>>
+
+    // New cache-related queries
+    @Query(
+        """
+        UPDATE ${AuthorsDb.WORKS}
+        SET audioCacheStatus = :status,
+            audioCachedBytes = :cachedBytes,
+            audioContentLength = :contentLength
+        WHERE id = :id
+        """
+    )
+    suspend fun updateAudioCacheStatus(
+        id: String,
+        status: AudioCacheStatus,
+        cachedBytes: Long,
+        contentLength: Long
+    )
+
+    @Query(
+        """
+        SELECT *
+        FROM ${AuthorsDb.WORKS}
+        WHERE audioCacheStatus = 'FULLY_CACHED'
+        """
+    )
+    fun getWorksWithFullyCachedAudio(): Flow<List<WorkEntity>>
 
     @Query("DELETE FROM ${AuthorsDb.WORKS}")
     suspend fun deleteAll()

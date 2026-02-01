@@ -1,6 +1,7 @@
 package com.firdavs.persianliterature.author.ui.work_details
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -37,22 +38,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import android.widget.Toast
-import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.firdavs.persianliterature.author.ui.R
-import com.firdavs.persianliterature.author_api.model.AudioDownloadStatus
 import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.BaseScreen
 import com.firdavs.persianliterature.ui.kit.H2Text
 import com.firdavs.persianliterature.ui.kit.H3Text
 import com.firdavs.persianliterature.ui.kit.H5Text
 import com.firdavs.persianliterature.ui.kit.components.ProgressIndicator
-import com.firdavs.persianliterature.ui.kit.components.buttons.PrimaryButton
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import com.firdavs.persianliterature.ui.kit.theme.localizedContext
+import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import com.rajat.pdfviewer.compose.PdfRendererViewCompose
 import com.rajat.pdfviewer.util.PdfSource
 
@@ -78,7 +76,6 @@ fun WorkDetailsEntryPoint(
             state = state,
             onBackClick = onBackClick,
             onToggleFavourite = viewModel::onToggleFavourite,
-            onDownloadAudio = viewModel::onDownloadAudio,
             onPlayAudio = viewModel::onPlayAudio,
             onPauseAudio = viewModel::onPauseAudio,
             onSeekTo = viewModel::onSeekTo,
@@ -94,7 +91,6 @@ fun WorkDetailsScreen(
     state: WorkDetailsUiState,
     onBackClick: () -> Unit,
     onToggleFavourite: (Boolean) -> Unit = {},
-    onDownloadAudio: () -> Unit = {},
     onPlayAudio: () -> Unit = {},
     onPauseAudio: () -> Unit = {},
     onSeekTo: (Long) -> Unit = {},
@@ -243,7 +239,6 @@ fun WorkDetailsScreen(
                     AudioControlsSection(
                         modifier = Modifier,
                         state = state,
-                        onDownloadAudio = onDownloadAudio,
                         onPlayAudio = onPlayAudio,
                         onPauseAudio = onPauseAudio,
                         onSeekTo = onSeekTo,
@@ -264,7 +259,6 @@ fun WorkDetailsScreen(
 fun AudioControlsSection(
     modifier: Modifier = Modifier,
     state: WorkDetailsUiState,
-    onDownloadAudio: () -> Unit,
     onPlayAudio: () -> Unit,
     onPauseAudio: () -> Unit,
     onSeekTo: (Long) -> Unit,
@@ -277,33 +271,9 @@ fun AudioControlsSection(
             .padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalAlignment = CenterHorizontally
     ) {
-        // Download button or status
+        // Audio controls - supports streaming with automatic caching
         when {
-            state.work?.audioDownloadStatus == AudioDownloadStatus.NOT_DOWNLOADED -> {
-                PrimaryButton(
-                    onClick = onDownloadAudio,
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(R.string.download_audio)
-                )
-            }
-            state.isDownloadingAudio -> {
-                Column(horizontalAlignment = CenterHorizontally) {
-                    LinearProgressIndicator(
-                        progress = { state.audioDownloadProgress },
-                        modifier = Modifier.fillMaxWidth(),
-                        color = LocalColors.current.primary
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = stringResource(
-                            R.string.downloading,
-                            (state.audioDownloadProgress * FULL_PERCENT).toInt()
-                        ),
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-            }
-            state.work?.audioDownloadStatus == AudioDownloadStatus.DOWNLOADED -> {
+            state.work?.audioUrl != null -> {
                 if (state.playbackState.isPreparing && !state.hasCompletedInitialPreparation) {
                     // Show loading indicator only during initial preparation
                     Column(
@@ -417,24 +387,33 @@ fun AudioControlsSection(
                                 )
                             }
                         }
-                    }
-                }
-            }
-            state.work?.audioDownloadStatus == AudioDownloadStatus.FAILED -> {
-                Column(horizontalAlignment = CenterHorizontally) {
-                    Text(
-                        text = stringResource(R.string.download_failed),
-                        color = MaterialTheme.colorScheme.error
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        PrimaryButton(
-                            onClick = onDownloadAudio,
-                            text = stringResource(R.string.retry_download)
-                        )
+
+                        // Cache progress indicator
+                        val cachePercentage = (state.audioCachePercentage * FULL_PERCENT).toInt()
+                        if (cachePercentage > 0) {
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                if (cachePercentage >= FULL_PERCENT) {
+                                    // Fully cached - show "Available Offline"
+                                    Text(
+                                        text = stringResource(R.string.available_offline),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                } else {
+                                    // Partially cached - show percentage
+                                    Text(
+                                        text = stringResource(R.string.cached_percentage, cachePercentage),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
             }

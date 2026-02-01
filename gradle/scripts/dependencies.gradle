@@ -56,6 +56,8 @@ ext {
             media3_common          : ("androidx.media3:media3-common:$media3_version"),
             media3_session         : ("androidx.media3:media3-session:$media3_version"),
             media3_ui              : ("androidx.media3:media3-ui:$media3_version"),
+            media3_datasource      : ("androidx.media3:media3-datasource:$media3_version"),
+            media3_database        : ("androidx.media3:media3-database:$media3_version"),
 
             work_runtime           : ("androidx.work:work-runtime-ktx:$work_version"),
             splash_screen          : ("androidx.core:core-splashscreen:$splash_screen_version")

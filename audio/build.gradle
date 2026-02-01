@@ -11,6 +11,8 @@ dependencies {
     implementation library.media3_common
     implementation library.media3_session
     implementation library.media3_ui
+    implementation library.media3_datasource
+    implementation library.media3_database
 
     implementation library.koin
 }

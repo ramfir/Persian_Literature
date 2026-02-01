@@ -2,20 +2,23 @@ package com.firdavs.persianliterature.author.ui.work_details
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.firdavs.persianliterature.audio.api.player.PlaybackState
 import com.firdavs.persianliterature.audio.api.service.AudioServiceController
-import com.firdavs.persianliterature.author_api.model.AudioDownloadStatus
+import com.firdavs.persianliterature.audio.cache.AudioCacheManager
+import com.firdavs.persianliterature.author_api.model.AudioCacheStatus
 import com.firdavs.persianliterature.author_api.repository.FavouritesRepository
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import com.firdavs.persianliterature.core.presentation.BaseViewModel
 import com.firdavs.persianliterature.settings.api.LanguageManager
-import com.firdavs.persianliterature.util.audiodownloader.AudioDownloader
 import com.firdavs.persianliterature.util.coroutines.runWithRetry
 import com.firdavs.persianliterature.util.pdfdownloader.PdfDownloader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -25,20 +28,20 @@ class WorkDetailsViewModel(
     private val context: Context,
     private val worksRepository: WorksRepository,
     private val pdfDownloader: PdfDownloader,
-    private val audioDownloader: AudioDownloader,
     private val audioServiceController: AudioServiceController,
+    private val audioCacheManager: AudioCacheManager,
     private val favouritesRepository: FavouritesRepository,
     private val languageManager: LanguageManager
 ) : BaseViewModel<WorkDetailsUiState>(WorkDetailsUiState(null)) {
     private val downloadPdfScope = CoroutineScope(Job() + Dispatchers.IO)
-    private val downloadAudioScope = CoroutineScope(Job() + Dispatchers.IO)
-    private var activeAudioDownloadJob: Job? = null
+    private var cacheMonitoringJob: Job? = null
     private var firstAudioPlay = true
 
     init {
         audioServiceController.connect()
         observeWork()
         observeAudioPlayback()
+        startCacheMonitoring()
     }
 
     override fun onViewResumed() {
@@ -66,43 +69,7 @@ class WorkDetailsViewModel(
                     }
                 } ?: post { it.copy(isDownloadingPdf = false) }
 
-                // Handle audio file checking
-                work.audioUrl?.let { audioUrl ->
-                    when (work.audioDownloadStatus) {
-                        AudioDownloadStatus.DOWNLOADED -> {
-                            work.audioLocalPath?.let { localPath ->
-                                val audioFile = File(localPath)
-                                if (audioFile.exists()) {
-                                    post { it.copy(audioFile = audioFile) }
-                                } else {
-                                    // File deleted externally, update status
-                                    worksRepository.updateAudioDownloadStatus(
-                                        work.id,
-                                        AudioDownloadStatus.NOT_DOWNLOADED,
-                                        null
-                                    )
-                                }
-                            }
-                        }
-                        AudioDownloadStatus.DOWNLOADING -> {
-                            // Check if there's an active download job
-                            if (activeAudioDownloadJob?.isActive != true) {
-                                // Download was interrupted (user navigated away), reset status
-                                worksRepository.updateAudioDownloadStatus(
-                                    work.id,
-                                    AudioDownloadStatus.NOT_DOWNLOADED,
-                                    null
-                                )
-                            } else {
-                                // Active download in progress, show it
-                                post { it.copy(isDownloadingAudio = true) }
-                            }
-                        }
-                        else -> {
-                            // NOT_DOWNLOADED or FAILED - no action
-                        }
-                    }
-                }
+                // Audio is now handled by ExoPlayer cache - no file checking needed
             }
         }
     }
@@ -155,16 +122,13 @@ class WorkDetailsViewModel(
         viewModelScope.launch {
             audioServiceController.playbackState.collect { playbackState ->
                 post {
-                    // Check if this work's audio is playing by comparing audio paths
-                    // We need to check both the current audio file and any expected audio path
-                    val currentAudioPath = it.audioFile?.absolutePath
-                    val expectedAudioPath = it.work?.audioLocalPath
+                    // Check if this work's audio is playing by comparing audio URLs
+                    val thisWorkAudioUrl = it.work?.audioUrl
 
-                    // Consider it "this work" if the playback URL matches either path
+                    // Consider it "this work" if the playback URL matches this work's audio URL
                     val isThisWorkPlaying = when {
                         playbackState.audioUrl == null -> false
-                        currentAudioPath != null && playbackState.audioUrl == currentAudioPath -> true
-                        expectedAudioPath != null && playbackState.audioUrl == expectedAudioPath -> true
+                        thisWorkAudioUrl != null && playbackState.audioUrl == thisWorkAudioUrl -> true
                         else -> false
                     }
 
@@ -205,108 +169,92 @@ class WorkDetailsViewModel(
         }
     }
 
-    // Download audio
-    fun onDownloadAudio() {
-        val work = state.value.work ?: return
-        val audioUrl = work.audioUrl ?: return
+    @Suppress("MagicNumber")
+    // Cache monitoring - updates cache status periodically
+    private fun startCacheMonitoring() {
+        cacheMonitoringJob = viewModelScope.launch {
+            while (isActive) {
+                state.value.work?.audioUrl?.let { audioUrl ->
+                    val uri = Uri.parse(audioUrl)
+                    val cachedBytes = audioCacheManager.getCachedBytes(uri)
+                    val contentLength = state.value.work?.audioContentLength ?: 0L
 
-        // Check if already downloaded
-        if (work.audioDownloadStatus == AudioDownloadStatus.DOWNLOADED) {
-            return
-        }
+                    // Update cache percentage in UI
+                    if (contentLength > 0) {
+                        val percentage = cachedBytes.toFloat() / contentLength.toFloat()
+                        post { it.copy(audioCachePercentage = percentage) }
 
-        activeAudioDownloadJob = downloadAudioScope.launch {
-            post {
-                it.copy(
-                    isDownloadingAudio = true,
-                    audioDownloadProgress = 0f,
-                    audioDownloadError = null
-                )
-            }
+                        // Update database cache status
+                        val newStatus = when {
+                            cachedBytes >= contentLength -> AudioCacheStatus.FULLY_CACHED
+                            cachedBytes > 0 -> AudioCacheStatus.PARTIALLY_CACHED
+                            else -> AudioCacheStatus.NOT_CACHED
+                        }
 
-            // Update database status to DOWNLOADING
-            worksRepository.updateAudioDownloadStatus(
-                work.id,
-                AudioDownloadStatus.DOWNLOADING
-            )
-
-            runWithRetry(maxAttempts = 5) {
-                tryDownloadAudio(audioUrl, work.title, work.id)
-            }?.let { error ->
-                // Download failed after retries
-                post {
-                    it.copy(
-                        isDownloadingAudio = false,
-                        audioDownloadError = "Download failed: ${error.message}"
-                    )
-                }
-                worksRepository.updateAudioDownloadStatus(
-                    work.id,
-                    AudioDownloadStatus.FAILED
-                )
-            }
-
-            // Clear job reference when done
-            activeAudioDownloadJob = null
-        }
-    }
-
-    private suspend fun tryDownloadAudio(url: String, fileName: String, workId: String) {
-        audioDownloader.downloadAudioFile(
-            audioUrl = url,
-            fileName = fileName,
-            onProgress = { progress ->
-                post { it.copy(audioDownloadProgress = progress) }
-            },
-            doOnSuccess = { audioFile ->
-                viewModelScope.launch {
-                    worksRepository.updateAudioDownloadStatus(
-                        workId,
-                        AudioDownloadStatus.DOWNLOADED,
-                        audioFile.absolutePath
-                    )
-                    post {
-                        it.copy(
-                            audioFile = audioFile,
-                            isDownloadingAudio = false,
-                            audioDownloadProgress = 1f
+                        worksRepository.updateAudioCacheStatus(
+                            id,
+                            newStatus,
+                            cachedBytes,
+                            contentLength
+                        )
+                    } else if (state.value.playbackState.duration > 0) {
+                        // If we have playback duration but no contentLength, use duration as estimate
+                        val estimatedLength = state.value.playbackState.duration
+                        worksRepository.updateAudioCacheStatus(
+                            id,
+                            if (cachedBytes > 0) AudioCacheStatus.PARTIALLY_CACHED
+                            else AudioCacheStatus.NOT_CACHED,
+                            cachedBytes,
+                            estimatedLength
                         )
                     }
                 }
+                delay(2000) // Check every 2 seconds
             }
-        )
+        }
     }
 
-    // Play audio
+    // Play audio - now streams directly from URL with automatic caching
     fun onPlayAudio() {
-        val audioFile = state.value.audioFile
-        val work = state.value.work
+        val work = state.value.work ?: return
+        val audioUrl = work.audioUrl ?: return
         val currentPlaybackState = state.value.playbackState
 
-        if (audioFile != null && audioFile.exists() && work != null) {
-            // Check if this is the first time playing audio
-            if (firstAudioPlay) {
-                // Mark as seen and show toast
-                firstAudioPlay = false
-                post { it.copy(showAudioControlToast = true) }
-            }
-
-            // Check if the service already has this audio prepared
-            val isAlreadyPrepared = currentPlaybackState.audioUrl == audioFile.absolutePath
-
-            // Only prepare if this is a different audio file or nothing is prepared yet
-            if (!isAlreadyPrepared) {
-                audioServiceController.prepareAudio(
-                    audioFile.absolutePath,
-                    work.title,
-                    "Persian Literature"
-                )
-                post { it.copy(currentlyPreparedAudioPath = audioFile.absolutePath) }
-            }
-            audioServiceController.play()
-        } else {
-            post { it.copy(audioDownloadError = "Audio not downloaded") }
+        // Check if this is the first time playing audio
+        if (firstAudioPlay) {
+            firstAudioPlay = false
+            post { it.copy(showAudioControlToast = true) }
         }
+
+        // Check if cache was cleared for fully cached audio
+        if (work.audioCacheStatus == AudioCacheStatus.FULLY_CACHED) {
+            val uri = Uri.parse(audioUrl)
+            if (!audioCacheManager.isFullyCached(uri, work.audioContentLength)) {
+                // Cache was cleared - update status
+                viewModelScope.launch {
+                    worksRepository.updateAudioCacheStatus(
+                        id,
+                        AudioCacheStatus.NOT_CACHED,
+                        0L,
+                        work.audioContentLength
+                    )
+                }
+            }
+        }
+
+        // Check if the service already has this audio prepared
+        val isAlreadyPrepared = currentPlaybackState.audioUrl == audioUrl
+
+        // Only prepare if this is a different audio or nothing is prepared yet
+        if (!isAlreadyPrepared) {
+            audioServiceController.prepareAudio(
+                audioUrl,
+                work.title,
+                "Persian Literature"
+            )
+            post { it.copy(currentlyPreparedAudioPath = audioUrl) }
+        }
+        audioServiceController.play()
     }
 
     // Pause audio
@@ -335,6 +283,7 @@ class WorkDetailsViewModel(
 
     override fun onCleared() {
         super.onCleared()
+        cacheMonitoringJob?.cancel()
         audioServiceController.disconnect()
     }
 

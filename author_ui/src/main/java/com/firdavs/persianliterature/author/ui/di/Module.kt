@@ -28,14 +28,14 @@ val authorUiModule = module {
     }
     viewModel {
             (args: Array<Any?>) -> WorkDetailsViewModel(
-        args.first() as String,
-        androidContext(),
-        get(),
-        get(),
-        get(),
-        get(),
-        get(),
-        get()
+        id = args.first() as String,
+        context = androidContext(),
+        worksRepository = get(),
+        pdfDownloader = get(),
+        audioServiceController = get(),
+        audioCacheManager = get(),
+        favouritesRepository = get(),
+        languageManager = get()
     )
     }
     factoryOf(::AuthorUiMapperImpl) bind AuthorUiMapper::class

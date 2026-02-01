@@ -6,6 +6,7 @@ import com.firdavs.persianliterature.author.db.model.WorkEntity
 import com.firdavs.persianliterature.author.db.model.toDomain
 import com.firdavs.persianliterature.author.model.WorkDTO
 import com.firdavs.persianliterature.author.model.toDb
+import com.firdavs.persianliterature.author_api.model.AudioCacheStatus
 import com.firdavs.persianliterature.author_api.model.AudioDownloadStatus
 import com.firdavs.persianliterature.author_api.model.Work
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
@@ -93,6 +94,22 @@ class WorksRepositoryImpl(
 
     override fun getWorksWithAudio(): Flow<List<Work>> {
         return worksDao.getWorksWithAudio().map { works ->
+            works.toDomain()
+        }
+    }
+
+    // New cache-related methods
+    override suspend fun updateAudioCacheStatus(
+        workId: String,
+        cacheStatus: AudioCacheStatus,
+        cachedBytes: Long,
+        contentLength: Long
+    ) {
+        worksDao.updateAudioCacheStatus(workId, cacheStatus, cachedBytes, contentLength)
+    }
+
+    override fun getWorksWithFullyCachedAudio(): Flow<List<Work>> {
+        return worksDao.getWorksWithFullyCachedAudio().map { works ->
             works.toDomain()
         }
     }

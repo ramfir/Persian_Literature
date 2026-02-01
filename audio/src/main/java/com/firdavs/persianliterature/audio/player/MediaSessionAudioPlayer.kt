@@ -6,14 +6,21 @@ import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import com.firdavs.persianliterature.audio.cache.AudioCacheManager
 import java.io.File
 
 /**
  * Wrapper around ExoPlayer that implements Player interface for MediaSession.
- * Handles audio focus and media item preparation.
+ * Handles audio focus and media item preparation with caching support.
  */
-class MediaSessionAudioPlayer(context: Context) {
+@UnstableApi
+class MediaSessionAudioPlayer(
+    context: Context,
+    private val audioCacheManager: AudioCacheManager
+) {
 
     private val exoPlayer: ExoPlayer
 
@@ -26,6 +33,10 @@ class MediaSessionAudioPlayer(context: Context) {
         exoPlayer = ExoPlayer.Builder(context)
             .setAudioAttributes(audioAttributes, true)
             .setWakeMode(C.WAKE_MODE_LOCAL)
+            .setMediaSourceFactory(
+                DefaultMediaSourceFactory(context)
+                    .setDataSourceFactory(audioCacheManager.getCacheDataSourceFactory(context))
+            )
             .build()
     }
 

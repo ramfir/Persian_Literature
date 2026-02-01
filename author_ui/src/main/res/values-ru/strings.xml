@@ -24,4 +24,9 @@
     <string name="no_audio_books_found">Аудиокниги пока недоступны</string>
     <string name="fetch_error">Не удалось загрузить данные. Проверьте подключение к интернету.</string>
     <string name="audio_control_notification_info">Появилось уведомление. Вы можете управлять воспроизведением через него.</string>
+    <string name="cached_percentage">Кэшировано: %d%%</string>
+    <string name="available_offline">Доступно Офлайн</string>
+    <string name="streaming">Стриминг…</string>
+    <string name="download_for_offline">Скачать для Офлайна</string>
+    <string name="cancel_download">Отменить</string>
 </resources>
