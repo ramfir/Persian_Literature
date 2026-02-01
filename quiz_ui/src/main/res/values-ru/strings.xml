@@ -6,6 +6,7 @@
     <string name="your_best_score">Лучший результат: %d%%</string>
     <string name="question_progress">Вопрос %1$d из %2$d</string>
     <string name="submit_answer">Отправить ответ</string>
+    <string name="confirm_answer">Подтвердить ответ</string>
     <string name="next_question">Следующий вопрос</string>
     <string name="finish_quiz">Завершить викторину</string>
     <string name="quiz_results">Результаты викторины</string>

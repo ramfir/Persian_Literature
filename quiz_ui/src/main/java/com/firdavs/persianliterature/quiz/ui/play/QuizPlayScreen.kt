@@ -57,6 +57,7 @@ fun QuizPlayEntryPoint(
             state = state,
             onBackClick = onBackClick,
             onAnswerSelected = viewModel::onAnswerSelected,
+            onConfirmAnswer = viewModel::onConfirmAnswer,
             onNextQuestion = viewModel::onNextQuestion,
             onShowQuitDialog = viewModel::onShowQuitDialog,
             onDismissQuitDialog = viewModel::onDismissQuitDialog
@@ -70,6 +71,7 @@ private fun QuizPlayScreen(
     state: QuizPlayUiState,
     onBackClick: () -> Unit,
     onAnswerSelected: (String) -> Unit,
+    onConfirmAnswer: () -> Unit,
     onNextQuestion: () -> Unit,
     onShowQuitDialog: () -> Unit,
     onDismissQuitDialog: () -> Unit
@@ -116,10 +118,13 @@ private fun QuizPlayScreen(
 
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     currentQuestion.options.forEach { option ->
-                        val isSelected = state.userAnswers[currentQuestion.id] == option
+                        val confirmedAnswer = state.userAnswers[currentQuestion.id]
+                        val isConfirmed = confirmedAnswer == option
+                        val isSelectedButNotConfirmed = state.selectedButUnconfirmedAnswer == option
+                        val isSelected = isConfirmed || isSelectedButNotConfirmed
                         val isCorrect = option == currentQuestion.correctAnswer
                         val showCorrect = state.showExplanation && isCorrect
-                        val showIncorrect = state.showExplanation && isSelected && !isCorrect
+                        val showIncorrect = state.showExplanation && isConfirmed && !isCorrect
 
                         OptionCard(
                             text = option,
@@ -130,6 +135,15 @@ private fun QuizPlayScreen(
                             onClick = { onAnswerSelected(option) }
                         )
                     }
+                }
+
+                if (!state.showExplanation && state.selectedButUnconfirmedAnswer != null) {
+                    Spacer(modifier = Modifier.weight(1f))
+                    PrimaryButton(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.confirm_answer),
+                        onClick = onConfirmAnswer
+                    )
                 }
 
                 if (state.showExplanation) {
@@ -262,7 +276,7 @@ private fun OptionCard(
     val backgroundColor = when {
         showCorrect -> colors.tertiary.copy(alpha = 0.3f)
         showIncorrect -> colors.error.copy(alpha = 0.3f)
-        isSelected -> colors.secondary.copy(alpha = 0.5f)
+        isSelected -> colors.primary
         else -> colors.primary.copy(alpha = 0.3f)
     }
 
