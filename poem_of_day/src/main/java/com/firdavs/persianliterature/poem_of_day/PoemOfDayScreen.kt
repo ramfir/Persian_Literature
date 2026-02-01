@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -26,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -41,6 +39,7 @@ import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
 import com.firdavs.persianliterature.ui.kit.components.buttons.PrimaryButton
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import com.firdavs.persianliterature.ui.kit.theme.localizedContext
+import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import kotlinx.coroutines.launch
 import com.firdavs.persianliterature.core.R as UiR
 
@@ -186,16 +185,22 @@ private fun PoemOfDayScreen(
                     Spacer(modifier = Modifier.height(24.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         PrimaryButton(
+                            modifier = Modifier.weight(1f),
                             text = stringResource(R.string.previous_poem),
                             enabled = !state.isLoading && state.allPoems.isNotEmpty(),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                             onClick = onPreviousPoemClick
                         )
                         PrimaryButton(
+                            modifier = Modifier.weight(1f),
                             text = stringResource(R.string.new_poem),
                             enabled = !state.isLoading && state.allPoems.isNotEmpty(),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                             onClick = onNewPoemClick
                         )
                     }
