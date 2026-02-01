@@ -276,7 +276,7 @@ private fun OptionCard(
     val backgroundColor = when {
         showCorrect -> colors.tertiary.copy(alpha = 0.3f)
         showIncorrect -> colors.error.copy(alpha = 0.3f)
-        isSelected -> colors.secondary.copy(alpha = 0.5f)
+        isSelected -> colors.primary
         else -> colors.primary.copy(alpha = 0.3f)
     }
 
