@@ -74,9 +74,7 @@ private fun FavouritesScreen(
             DrawerSheet(
                 chapters = state.chapters,
                 currentChapter = Chapter.Favourites,
-                onChapterClick = onChapterClick,
-                appName = stringResource(com.firdavs.persianliterature.core.R.string.app_name),
-                appIconRes = R.mipmap.ic_launcher
+                onChapterClick = onChapterClick
             )
         },
         topBar = { drawerState, scope ->

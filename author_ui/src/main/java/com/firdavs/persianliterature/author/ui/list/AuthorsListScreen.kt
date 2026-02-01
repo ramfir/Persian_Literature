@@ -134,9 +134,7 @@ private fun AuthorsListScreen(
             DrawerSheet(
                 chapters = state.chapters,
                 currentChapter = Chapter.Authors,
-                onChapterClick = onChapterClick,
-                appName = stringResource(com.firdavs.persianliterature.core.R.string.app_name),
-                appIconRes = R.mipmap.ic_launcher
+                onChapterClick = onChapterClick
             )
         },
         topBar = { drawerState, scope ->

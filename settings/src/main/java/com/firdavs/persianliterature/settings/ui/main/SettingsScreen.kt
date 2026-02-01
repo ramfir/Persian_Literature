@@ -80,9 +80,7 @@ private fun SettingsScreen(
             DrawerSheet(
                 chapters = state.chapters,
                 currentChapter = Chapter.Settings,
-                onChapterClick = onChapterClick,
-                appName = stringResource(UiR.string.app_name),
-                appIconRes = R.mipmap.ic_launcher
+                onChapterClick = onChapterClick
             )
         },
         topBar = { drawerState, scope ->

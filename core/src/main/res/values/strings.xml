@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Treasure of Literature</string>
+    <string name="drawer_title">Treasure of Literature</string>
     <string name="about_app">About app</string>
     <string name="favourites">Favourites</string>
     <string name="settings">Settings</string>

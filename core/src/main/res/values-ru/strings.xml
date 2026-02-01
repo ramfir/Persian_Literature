@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Ганҷи Адабиёт</string>
+    <string name="drawer_title">Сокровищница литературы</string>
     <string name="about_app">О приложении</string>
     <string name="favourites">Избранное</string>
     <string name="settings">Настройки</string>

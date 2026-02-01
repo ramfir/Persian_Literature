@@ -59,9 +59,7 @@ private fun AudioBooksScreen(
             DrawerSheet(
                 chapters = state.chapters,
                 currentChapter = Chapter.AudioBooks,
-                onChapterClick = onChapterClick,
-                appName = stringResource(com.firdavs.persianliterature.core.R.string.app_name),
-                appIconRes = R.mipmap.ic_launcher
+                onChapterClick = onChapterClick
             )
         },
         topBar = { drawerState, scope ->
