@@ -73,6 +73,21 @@ class AudioCacheManager(context: Context) {
     }
 
     /**
+     * Get the total content length for a specific URL from cache metadata.
+     *
+     * @param uri The audio file URI
+     * @return Total content length in bytes, or -1 if not available yet
+     */
+    fun getContentLength(uri: Uri): Long {
+        return try {
+            val contentMetadata = cache.getContentMetadata(uri.toString())
+            androidx.media3.datasource.cache.ContentMetadata.getContentLength(contentMetadata)
+        } catch (e: Exception) {
+            -1L
+        }
+    }
+
+    /**
      * Check if the entire file is fully cached.
      *
      * @param uri The audio file URI

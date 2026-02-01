@@ -2,12 +2,9 @@ package com.firdavs.persianliterature.author.ui.work_details
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.firdavs.persianliterature.audio.api.player.PlaybackState
 import com.firdavs.persianliterature.audio.api.service.AudioServiceController
-import com.firdavs.persianliterature.audio.cache.AudioCacheManager
-import com.firdavs.persianliterature.author_api.model.AudioCacheStatus
 import com.firdavs.persianliterature.author_api.repository.FavouritesRepository
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import com.firdavs.persianliterature.core.presentation.BaseViewModel
@@ -17,8 +14,6 @@ import com.firdavs.persianliterature.util.pdfdownloader.PdfDownloader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -29,19 +24,16 @@ class WorkDetailsViewModel(
     private val worksRepository: WorksRepository,
     private val pdfDownloader: PdfDownloader,
     private val audioServiceController: AudioServiceController,
-    private val audioCacheManager: AudioCacheManager,
     private val favouritesRepository: FavouritesRepository,
     private val languageManager: LanguageManager
 ) : BaseViewModel<WorkDetailsUiState>(WorkDetailsUiState(null)) {
     private val downloadPdfScope = CoroutineScope(Job() + Dispatchers.IO)
-    private var cacheMonitoringJob: Job? = null
     private var firstAudioPlay = true
 
     init {
         audioServiceController.connect()
         observeWork()
         observeAudioPlayback()
-        startCacheMonitoring()
     }
 
     override fun onViewResumed() {
@@ -169,52 +161,7 @@ class WorkDetailsViewModel(
         }
     }
 
-    @Suppress("MagicNumber")
-    // Cache monitoring - updates cache status periodically
-    private fun startCacheMonitoring() {
-        cacheMonitoringJob = viewModelScope.launch {
-            while (isActive) {
-                state.value.work?.audioUrl?.let { audioUrl ->
-                    val uri = Uri.parse(audioUrl)
-                    val cachedBytes = audioCacheManager.getCachedBytes(uri)
-                    val contentLength = state.value.work?.audioContentLength ?: 0L
-
-                    // Update cache percentage in UI
-                    if (contentLength > 0) {
-                        val percentage = cachedBytes.toFloat() / contentLength.toFloat()
-                        post { it.copy(audioCachePercentage = percentage) }
-
-                        // Update database cache status
-                        val newStatus = when {
-                            cachedBytes >= contentLength -> AudioCacheStatus.FULLY_CACHED
-                            cachedBytes > 0 -> AudioCacheStatus.PARTIALLY_CACHED
-                            else -> AudioCacheStatus.NOT_CACHED
-                        }
-
-                        worksRepository.updateAudioCacheStatus(
-                            id,
-                            newStatus,
-                            cachedBytes,
-                            contentLength
-                        )
-                    } else if (state.value.playbackState.duration > 0) {
-                        // If we have playback duration but no contentLength, use duration as estimate
-                        val estimatedLength = state.value.playbackState.duration
-                        worksRepository.updateAudioCacheStatus(
-                            id,
-                            if (cachedBytes > 0) AudioCacheStatus.PARTIALLY_CACHED
-                            else AudioCacheStatus.NOT_CACHED,
-                            cachedBytes,
-                            estimatedLength
-                        )
-                    }
-                }
-                delay(2000) // Check every 2 seconds
-            }
-        }
-    }
-
-    // Play audio - now streams directly from URL with automatic caching
+    // Play audio - streams directly from URL
     fun onPlayAudio() {
         val work = state.value.work ?: return
         val audioUrl = work.audioUrl ?: return
@@ -224,22 +171,6 @@ class WorkDetailsViewModel(
         if (firstAudioPlay) {
             firstAudioPlay = false
             post { it.copy(showAudioControlToast = true) }
-        }
-
-        // Check if cache was cleared for fully cached audio
-        if (work.audioCacheStatus == AudioCacheStatus.FULLY_CACHED) {
-            val uri = Uri.parse(audioUrl)
-            if (!audioCacheManager.isFullyCached(uri, work.audioContentLength)) {
-                // Cache was cleared - update status
-                viewModelScope.launch {
-                    worksRepository.updateAudioCacheStatus(
-                        id,
-                        AudioCacheStatus.NOT_CACHED,
-                        0L,
-                        work.audioContentLength
-                    )
-                }
-            }
         }
 
         // Check if the service already has this audio prepared
@@ -283,7 +214,6 @@ class WorkDetailsViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        cacheMonitoringJob?.cancel()
         audioServiceController.disconnect()
     }
 

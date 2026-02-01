@@ -387,33 +387,6 @@ fun AudioControlsSection(
                                 )
                             }
                         }
-
-                        // Cache progress indicator
-                        val cachePercentage = (state.audioCachePercentage * FULL_PERCENT).toInt()
-                        if (cachePercentage > 0) {
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Center,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                if (cachePercentage >= FULL_PERCENT) {
-                                    // Fully cached - show "Available Offline"
-                                    Text(
-                                        text = stringResource(R.string.available_offline),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.primary
-                                    )
-                                } else {
-                                    // Partially cached - show percentage
-                                    Text(
-                                        text = stringResource(R.string.cached_percentage, cachePercentage),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                                    )
-                                }
-                            }
-                        }
                     }
                 }
             }

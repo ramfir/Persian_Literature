@@ -11,12 +11,7 @@ data class WorkDetailsUiState(
     val workFile: File? = null,
     val isDownloadingPdf: Boolean = false,
     val pdfDownloadProgress: Float = 0f,
-
-    // Audio cache-related state (new)
-    val audioCachePercentage: Float = 0f,
     val audioDownloadError: String? = null,
-
-    // Audio playback state
     val playbackState: PlaybackState = PlaybackState(),
     val currentlyPreparedAudioPath: String? = null,
     val hasCompletedInitialPreparation: Boolean = false,

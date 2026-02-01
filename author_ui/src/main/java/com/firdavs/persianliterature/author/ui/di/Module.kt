@@ -33,7 +33,6 @@ val authorUiModule = module {
         worksRepository = get(),
         pdfDownloader = get(),
         audioServiceController = get(),
-        audioCacheManager = get(),
         favouritesRepository = get(),
         languageManager = get()
     )
