@@ -17,11 +17,12 @@ class PoemOfDayViewModel(
 
     private fun loadPoem() {
         viewModelScope.launch {
+            val allPoems = poemRepository.getAllPoems()
             if (poemId != null) {
                 val poem = poemRepository.getPoemById(poemId)
-                post { it.copy(poem = poem, isLoading = false) }
+                val currentIndex = allPoems.indexOfFirst { it.id == poemId }
+                post { it.copy(poem = poem, allPoems = allPoems, currentIndex = currentIndex, isLoading = false) }
             } else {
-                val allPoems = poemRepository.getAllPoems()
                 if (allPoems.isNotEmpty()) {
                     val randomIndex = allPoems.indices.random()
                     val poem = allPoems[randomIndex]
