@@ -38,4 +38,8 @@ class PoemRepositoryImpl(
     override suspend fun getPoemById(id: String): Poem? {
         return poemsDao.getPoemById(id)?.toDomain()
     }
+
+    override suspend fun getAllPoems(): List<Poem> {
+        return poemsDao.getAllPoems().map { it.toDomain() }
+    }
 }

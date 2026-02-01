@@ -36,15 +36,17 @@ fun H4Text(
     text: String,
     modifier: Modifier = Modifier,
     color: Color? = null,
-    textAlign: TextAlign? = null
+    textAlign: TextAlign? = null,
+    maxLines: Int = Int.MAX_VALUE,
+    overflow: TextOverflow = TextOverflow.Clip
 ) =
     AppTheme.typography.h4TextStyle.asText(
         text,
         modifier,
         color,
         textAlign,
-        Int.MAX_VALUE,
-        TextOverflow.Clip
+        maxLines,
+        overflow
     )
 
 @Composable
@@ -166,15 +168,17 @@ fun H4Text(
     @StringRes res: Int,
     modifier: Modifier = Modifier,
     color: Color? = null,
-    textAlign: TextAlign? = null
+    textAlign: TextAlign? = null,
+    maxLines: Int = Int.MAX_VALUE,
+    overflow: TextOverflow = TextOverflow.Clip
 ) =
     AppTheme.typography.h4TextStyle.asText(
         stringResource(res),
         modifier,
         color,
         textAlign,
-        Int.MAX_VALUE,
-        TextOverflow.Clip
+        maxLines,
+        overflow
     )
 
 @Composable
