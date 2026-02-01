@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="drawer_title">Ганҷи Адабиёт</string>
     <string name="about_app">Дар бораи барнома</string>
     <string name="favourites">Интихобшуда</string>
     <string name="settings">Танзимот</string>
