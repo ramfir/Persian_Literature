@@ -173,10 +173,7 @@ private fun QuizPlayScreen(
                                 T2Text(text = currentQuestion.explanation)
                             }
                         }
-                    }
-
-                    if (state.showExplanation) {
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.weight(1f))
                         PrimaryButton(
                             modifier = Modifier.fillMaxWidth(),
                             text = if (state.isLastQuestion) {
