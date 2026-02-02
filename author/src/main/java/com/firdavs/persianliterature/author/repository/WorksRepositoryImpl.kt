@@ -25,16 +25,6 @@ class WorksRepositoryImpl(
     private val context: Context
 ) : WorksRepository {
     override suspend fun fetchWorks() {
-        // Delete all downloaded audio files
-        deleteDownloadedAudioFiles()
-
-        // Delete all downloaded PDF files
-        deleteDownloadedPdfFiles()
-
-        // Clear database
-        worksDao.deleteAll()
-
-        // Fetch and insert new works
         val lang = languageManager.getSavedLanguage(context).firebaseCode
         val worksCollection = Firebase.firestore.collection("works_$lang")
         val snapshot = worksCollection.get(Source.SERVER).await()
@@ -42,6 +32,9 @@ class WorksRepositoryImpl(
             val workDto = document.toObject(WorkDTO::class.java)
             workDto?.copy(id = document.id)
         }
+        deleteDownloadedAudioFiles()
+        deleteDownloadedPdfFiles()
+        worksDao.deleteAll()
         worksDao.insert(worksDTO.toDb())
     }
 
