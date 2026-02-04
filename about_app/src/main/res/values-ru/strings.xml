@@ -5,6 +5,9 @@
     <string name="authors_list_with_works">Список поэтов и писателей с их произведениями</string>
     <string name="add_favourites">Добавление поэта, писателя или их произведений в избранное</string>
     <string name="languages">Изменение языка на таджикский, английский или русский</string>
+    <string name="about_audio_books">Прослушивание аудиозаписей классической персидской поэзии и литературы</string>
+    <string name="about_quizzes">Проверка знаний персидской литературы с помощью интерактивных викторин</string>
+    <string name="about_poem_of_day">Получение ежедневных уведомлений с новым стихотворением для вдохновения</string>
     <string name="app_author">Контакт</string>
     <string name="firdavs">Если у вас есть вопросы или рекомендации, поделитесь ими на странице приложения в Play Market или свяжитесь с автором приложения по электронной почте: firdavssalimov6@gmail.com</string>
 </resources>

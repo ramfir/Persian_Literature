@@ -5,6 +5,9 @@
     <string name="authors_list_with_works">List of poets and writers with their works</string>
     <string name="add_favourites">Adding poet or writer or their works to favourites</string>
     <string name="languages">Changing language to Tajik, English or Russian</string>
+    <string name="about_audio_books">Listen to audio recordings of classic Persian poetry and literature</string>
+    <string name="about_quizzes">Test your knowledge of Persian literature by passing interactive quizzes</string>
+    <string name="about_poem_of_day">Receive daily notifications with a new poem to inspire your day</string>
     <string name="app_author">Contact</string>
     <string name="firdavs">If you have any questions or recommendations, please share them on the app\'s Play Market page or contact the developer via email: firdavssalimov6@gmail.com</string>
 </resources>

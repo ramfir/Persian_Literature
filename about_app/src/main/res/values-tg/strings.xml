@@ -5,6 +5,9 @@
     <string name="authors_list_with_works">Рӯйхати шоирон ва нависандагон бо асарҳояшон</string>
     <string name="add_favourites">Илова кардани шоир ё нависанда ё асарҳояшон ба интихобшуда</string>
     <string name="languages">Тағйир додани забон ба тоҷикӣ, англисӣ ё русӣ</string>
+    <string name="about_audio_books">Гӯш кардани сабтҳои аудиоии шеъру адабиёти классикии форсӣ</string>
+    <string name="about_quizzes">Санҷиши дониши адабиёти форсӣ тавассути имтиҳонҳои интерактивӣ</string>
+    <string name="about_poem_of_day">Гирифтани огоҳиҳои ҳаррӯза бо шеъри нав барои илҳом</string>
     <string name="app_author">Тамос</string>
     <string name="firdavs">Агар савол ё тавсияҳое доред, лутфан онҳоро дар саҳифаи барнома дар Play Market мубодила кунед ё бо муаллифи барнома тавассути почтаи электронӣ тамос гиред: firdavssalimov6@gmail.com</string>
 </resources>
