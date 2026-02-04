@@ -17,13 +17,13 @@ interface AuthorsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(authors: List<AuthorEntity>)
 
-    @Query("SELECT * FROM ${AuthorsDb.AUTHORS}")
+    @Query("SELECT * FROM ${AuthorsDb.AUTHORS} ORDER BY name COLLATE NOCASE")
     fun getAllFlow(): Flow<List<AuthorEntity>>
 
     @Query("SELECT * FROM ${AuthorsDb.AUTHORS} WHERE id = :id")
     fun getByIdFlow(id: String): Flow<AuthorEntity>
 
-    @Query("SELECT * FROM ${AuthorsDb.AUTHORS} WHERE isFavourite = 1")
+    @Query("SELECT * FROM ${AuthorsDb.AUTHORS} WHERE isFavourite = 1 ORDER BY name COLLATE NOCASE")
     fun getFavouritesFlow(): Flow<List<AuthorEntity>>
 
     @Query("UPDATE ${AuthorsDb.AUTHORS} SET isFavourite = :isFavourite WHERE id = :id")
