@@ -1,5 +1,6 @@
 package com.firdavs.persianliterature.app.di
 
+import android.content.Context
 import com.firdavs.persianliterature.about_app.di.aboutAppUiModule
 import com.firdavs.persianliterature.app.ui.MainViewModel
 import com.firdavs.persianliterature.audio.di.audioModule
@@ -10,13 +11,16 @@ import com.firdavs.persianliterature.quiz.di.quizModule
 import com.firdavs.persianliterature.quiz.ui.di.quizUiModule
 import com.firdavs.persianliterature.settings.data.LanguageManagerImpl
 import com.firdavs.persianliterature.settings.data.NotificationManagerImpl
+import com.firdavs.persianliterature.settings.data.UpdateManagerImpl
 import com.firdavs.persianliterature.settings.ui.language.LanguageViewModel
 import com.firdavs.persianliterature.settings.ui.main.SettingsViewModel
 import com.firdavs.persianliterature.settings.worker.DailyNotificationWorker
 import com.firdavs.persianliterature.settings.api.LanguageManager
 import com.firdavs.persianliterature.settings.api.LocaleHolder
 import com.firdavs.persianliterature.settings.api.NotificationManager
+import com.firdavs.persianliterature.settings.api.UpdateManager
 import com.firdavs.persianliterature.util.di.utilModule
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import org.koin.androidx.workmanager.dsl.workerOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -30,6 +34,12 @@ val appModule = module {
     viewModelOf(::LanguageViewModel)
     single { LanguageManagerImpl(get()) } binds arrayOf(LanguageManager::class, LocaleHolder::class)
     singleOf(::NotificationManagerImpl) bind NotificationManager::class
+    single<UpdateManager> {
+        UpdateManagerImpl(
+            appUpdateManager = AppUpdateManagerFactory.create(get()),
+            sharedPreferences = get<Context>().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        )
+    }
 
     workerOf(::DailyNotificationWorker)
 

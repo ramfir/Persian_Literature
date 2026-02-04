@@ -60,7 +60,8 @@ ext {
             media3_database        : ("androidx.media3:media3-database:$media3_version"),
 
             work_runtime           : ("androidx.work:work-runtime-ktx:$work_version"),
-            splash_screen          : ("androidx.core:core-splashscreen:$splash_screen_version")
+            splash_screen          : ("androidx.core:core-splashscreen:$splash_screen_version"),
+            app_update_ktx         : ("com.google.android.play:app-update-ktx:$app_update_version")
     ]
     module = [
             core            : project(":core"),

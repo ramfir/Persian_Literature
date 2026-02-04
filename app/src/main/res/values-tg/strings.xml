@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">Ганҷи Адабиёт</string>
     <string name="exit_toast_message">Боз як маротиба пахш кунед, агар мехоҳед аз барнома баромад кунед</string>
+
+    <!-- Update Feature -->
+    <string name="update_available_title">Навсозӣ дастрас аст</string>
+    <string name="update_available_message">Версияи нави барномаи Ганҷи Адабиёт дастрас аст. Ҳозир навсозӣ кунед, то имконоти нав ва беҳтаршавиҳоро гиред.</string>
+    <string name="update_button">Навсозӣ кунед</string>
+    <string name="update_later_button">Баъдтар</string>
+    <string name="update_downloading">Боргирии навсозӣ…</string>
+    <string name="update_ready_title">Навсозӣ тайёр аст</string>
+    <string name="update_ready_message">Навсозӣ боргирӣ шуд. Барои насб барномаро аз нав оғоз кунед.</string>
+    <string name="update_install_button">Насб кунед</string>
 </resources>

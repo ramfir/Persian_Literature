@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">Treasure of Literature</string>
     <string name="exit_toast_message">Click again if you want to quit the app</string>
+
+    <!-- Update Feature -->
+    <string name="update_available_title">Update Available</string>
+    <string name="update_available_message">A new version of Treasure of Literature is available. Update now to get the latest features and improvements.</string>
+    <string name="update_button">Update</string>
+    <string name="update_later_button">Later</string>
+    <string name="update_downloading">Downloading update…</string>
+    <string name="update_ready_title">Update Ready</string>
+    <string name="update_ready_message">Update has been downloaded. Restart app to install.</string>
+    <string name="update_install_button">Install</string>
 </resources>

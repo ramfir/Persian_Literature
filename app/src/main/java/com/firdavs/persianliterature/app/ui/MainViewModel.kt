@@ -1,5 +1,6 @@
 package com.firdavs.persianliterature.app.ui
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.util.Log
@@ -13,6 +14,8 @@ import com.firdavs.persianliterature.quiz_api.repository.QuizRepository
 import com.firdavs.persianliterature.settings.api.Language
 import com.firdavs.persianliterature.settings.api.LanguageManager
 import com.firdavs.persianliterature.settings.api.NotificationManager
+import com.firdavs.persianliterature.settings.api.UpdateInfo
+import com.firdavs.persianliterature.settings.api.UpdateManager
 import kotlinx.coroutines.launch
 import androidx.core.content.edit
 
@@ -24,11 +27,14 @@ class MainViewModel(
     private val questionRepository: QuestionRepository,
     private val poemRepository: PoemRepository,
     private val languageManager: LanguageManager,
-    private val notificationManager: NotificationManager
+    private val notificationManager: NotificationManager,
+    private val updateManager: UpdateManager
 ) : BaseViewModel<MainActivityUiState>(MainActivityUiState()) {
 
     init {
         checkFirstLaunch()
+        observeUpdateState()
+        checkForUpdates()
     }
 
     private fun checkFirstLaunch() {
@@ -131,6 +137,60 @@ class MainViewModel(
         // Mark first launch as completed
         val prefs = application.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         prefs.edit { putBoolean(KEY_FIRST_LAUNCH, false) }
+    }
+
+    fun checkForUpdates() {
+        viewModelScope.launch {
+            val updateInfo = updateManager.checkForUpdate()
+            when (updateInfo) {
+                is UpdateInfo.UpdateAvailable -> {
+                    post { it.copy(showUpdateDialog = true, updateInfo = updateInfo) }
+                }
+                is UpdateInfo.UpdateDownloaded -> {
+                    post { it.copy(showInstallPrompt = true) }
+                }
+                else -> { /* No update available */ }
+            }
+        }
+    }
+
+    private fun observeUpdateState() {
+        viewModelScope.launch {
+            updateManager.observeUpdateState().collect { state ->
+                if (state.isUpdateDownloaded) {
+                    post { it.copy(showInstallPrompt = true) }
+                }
+            }
+        }
+    }
+
+    fun onUpdateDialogDismissed() {
+        post { it.copy(showUpdateDialog = false) }
+    }
+
+    fun onUpdateClicked(activity: Activity) {
+        post { it.copy(showUpdateDialog = false) }
+        viewModelScope.launch {
+            updateManager.startFlexibleUpdate(activity)
+        }
+    }
+
+    fun onInstallUpdateClicked() {
+        updateManager.completeUpdate()
+        post { it.copy(showInstallPrompt = false) }
+    }
+
+    fun onInstallPromptDismissed() {
+        post { it.copy(showInstallPrompt = false) }
+    }
+
+    fun checkIfUpdateDownloaded() {
+        viewModelScope.launch {
+            val updateInfo = updateManager.checkForUpdate()
+            if (updateInfo is UpdateInfo.UpdateDownloaded) {
+                post { it.copy(showInstallPrompt = true) }
+            }
+        }
     }
 
     companion object {

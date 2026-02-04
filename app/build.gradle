@@ -51,6 +51,7 @@ dependencies {
     implementation groups.navigation
     implementation library.work_runtime
     implementation library.koin_workmanager
+    implementation library.app_update_ktx
 }
 
 tasks.register("runKoinModuleTests", Test.class) {

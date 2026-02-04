@@ -113,7 +113,7 @@ class NotificationManagerImpl : NotificationManager {
     }
 
     private fun calculateDelayToNextTenAM(): Long {
-        //return TimeUnit.MINUTES.toMillis(1)
+        // return TimeUnit.MINUTES.toMillis(1)
         val currentTime = Calendar.getInstance()
         val targetTime = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 10)

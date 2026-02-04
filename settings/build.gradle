@@ -12,4 +12,6 @@ dependencies {
     implementation module.quiz_api
     implementation library.work_runtime
     implementation library.room_runtime
+    implementation library.app_update_ktx
+    implementation library.coroutines_play_services
 }

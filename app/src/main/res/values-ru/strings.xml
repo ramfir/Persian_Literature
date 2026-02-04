@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">Ганҷи Адабиёт</string>
     <string name="exit_toast_message">Нажмите еще раз, если хотите выйти из приложения</string>
+
+    <!-- Update Feature -->
+    <string name="update_available_title">Доступно обновление</string>
+    <string name="update_available_message">Доступна новая версия приложения Сокровищница Литературы. Обновите сейчас, чтобы получить последние функции и улучшения.</string>
+    <string name="update_button">Обновить</string>
+    <string name="update_later_button">Позже</string>
+    <string name="update_downloading">Загрузка обновления…</string>
+    <string name="update_ready_title">Обновление готово</string>
+    <string name="update_ready_message">Обновление загружено. Перезапустите приложение для установки.</string>
+    <string name="update_install_button">Установить</string>
 </resources>

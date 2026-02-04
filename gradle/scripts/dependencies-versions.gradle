@@ -22,4 +22,5 @@ ext {
     media3_version = "1.5.0"
     work_version = "2.10.0"
     splash_screen_version = "1.0.1"
+    app_update_version = "2.1.0"
 }

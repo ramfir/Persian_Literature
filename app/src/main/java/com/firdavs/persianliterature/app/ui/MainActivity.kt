@@ -29,6 +29,7 @@ import org.koin.compose.koinInject
 
 class MainActivity : ComponentActivity() {
     private var notificationPoemId by mutableStateOf<String?>(null)
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Install splash screen before calling super.onCreate()
@@ -42,7 +43,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            val viewModel = koinViewModel<MainViewModel>()
+            viewModel = koinViewModel<MainViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
 
             // Get LocaleHolder (LanguageManager) from Koin
@@ -103,9 +104,31 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
+
+                        if (state.showUpdateDialog) {
+                            UpdateDialog(
+                                onUpdate = { viewModel.onUpdateClicked(this@MainActivity) },
+                                onDismiss = { viewModel.onUpdateDialogDismissed() }
+                            )
+                        }
+
+                        if (state.showInstallPrompt) {
+                            UpdateInstallPrompt(
+                                onInstall = { viewModel.onInstallUpdateClicked() },
+                                onDismiss = { viewModel.onInstallPromptDismissed() }
+                            )
+                        }
                     }
                 }
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Check if update was downloaded while app was in background
+        if (::viewModel.isInitialized) {
+            viewModel.checkIfUpdateDownloaded()
         }
     }
 
