@@ -88,6 +88,7 @@ private fun AudioBooksScreen(
         mainContent = {
             AudioBooksContent(
                 works = state.works,
+                authorsMap = state.authorsMap,
                 onWorkClick = onWorkClick
             )
         }
@@ -97,6 +98,7 @@ private fun AudioBooksScreen(
 @Composable
 private fun AudioBooksContent(
     works: List<Work>,
+    authorsMap: Map<String, String>,
     onWorkClick: (String) -> Unit
 ) {
     if (works.isEmpty()) {
@@ -114,11 +116,12 @@ private fun AudioBooksContent(
             modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(works) { work ->
                 AudioBookItem(
                     work = work,
+                    authorName = authorsMap[work.authorId] ?: "",
                     onWorkClick = onWorkClick
                 )
                 HorizontalDivider(
@@ -134,15 +137,19 @@ private fun AudioBooksContent(
 @Composable
 private fun AudioBookItem(
     work: Work,
+    authorName: String,
     onWorkClick: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onWorkClick(work.id) }
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
-        H4Text(text = work.title)
+        H3Text(text = work.title)
+        if (authorName.isNotEmpty()) {
+            H5Text(text = authorName)
+        }
         work.publishYear?.let { year ->
             H5Text(text = stringResource(R.string.published_at, year))
         }

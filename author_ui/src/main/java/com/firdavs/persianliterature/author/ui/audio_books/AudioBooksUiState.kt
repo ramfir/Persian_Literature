@@ -6,5 +6,6 @@ import com.firdavs.persianliterature.core.presentation.UiState
 
 data class AudioBooksUiState(
     val works: List<Work> = emptyList(),
+    val authorsMap: Map<String, String> = emptyMap(),
     val chapters: List<Chapter> = Chapter.all
 ) : UiState()
