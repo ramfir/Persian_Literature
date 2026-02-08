@@ -105,6 +105,13 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
+                        if (state.showNotificationPermissionDialog) {
+                            NotificationPermissionDialog(
+                                onAllowClicked = { viewModel.onNotificationPermissionAllowClicked() },
+                                onSkipClicked = { viewModel.onNotificationPermissionSkipClicked() }
+                            )
+                        }
+
                         if (state.showUpdateDialog) {
                             UpdateDialog(
                                 onUpdate = { viewModel.onUpdateClicked(this@MainActivity) },

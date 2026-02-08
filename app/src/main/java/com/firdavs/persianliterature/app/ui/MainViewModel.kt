@@ -131,12 +131,22 @@ class MainViewModel(
         languageManager.setLanguage(application, language)
         fetchAllData()
 
-        // Dismiss the language selection dialog
-        post { it.copy(showLanguageSelectionDialog = false, requestNotificationPermission = true) }
+        // Dismiss the language selection dialog and show notification permission explanation dialog
+        post { it.copy(showLanguageSelectionDialog = false, showNotificationPermissionDialog = true) }
 
         // Mark first launch as completed
         val prefs = application.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         prefs.edit { putBoolean(KEY_FIRST_LAUNCH, false) }
+    }
+
+    fun onNotificationPermissionAllowClicked() {
+        // Dismiss the explanation dialog and request the actual system permission
+        post { it.copy(showNotificationPermissionDialog = false, requestNotificationPermission = true) }
+    }
+
+    fun onNotificationPermissionSkipClicked() {
+        // Just dismiss the explanation dialog without requesting permission
+        post { it.copy(showNotificationPermissionDialog = false) }
     }
 
     fun checkForUpdates() {

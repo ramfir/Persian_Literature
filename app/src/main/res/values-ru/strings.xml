@@ -11,4 +11,10 @@
     <string name="update_ready_title">Обновление готово</string>
     <string name="update_ready_message">Обновление загружено. Перезапустите приложение для установки.</string>
     <string name="update_install_button">Установить</string>
+
+    <!-- Notification Permission -->
+    <string name="notification_permission_title">Ежедневные напоминания с поэзией</string>
+    <string name="notification_permission_message">Сокровищница Литературы может отправлять вам ежедневные уведомления с прекрасной персидской поэзией, чтобы вдохновить ваш день.\n\nХотите получать ежедневные стихи в 10:00?</string>
+    <string name="notification_permission_allow">Разрешить уведомления</string>
+    <string name="notification_permission_skip">Может быть позже</string>
 </resources>
