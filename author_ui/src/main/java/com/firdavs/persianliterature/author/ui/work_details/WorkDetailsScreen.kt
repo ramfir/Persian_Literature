@@ -409,7 +409,7 @@ private fun formatTime(milliseconds: Long): String {
     val hours = totalSeconds / SECONDS_IN_HOUR
     val minutes = (totalSeconds % SECONDS_IN_HOUR) / SECONDS_IN_MINUTE
     val seconds = totalSeconds % SECONDS_IN_MINUTE
-    return String.format("%d:%02d:%02d", hours, minutes, seconds)
+    return String.format("%02d:%02d:%02d", hours, minutes, seconds)
 }
 
 private const val SECONDS_IN_MINUTE = 60
