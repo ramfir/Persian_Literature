@@ -72,6 +72,17 @@ fun WorkDetailsEntryPoint(
             }
         }
 
+        LaunchedEffect(state.audioErrorResId) {
+            state.audioErrorResId?.let { errorResId ->
+                Toast.makeText(
+                    toastContext,
+                    toastContext.getString(errorResId),
+                    Toast.LENGTH_LONG
+                ).show()
+                viewModel.clearAudioError()
+            }
+        }
+
         WorkDetailsScreen(
             state = state,
             onBackClick = onBackClick,
@@ -390,15 +401,6 @@ fun AudioControlsSection(
                     }
                 }
             }
-        }
-        // Error display
-        state.audioDownloadError?.let { error ->
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = error,
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodySmall
-            )
         }
     }
 }

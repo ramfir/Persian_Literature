@@ -11,7 +11,7 @@ data class WorkDetailsUiState(
     val workFile: File? = null,
     val isDownloadingPdf: Boolean = false,
     val pdfDownloadProgress: Float = 0f,
-    val audioDownloadError: String? = null,
+    val audioErrorResId: Int? = null,
     val playbackState: PlaybackState = PlaybackState(),
     val currentlyPreparedAudioPath: String? = null,
     val hasCompletedInitialPreparation: Boolean = false,

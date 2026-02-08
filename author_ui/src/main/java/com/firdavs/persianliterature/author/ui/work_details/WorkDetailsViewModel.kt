@@ -54,7 +54,6 @@ class WorkDetailsViewModel(
                     val fileName = "${work.id}_$languageCode"
                     val workFilePath = context.filesDir.toString() + "/$fileName"
                     val workFile = File(workFilePath)
-                    println("mmmm workFile.exists()=${workFile.exists()}")
                     if (workFile.exists().not()) {
                         downloadPdf(it, fileName)
                     } else {
@@ -150,10 +149,10 @@ class WorkDetailsViewModel(
                             // Reset to default state if a different work is playing
                             PlaybackState()
                         },
-                        audioDownloadError = if (isThisWorkPlaying) {
-                            playbackState.error
+                        audioErrorResId = if (isThisWorkPlaying) {
+                            playbackState.errorResId
                         } else {
-                            it.audioDownloadError
+                            it.audioErrorResId
                         },
                         // Update the currently prepared path when we receive playback state
                         currentlyPreparedAudioPath = if (isThisWorkPlaying) {
@@ -217,6 +216,10 @@ class WorkDetailsViewModel(
 
     fun resetAudioControlToastFlag() {
         post { it.copy(showAudioControlToast = false) }
+    }
+
+    fun clearAudioError() {
+        post { it.copy(audioErrorResId = null) }
     }
 
     override fun onCleared() {

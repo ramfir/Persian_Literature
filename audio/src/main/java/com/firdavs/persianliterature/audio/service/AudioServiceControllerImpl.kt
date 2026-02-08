@@ -6,9 +6,11 @@ import android.content.Intent
 import android.os.Build
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
+import com.firdavs.persianliterature.audio.R
 import com.firdavs.persianliterature.audio.api.player.PlaybackState
 import com.firdavs.persianliterature.audio.api.service.AudioServiceController
 import com.google.common.util.concurrent.ListenableFuture
@@ -56,6 +58,27 @@ class AudioServiceControllerImpl(
                 stopPositionUpdates()
             }
             updatePlaybackState()
+        }
+
+        override fun onPlayerError(error: PlaybackException) {
+            val errorResId = when (error.errorCode) {
+                PlaybackException.ERROR_CODE_IO_BAD_HTTP_STATUS,
+                PlaybackException.ERROR_CODE_IO_FILE_NOT_FOUND,
+                PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED,
+                PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT ->
+                    R.string.audio_error_network
+                PlaybackException.ERROR_CODE_PARSING_CONTAINER_MALFORMED,
+                PlaybackException.ERROR_CODE_PARSING_MANIFEST_MALFORMED ->
+                    R.string.audio_error_format
+                else ->
+                    R.string.audio_error_playback
+            }
+
+            _playbackState.value = _playbackState.value.copy(
+                errorResId = errorResId,
+                isPlaying = false,
+                isPreparing = false
+            )
         }
     }
 
@@ -112,7 +135,8 @@ class AudioServiceControllerImpl(
                 workTitle = workTitle,
                 authorName = authorName,
                 audioUrl = url,
-                isPreparing = true
+                isPreparing = true,
+                errorResId = null
             )
         }
     }
@@ -180,6 +204,11 @@ class AudioServiceControllerImpl(
         val controller = mediaController ?: return
         val metadata = controller.mediaMetadata
 
+        // Clear error only when playback is successful (ready or playing)
+        val shouldClearError = controller.playbackState == Player.STATE_READY ||
+            controller.playbackState == Player.STATE_BUFFERING ||
+            controller.isPlaying
+
         _playbackState.value = _playbackState.value.copy(
             isPlaying = controller.isPlaying,
             isPreparing = controller.playbackState == Player.STATE_BUFFERING,
@@ -188,7 +217,7 @@ class AudioServiceControllerImpl(
             workTitle = metadata.title?.toString() ?: _playbackState.value.workTitle,
             authorName = metadata.artist?.toString() ?: _playbackState.value.authorName,
             audioUrl = _playbackState.value.audioUrl,
-            error = null
+            errorResId = if (shouldClearError) null else _playbackState.value.errorResId
         )
     }
 

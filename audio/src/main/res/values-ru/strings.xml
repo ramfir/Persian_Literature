@@ -1,4 +1,7 @@
 <resources>
     <string name="notification_channel_name">Воспроизведение аудио</string>
     <string name="notification_channel_description">Управление воспроизведением аудио</string>
+    <string name="audio_error_network">Ошибка сети: Не удалось загрузить аудио</string>
+    <string name="audio_error_format">Неверный формат аудиофайла</string>
+    <string name="audio_error_playback">Не удалось воспроизвести аудио</string>
 </resources>

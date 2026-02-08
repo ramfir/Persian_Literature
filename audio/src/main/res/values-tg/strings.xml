@@ -1,4 +1,7 @@
 <resources>
     <string name="notification_channel_name">Пахш кардани аудио</string>
     <string name="notification_channel_description">Идораи пахш кардани аудио</string>
+    <string name="audio_error_network">Хатои шабака: Зеркашии аудио ноком шуд</string>
+    <string name="audio_error_format">Формати файли аудиоӣ нодуруст аст</string>
+    <string name="audio_error_playback">Пахши аудио ноком шуд</string>
 </resources>

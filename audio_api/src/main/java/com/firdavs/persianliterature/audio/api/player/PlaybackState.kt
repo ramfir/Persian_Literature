@@ -9,6 +9,7 @@ data class PlaybackState(
     val currentPosition: Long = 0L,
     val duration: Long = 0L,
     val error: String? = null,
+    val errorResId: Int? = null,
     val workTitle: String? = null,
     val authorName: String? = null,
     val audioUrl: String? = null
