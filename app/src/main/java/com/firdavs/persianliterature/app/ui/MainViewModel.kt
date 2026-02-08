@@ -3,6 +3,7 @@ package com.firdavs.persianliterature.app.ui
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
@@ -131,12 +132,20 @@ class MainViewModel(
         languageManager.setLanguage(application, language)
         fetchAllData()
 
-        // Dismiss the language selection dialog and show notification permission explanation dialog
-        post { it.copy(showLanguageSelectionDialog = false, showNotificationPermissionDialog = true) }
-
         // Mark first launch as completed
         val prefs = application.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         prefs.edit { putBoolean(KEY_FIRST_LAUNCH, false) }
+
+        // Only show notification permission dialog on Android 13+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Dismiss language selection dialog and show notification permission explanation dialog
+            post { it.copy(showLanguageSelectionDialog = false, showNotificationPermissionDialog = true) }
+        } else {
+            // On Android 12 and below, permission is granted at install time
+            // Just enable notifications automatically
+            post { it.copy(showLanguageSelectionDialog = false) }
+            onNotificationPermissionResult(true)
+        }
     }
 
     fun onNotificationPermissionAllowClicked() {
