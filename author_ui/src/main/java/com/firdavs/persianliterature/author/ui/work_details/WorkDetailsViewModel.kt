@@ -54,6 +54,7 @@ class WorkDetailsViewModel(
                     val fileName = "${work.id}_$languageCode"
                     val workFilePath = context.filesDir.toString() + "/$fileName"
                     val workFile = File(workFilePath)
+                    println("mmmm workFile.exists()=${workFile.exists()}")
                     if (workFile.exists().not()) {
                         downloadPdf(it, fileName)
                     } else {
@@ -68,6 +69,12 @@ class WorkDetailsViewModel(
 
     private fun downloadPdf(url: String, fileName: String) {
         downloadPdfScope.launch {
+            // Clean up any leftover temporary file from previous failed attempts
+            val tempFile = File(context.filesDir, "$fileName.tmp")
+            if (tempFile.exists()) {
+                tempFile.delete()
+            }
+
             post {
                 it.copy(
                     isDownloadingPdf = true,

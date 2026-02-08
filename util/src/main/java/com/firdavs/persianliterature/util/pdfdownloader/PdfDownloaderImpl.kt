@@ -27,7 +27,8 @@ class PdfDownloaderImpl(private val context: Context) : PdfDownloader {
         downloadedFileName: String,
         onProgress: (Float) -> Unit
     ): String {
-        val filePath = context.filesDir.toString() + "/$downloadedFileName"
+        val finalFilePath = context.filesDir.toString() + "/$downloadedFileName"
+        val tempFilePath = context.filesDir.toString() + "/$downloadedFileName.tmp"
 
         val url = URL(pdfUrl)
         val connection = url.openConnection()
@@ -35,9 +36,9 @@ class PdfDownloaderImpl(private val context: Context) : PdfDownloader {
 
         val fileLength = connection.contentLength
 
-        // Download with progress tracking
+        // Download to temporary file with progress tracking
         BufferedInputStream(url.openStream(), bufferSize).use { input ->
-            FileOutputStream(filePath).use { output ->
+            FileOutputStream(tempFilePath).use { output ->
                 val data = ByteArray(bufferSize)
                 var total = 0L
                 var count: Int
@@ -55,7 +56,19 @@ class PdfDownloaderImpl(private val context: Context) : PdfDownloader {
                 output.flush()
             }
         }
-        return filePath
+
+        // Rename temp file to final file only after successful download
+        val tempFile = File(tempFilePath)
+        val finalFile = File(finalFilePath)
+        if (tempFile.exists()) {
+            // Delete old file if it exists
+            if (finalFile.exists()) {
+                finalFile.delete()
+            }
+            tempFile.renameTo(finalFile)
+        }
+
+        return finalFilePath
     }
 
     companion object {
