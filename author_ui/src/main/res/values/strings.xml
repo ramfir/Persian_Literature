@@ -4,6 +4,7 @@
     <string name="favourites">Favourites</string>
     <string name="settings">Settings</string>
     <string name="search_authors">Search authors…</string>
+    <string name="search_all_works">Search works…</string>
     <string name="bio">Biography</string>
     <string name="works">Works</string>
     <string name="bio_loading">Loading biography…</string>

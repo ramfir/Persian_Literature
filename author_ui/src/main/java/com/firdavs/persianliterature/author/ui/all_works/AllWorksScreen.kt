@@ -1,7 +1,6 @@
-package com.firdavs.persianliterature.author.ui.list
+package com.firdavs.persianliterature.author.ui.all_works
 
-import android.widget.Toast
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,19 +10,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -37,104 +30,69 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.painterResource
-import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.firdavs.persianliterature.author.ui.R
-import com.firdavs.persianliterature.author.ui.model.AuthorUiModel
+import com.firdavs.persianliterature.author_api.model.Work
 import com.firdavs.persianliterature.core.model.Chapter
 import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.BaseScreen
 import com.firdavs.persianliterature.ui.kit.H3Text
+import com.firdavs.persianliterature.ui.kit.H4Text
 import com.firdavs.persianliterature.ui.kit.H5Text
-import com.firdavs.persianliterature.ui.kit.T1Text
 import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
 import com.firdavs.persianliterature.ui.kit.components.ProgressIndicator
-import com.firdavs.persianliterature.ui.kit.theme.AppPreviewTheme
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import com.firdavs.persianliterature.ui.kit.theme.LocalTypography
-import com.firdavs.persianliterature.ui.kit.theme.localizedContext
-import com.skydoves.landscapist.glide.GlideImage
+import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 
 @Composable
-fun AuthorsListEntryPoint(
+fun AllWorksEntryPoint(
     onAuthorClick: (String) -> Unit,
+    onWorkClick: (String) -> Unit,
     onChapterClick: (Chapter) -> Unit
 ) {
-    BaseEntryPoint(AuthorsListViewModel::class) { state, viewModel ->
-        AuthorsListScreen(
+    BaseEntryPoint(AllWorksViewModel::class) { state, viewModel ->
+        AllWorksScreen(
             state = state,
             onSearchClick = viewModel::onSearchClick,
             onExitSearchClick = viewModel::onExitSearchClick,
             onSearchQueryChange = viewModel::onSearchQueryChange,
             onClearSearchQueryClick = viewModel::onClearSearchQueryClick,
+            applySearchFilter = viewModel::applySearchFilter,
             onAuthorClick = onAuthorClick,
-            filterAuthorsList = viewModel::filterAuthorsList,
-            onChapterClick = onChapterClick,
-            onToggleFavourite = viewModel::onToggleFavourite,
-            onRefreshClick = viewModel::onRefreshClick,
-            resetShowToastFlag = viewModel::resetShowToastFlag,
-            resetShowErrorToastFlag = viewModel::resetShowErrorToastFlag
+            onWorkClick = onWorkClick,
+            onChapterClick = onChapterClick
         )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AuthorsListScreen(
-    state: AuthorsListUiState,
+private fun AllWorksScreen(
+    state: AllWorksUiState,
     onSearchClick: () -> Unit,
     onExitSearchClick: () -> Unit,
     onSearchQueryChange: (String) -> Unit,
     onClearSearchQueryClick: () -> Unit,
+    applySearchFilter: () -> Unit,
     onAuthorClick: (String) -> Unit,
-    filterAuthorsList: () -> Unit,
-    onChapterClick: (Chapter) -> Unit,
-    onToggleFavourite: (String, Boolean) -> Unit,
-    onRefreshClick: () -> Unit,
-    resetShowToastFlag: () -> Unit,
-    resetShowErrorToastFlag: () -> Unit
+    onWorkClick: (String) -> Unit,
+    onChapterClick: (Chapter) -> Unit
 ) {
-    val context = localizedContext()
-    LaunchedEffect(state.showToast) {
-        if (state.showToast) {
-            Toast.makeText(
-                context,
-                R.string.authors_fetched,
-                Toast.LENGTH_SHORT
-            ).show()
-            resetShowToastFlag()
-        }
-    }
-
-    LaunchedEffect(state.showErrorToast) {
-        if (state.showErrorToast) {
-            Toast.makeText(
-                context,
-                R.string.fetch_error,
-                Toast.LENGTH_LONG
-            ).show()
-            resetShowErrorToastFlag()
-        }
-    }
     BaseScreen(
         drawerContent = {
             DrawerSheet(
                 chapters = state.chapters,
-                currentChapter = Chapter.Authors,
+                currentChapter = Chapter.AllWorks,
                 onChapterClick = onChapterClick
             )
         },
@@ -148,9 +106,7 @@ private fun AuthorsListScreen(
                 onClearSearchQueryClick = onClearSearchQueryClick,
                 onSearchClick = onSearchClick,
                 onExitSearchClick = onExitSearchClick,
-                filterAuthorsList = filterAuthorsList,
-                isRefreshing = state.isRefreshing,
-                onRefreshClick = onRefreshClick
+                applySearchFilter = applySearchFilter
             )
         },
         mainContent = {
@@ -169,17 +125,36 @@ private fun AuthorsListScreen(
                             .fillMaxSize(),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(state.authors) { author ->
-                            AuthorItem(
-                                author = author,
-                                onAuthorClick = onAuthorClick,
-                                onToggleFavourite = onToggleFavourite
-                            )
-                            HorizontalDivider(
-                                modifier = Modifier.padding(horizontal = 16.dp),
-                                thickness = 1.dp,
-                                color = LocalColors.current.primary
-                            )
+                        items(state.items) { item ->
+                            when (item) {
+                                is AllWorksListItem.AuthorHeader -> {
+                                    AuthorHeaderItem(
+                                        authorName = item.author.name,
+                                        authorId = item.author.id,
+                                        onAuthorClick = onAuthorClick
+                                    )
+                                    HorizontalDivider(
+                                        modifier = Modifier.padding(horizontal = 16.dp),
+                                        thickness = 2.dp,
+                                        color = LocalColors.current.primary
+                                    )
+                                }
+                                is AllWorksListItem.WorkItem -> {
+                                    WorkItem(
+                                        work = item.work,
+                                        onWorkClick = onWorkClick
+                                    )
+                                }
+                                is AllWorksListItem.EmptyWorksMessage -> {
+                                    H3Text(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(16.dp),
+                                        res = R.string.no_works_found,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -199,9 +174,7 @@ private fun TopBar(
     onClearSearchQueryClick: () -> Unit,
     onSearchClick: () -> Unit,
     onExitSearchClick: () -> Unit,
-    filterAuthorsList: () -> Unit,
-    isRefreshing: Boolean,
-    onRefreshClick: () -> Unit
+    applySearchFilter: () -> Unit
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -232,7 +205,7 @@ private fun TopBar(
             }
                 .debounce(SEARCH_DEBOUNCE)
                 .collect {
-                    filterAuthorsList()
+                    applySearchFilter()
                 }
         }
         if (isSearchActive) {
@@ -251,7 +224,7 @@ private fun TopBar(
                     .align(Alignment.CenterVertically)
                     .focusRequester(focusRequester),
                 placeholder = {
-                    H5Text(stringResource(R.string.search_authors))
+                    H5Text(stringResource(R.string.search_all_works))
                 },
                 singleLine = true,
                 colors = TextFieldDefaults.colors(
@@ -275,21 +248,12 @@ private fun TopBar(
         } else {
             Spacer(Modifier.weight(1f))
             H3Text(
-                text = stringResource(R.string.authors_list),
+                text = stringResource(com.firdavs.persianliterature.core.R.string.all_works),
                 textAlign = TextAlign.Center,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
             Spacer(Modifier.weight(1f))
-            IconButton(
-                onClick = onRefreshClick,
-                enabled = !isRefreshing
-            ) {
-                Icon(
-                    Icons.Default.Refresh,
-                    contentDescription = "Refresh"
-                )
-            }
             IconButton(onClick = onSearchClick) {
                 Icon(
                     Icons.Default.Search,
@@ -301,109 +265,43 @@ private fun TopBar(
 }
 
 @Composable
-fun AuthorItem(
-    author: AuthorUiModel,
-    onAuthorClick: (String) -> Unit,
-    onToggleFavourite: ((String, Boolean) -> Unit)? = null
+private fun AuthorHeaderItem(
+    authorName: String,
+    authorId: String,
+    onAuthorClick: (String) -> Unit
 ) {
-    Row(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onAuthorClick(author.id) }
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .clickable { onAuthorClick(authorId) }
+            .background(LocalColors.current.primary.copy(alpha = 0.1f))
+            .padding(16.dp)
     ) {
-        Column(
-            modifier = Modifier.weight(1f),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            // for preview
-            if (LocalInspectionMode.current) {
-                Image(
-                    modifier = Modifier
-                        .size(70.dp)
-                        .clip(RoundedCornerShape(8.dp)),
-                    painter = painterResource(R.drawable.img_rudaki),
-                    contentDescription = null
-                )
-            } else {
-                GlideImage(
-                    imageModel = { author.photoUrl },
-                    modifier = Modifier
-                        .size(70.dp)
-                        .clip(RoundedCornerShape(8.dp)),
-                    loading = {
-                        ProgressIndicator(
-                            modifier = Modifier
-                                .size(50.dp)
-                        )
-                    },
-                    failure = {
-                        Image(
-                            modifier = Modifier
-                                .size(70.dp)
-                                .clip(RoundedCornerShape(8.dp)),
-                            painter = painterResource(R.drawable.img_rudaki),
-                            contentDescription = null
-                        )
-                    }
-                )
-            }
-            T1Text(
-                modifier = Modifier
-                    .padding(top = 4.dp),
-                text = "${author.born} - ${author.died}"
-            )
-            H3Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp),
-                text = author.name,
-                textAlign = TextAlign.Center
-            )
-        }
-        onToggleFavourite?.let { toggle ->
-            IconButton(
-                onClick = { toggle(author.id, !author.isFavourite) }
-            ) {
-                Icon(
-                    imageVector = if (author.isFavourite) {
-                        Icons.Filled.Favorite
-                    } else {
-                        Icons.Outlined.FavoriteBorder
-                    },
-                    contentDescription = null,
-                    tint = if (author.isFavourite) {
-                        LocalColors.current.primary
-                    } else {
-                        LocalColors.current.onPrimary
-                    }
-                )
-            }
-        }
+        H3Text(
+            text = authorName,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
-@Preview
 @Composable
-private fun AuthorsListScreenPreview(
-    @PreviewParameter(AuthorsListStateProvider ::class) state: AuthorsListUiState
+private fun WorkItem(
+    work: Work,
+    onWorkClick: (String) -> Unit
 ) {
-    AppPreviewTheme {
-        AuthorsListScreen(
-            state = state,
-            onSearchClick = {},
-            onExitSearchClick = {},
-            onSearchQueryChange = {},
-            onClearSearchQueryClick = {},
-            onAuthorClick = {},
-            filterAuthorsList = {},
-            onChapterClick = {},
-            onToggleFavourite = { _, _ -> },
-            onRefreshClick = {},
-            resetShowToastFlag = {},
-            resetShowErrorToastFlag = {}
-        )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = {
+                onWorkClick(work.id)
+            })
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        H4Text(text = work.title)
+        work.publishYear?.let { year ->
+            H5Text(text = stringResource(R.string.published_at, year))
+        }
     }
 }
 

@@ -4,6 +4,7 @@
     <string name="favourites">Избранное</string>
     <string name="settings">Настройки</string>
     <string name="search_authors">Поиск авторов…</string>
+    <string name="search_all_works">Поиск произведений…</string>
     <string name="bio">Биография</string>
     <string name="works">Произведения</string>
     <string name="bio_loading">Загрузка биографии…</string>

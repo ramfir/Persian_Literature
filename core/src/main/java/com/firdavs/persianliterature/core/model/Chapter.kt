@@ -4,6 +4,7 @@ import com.firdavs.persianliterature.core.R
 
 enum class Chapter(val titleRes: Int) {
     Authors(R.string.authors),
+    AllWorks(R.string.all_works),
     PoemOfDay(R.string.poem_of_day),
     AudioBooks(R.string.audio_books),
     Quiz(R.string.quiz),
@@ -12,6 +13,6 @@ enum class Chapter(val titleRes: Int) {
     Settings(R.string.settings);
 
     companion object {
-        val all = listOf(Authors, PoemOfDay, AudioBooks, Quiz, AboutApp, Favourites, Settings)
+        val all = listOf(Authors, AllWorks, PoemOfDay, AudioBooks, Quiz, AboutApp, Favourites, Settings)
     }
 }

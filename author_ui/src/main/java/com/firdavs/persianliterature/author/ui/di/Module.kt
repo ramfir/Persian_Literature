@@ -1,5 +1,6 @@
 package com.firdavs.persianliterature.author.ui.di
 
+import com.firdavs.persianliterature.author.ui.all_works.AllWorksViewModel
 import com.firdavs.persianliterature.author.ui.audio_books.AudioBooksViewModel
 import com.firdavs.persianliterature.author.ui.details.AuthorDetailsViewModel
 import com.firdavs.persianliterature.author.ui.favourites.FavouritesViewModel
@@ -16,6 +17,7 @@ import org.koin.dsl.module
 
 val authorUiModule = module {
     viewModelOf(::AuthorsListViewModel)
+    viewModelOf(::AllWorksViewModel)
     viewModelOf(::FavouritesViewModel)
     viewModelOf(::AudioBooksViewModel)
     viewModel {
