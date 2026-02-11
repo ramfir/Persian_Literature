@@ -38,7 +38,6 @@ class MainViewModel(
         checkFirstLaunch()
         observeUpdateState()
         checkForUpdates()
-        checkForNewWorks()
     }
 
     private fun checkFirstLaunch() {
@@ -49,6 +48,7 @@ class MainViewModel(
             post { it.copy(showLanguageSelectionDialog = true) }
         } else {
             fetchAllData()
+            checkForNewWorks()
         }
     }
 

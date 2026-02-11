@@ -1,17 +1,12 @@
 package com.firdavs.persianliterature.author.ui.all_works
 
 import androidx.lifecycle.viewModelScope
-import com.firdavs.persianliterature.author.ui.mapper.AuthorUiMapper
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
-import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import com.firdavs.persianliterature.core.presentation.BaseViewModel
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class AllWorksViewModel(
-    private val authorRepository: AuthorRepository,
-    private val worksRepository: WorksRepository,
-    private val authorUiMapper: AuthorUiMapper
+    private val authorRepository: AuthorRepository
 ) : BaseViewModel<AllWorksUiState>(AllWorksUiState()) {
 
     init {
@@ -22,26 +17,9 @@ class AllWorksViewModel(
 
     private fun observeAuthorsWithWorks() {
         viewModelScope.launch {
-            authorRepository.getAuthors().collect { authors ->
-                val authorUiModels = authorUiMapper.map(authors)
-
-                if (authorUiModels.isEmpty()) {
-                    post { it.copy(items = emptyList(), isLoading = false) }
-                    return@collect
-                }
-
-                // Collect works for all authors and combine them
-                val worksFlows = authorUiModels.map { author ->
-                    worksRepository.getWorksByAuthorId(author.id)
-                }
-
-                combine(worksFlows) { worksArrays ->
-                    // Create map of author to their works
-                    authorUiModels.zip(worksArrays.toList()).toMap()
-                }.collect { authorsToWorksMap ->
-                    allItems = authorsToWorksMap.toListItems()
-                    applySearchFilter()
-                }
+            authorRepository.getAllAuthorsWithWorks().collect { authorsWithWorks ->
+                allItems = authorsWithWorks.toListItems()
+                applySearchFilter()
             }
         }
     }
@@ -89,7 +67,7 @@ class AllWorksViewModel(
                     currentAuthorWorks.clear()
 
                     // Check if author name matches
-                    val authorMatches = item.author.name.contains(searchQuery, ignoreCase = true)
+                    val authorMatches = item.authorName.contains(searchQuery, ignoreCase = true)
                     if (authorMatches) {
                         // If author matches, we'll include all their works
                         currentAuthorWorks.add(item) // Placeholder, will be replaced

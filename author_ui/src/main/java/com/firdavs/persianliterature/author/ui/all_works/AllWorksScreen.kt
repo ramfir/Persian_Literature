@@ -129,8 +129,8 @@ private fun AllWorksScreen(
                             when (item) {
                                 is AllWorksListItem.AuthorHeader -> {
                                     AuthorHeaderItem(
-                                        authorName = item.author.name,
-                                        authorId = item.author.id,
+                                        authorName = item.authorName,
+                                        authorId = item.authorId,
                                         onAuthorClick = onAuthorClick
                                     )
                                     HorizontalDivider(
