@@ -59,6 +59,18 @@ fun Navigator(
         }
     }
 
+    // Handle new works dialog navigation
+    LaunchedEffect(state.navigationWorkId) {
+        state.navigationWorkId?.let { workId ->
+            backStack.next(Route.WorkDetails(workId))
+            // Clear the navigation work ID after handling
+            coroutineScope.launch {
+                delay(100) // Small delay to ensure navigation completes
+                onNavigationHandled()
+            }
+        }
+    }
+
     val onBack: () -> Unit = {
         val isRootScreen = backStack.size == 1
 

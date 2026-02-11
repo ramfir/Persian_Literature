@@ -17,4 +17,12 @@
     <string name="notification_permission_message">Ганҷи Адабиёт метавонад ба шумо ҳар рӯз огоҳиҳои зебо бо шеърҳои форсӣ фиристад, то рӯзатонро илҳом бахшад.\n\nМехоҳед ҳар рӯз соати 10:00 шеър қабул кунед?</string>
     <string name="notification_permission_allow">Иҷозат додан ба огоҳиҳо</string>
     <string name="notification_permission_skip">Баъдтар</string>
+
+    <!-- New Works Notification -->
+    <string name="new_works_available">Асарҳои нав дастрасанд</string>
+    <string name="close">Пӯшидан</string>
+    <string name="new_works_in_english">Асарҳои нав ба забони англисӣ</string>
+    <string name="new_works_in_russian">Асарҳои нав ба забони русӣ</string>
+    <string name="new_works_in_tajik">Асарҳои нав ба забони тоҷикӣ</string>
+    <string name="change_language_to_view_work">Барои дидани ин асар, лутфан забонро дар Танзимот иваз кунед</string>
 </resources>

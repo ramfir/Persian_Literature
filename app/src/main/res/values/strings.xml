@@ -17,4 +17,12 @@
     <string name="notification_permission_message">Treasure of Literature can send you daily notifications with beautiful Persian poetry to inspire your day.\n\nWould you like to receive daily poetry at 10:00 AM?</string>
     <string name="notification_permission_allow">Allow Notifications</string>
     <string name="notification_permission_skip">Maybe Later</string>
+
+    <!-- New Works Notification -->
+    <string name="new_works_available">New Works Available</string>
+    <string name="close">Close</string>
+    <string name="new_works_in_english">New works in English</string>
+    <string name="new_works_in_russian">New works in Russian</string>
+    <string name="new_works_in_tajik">New works in Tajik</string>
+    <string name="change_language_to_view_work">To view this work, please change the language in Settings</string>
 </resources>

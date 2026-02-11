@@ -88,7 +88,10 @@ class MainActivity : ComponentActivity() {
                         Navigator(
                             state = state,
                             modifier = Modifier.padding(innerPadding),
-                            onNavigationHandled = { viewModel.clearNotificationPoemId() }
+                            onNavigationHandled = {
+                                viewModel.clearNotificationPoemId()
+                                viewModel.clearNavigationWorkId()
+                            }
                         )
 
                         if (state.showWelcomeDialog) {
@@ -123,6 +126,18 @@ class MainActivity : ComponentActivity() {
                             UpdateInstallPrompt(
                                 onInstall = { viewModel.onInstallUpdateClicked() },
                                 onDismiss = { viewModel.onInstallPromptDismissed() }
+                            )
+                        }
+
+                        if (state.newWorks.isNotEmpty()) {
+                            NewWorksDialog(
+                                newWorks = state.newWorks,
+                                onWorkClick = { workId ->
+                                    viewModel.onNewWorkClicked(workId)
+                                },
+                                onDismiss = {
+                                    viewModel.onNewWorksDialogShown()
+                                }
                             )
                         }
                     }

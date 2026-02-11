@@ -8,10 +8,12 @@ import com.firdavs.persianliterature.author.db.dao.WorksDao
 import com.firdavs.persianliterature.author.db.mapper.AuthorsEntityToDomainMapper
 import com.firdavs.persianliterature.author.db.mapper.AuthorsEntityToDomainMapperImpl
 import com.firdavs.persianliterature.author.db.migration.MIGRATION_1_2
+import com.firdavs.persianliterature.author.manager.NewWorksNotificationManagerImpl
 import com.firdavs.persianliterature.author.repository.AuthorRepositoryImpl
 import com.firdavs.persianliterature.author.repository.FavouritesRepositoryImpl
 import com.firdavs.persianliterature.author.repository.PoemRepositoryImpl
 import com.firdavs.persianliterature.author.repository.WorksRepositoryImpl
+import com.firdavs.persianliterature.author_api.manager.NewWorksNotificationManager
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
 import com.firdavs.persianliterature.author_api.repository.FavouritesRepository
 import com.firdavs.persianliterature.author_api.repository.PoemRepository
@@ -54,6 +56,11 @@ val authorModule = module {
         PoemRepositoryImpl(
             poemsDao = get(),
             languageManager = get(),
+            context = androidContext()
+        )
+    }
+    single<NewWorksNotificationManager> {
+        NewWorksNotificationManagerImpl(
             context = androidContext()
         )
     }

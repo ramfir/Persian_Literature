@@ -1,5 +1,6 @@
 package com.firdavs.persianliterature.app.ui
 
+import com.firdavs.persianliterature.author_api.model.NewWorkItem
 import com.firdavs.persianliterature.core.presentation.UiState
 import com.firdavs.persianliterature.settings.api.UpdateInfo
 
@@ -11,5 +12,7 @@ data class MainActivityUiState(
     val requestNotificationPermission: Boolean = false,
     val showUpdateDialog: Boolean = false,
     val updateInfo: UpdateInfo = UpdateInfo.NoUpdateAvailable,
-    val showInstallPrompt: Boolean = false
+    val showInstallPrompt: Boolean = false,
+    val newWorks: List<NewWorkItem> = emptyList(),
+    val navigationWorkId: String? = null
 ) : UiState()

@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.firdavs.persianliterature.author_api.manager.NewWorksNotificationManager
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
 import com.firdavs.persianliterature.author_api.repository.PoemRepository
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
@@ -29,13 +30,15 @@ class MainViewModel(
     private val poemRepository: PoemRepository,
     private val languageManager: LanguageManager,
     private val notificationManager: NotificationManager,
-    private val updateManager: UpdateManager
+    private val updateManager: UpdateManager,
+    private val newWorksNotificationManager: NewWorksNotificationManager
 ) : BaseViewModel<MainActivityUiState>(MainActivityUiState()) {
 
     init {
         checkFirstLaunch()
         observeUpdateState()
         checkForUpdates()
+        checkForNewWorks()
     }
 
     private fun checkFirstLaunch() {
@@ -105,6 +108,34 @@ class MainViewModel(
                 Log.e(TAG, "fetchPoems error ", it)
             }
         }
+    }
+
+    private fun checkForNewWorks() {
+        viewModelScope.launch {
+            try {
+                val newWorks = newWorksNotificationManager.checkForNewWorks()
+                if (newWorks.isNotEmpty()) {
+                    post { it.copy(newWorks = newWorks) }
+                }
+            } catch (e: Exception) {
+                // Log error, don't block app launch
+                Log.e(TAG, "Failed to check new works", e)
+            }
+        }
+    }
+
+    fun onNewWorksDialogShown() {
+        viewModelScope.launch {
+            post { it.copy(newWorks = emptyList()) }
+        }
+    }
+
+    fun onNewWorkClicked(workId: String) {
+        post { it.copy(navigationWorkId = workId, newWorks = emptyList()) }
+    }
+
+    fun clearNavigationWorkId() {
+        post { it.copy(navigationWorkId = null) }
     }
 
     fun setNotificationPoemId(poemId: String?) {
