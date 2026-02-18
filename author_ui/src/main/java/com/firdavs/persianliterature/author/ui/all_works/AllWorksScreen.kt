@@ -19,7 +19,6 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.TextField
@@ -132,11 +131,6 @@ private fun AllWorksScreen(
                                         authorName = item.authorName,
                                         authorId = item.authorId,
                                         onAuthorClick = onAuthorClick
-                                    )
-                                    HorizontalDivider(
-                                        modifier = Modifier.padding(horizontal = 16.dp),
-                                        thickness = 2.dp,
-                                        color = LocalColors.current.primary
                                     )
                                 }
                                 is AllWorksListItem.WorkItem -> {
@@ -274,7 +268,7 @@ private fun AuthorHeaderItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onAuthorClick(authorId) }
-            .background(LocalColors.current.primary.copy(alpha = 0.1f))
+            .background(LocalColors.current.primary.copy(alpha = 0.5f))
             .padding(16.dp)
     ) {
         H3Text(
