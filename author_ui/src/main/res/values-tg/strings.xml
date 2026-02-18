@@ -22,7 +22,7 @@
     <string name="now_playing">Дар ҳоли пахш</string>
     <string name="download_failed">Зеркашӣ ноком шуд</string>
     <string name="retry_download">Аз нав кӯшиш кунед</string>
-    <string name="no_audio_books_found">Китобҳои аудиоӣ ҳанӯз дастрас нестанд</string>
+    <string name="no_audio_books_found">Китобҳои савтӣ ҳанӯз дастрас нестанд</string>
     <string name="fetch_error">Боргузорӣ ноком шуд. Лутфан пайвасти интернетро санҷед.</string>
     <string name="audio_control_notification_info">Огоҳнома пайдо шуд. Шумо метавонед аудиоро аз он идора кунед.</string>
     <string name="cached_percentage">Кэш карда шуд: %d%%</string>
