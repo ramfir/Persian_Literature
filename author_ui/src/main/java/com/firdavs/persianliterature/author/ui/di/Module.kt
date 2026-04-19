@@ -1,5 +1,7 @@
 package com.firdavs.persianliterature.author.ui.di
 
+import com.firdavs.persianliterature.author.ui.all_works.AllWorksViewModel
+import com.firdavs.persianliterature.author.ui.audio_books.AudioBooksViewModel
 import com.firdavs.persianliterature.author.ui.details.AuthorDetailsViewModel
 import com.firdavs.persianliterature.author.ui.favourites.FavouritesViewModel
 import com.firdavs.persianliterature.author.ui.list.AuthorsListViewModel
@@ -15,12 +17,12 @@ import org.koin.dsl.module
 
 val authorUiModule = module {
     viewModelOf(::AuthorsListViewModel)
+    viewModelOf(::AllWorksViewModel)
     viewModelOf(::FavouritesViewModel)
+    viewModelOf(::AudioBooksViewModel)
     viewModel {
             (args: Array<Any?>) -> AuthorDetailsViewModel(
         args.first() as String,
-        androidContext(),
-        get(),
         get(),
         get(),
         get()
@@ -28,11 +30,13 @@ val authorUiModule = module {
     }
     viewModel {
             (args: Array<Any?>) -> WorkDetailsViewModel(
-        args.first() as String,
-        androidContext(),
-        get(),
-        get(),
-        get()
+        id = args.first() as String,
+        context = androidContext(),
+        worksRepository = get(),
+        pdfDownloader = get(),
+        audioServiceController = get(),
+        favouritesRepository = get(),
+        languageManager = get()
     )
     }
     factoryOf(::AuthorUiMapperImpl) bind AuthorUiMapper::class

@@ -8,7 +8,10 @@ dependencies {
     implementation module.core
     implementation module.ui_kit
     implementation module.author_api
+    implementation module.audio_api
+    implementation module.audio
     implementation module.util
+    implementation module.settings_api
 
     implementation library.glide
     implementation platform(library.firebase_bom)

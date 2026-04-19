@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="drawer_title">Сокровищница литературы</string>
+    <string name="about_app">О приложении</string>
+    <string name="favourites">Избранное</string>
+    <string name="settings">Настройки</string>
+    <string name="authors">Авторы</string>
+    <string name="all_works">Все произведения</string>
+    <string name="poem_of_day">Стих дня</string>
+    <string name="audio_books">Аудиокниги</string>
+    <string name="quiz">Викторина</string>
+</resources>

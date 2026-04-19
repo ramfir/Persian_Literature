@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Ганҷи Адабиёт</string>
+    <string name="exit_toast_message">Нажмите еще раз, если хотите выйти из приложения</string>
+
+    <!-- Update Feature -->
+    <string name="update_available_title">Доступно обновление</string>
+    <string name="update_available_message">Доступна новая версия приложения Сокровищница Литературы. Обновите сейчас, чтобы получить последние функции и улучшения.</string>
+    <string name="update_button">Обновить</string>
+    <string name="update_later_button">Позже</string>
+    <string name="update_downloading">Загрузка обновления…</string>
+    <string name="update_ready_title">Обновление готово</string>
+    <string name="update_ready_message">Обновление загружено. Перезапустите приложение для установки.</string>
+    <string name="update_install_button">Установить</string>
+
+    <!-- Notification Permission -->
+    <string name="notification_permission_title">Ежедневные напоминания с поэзией</string>
+    <string name="notification_permission_message">Сокровищница Литературы может отправлять вам ежедневные уведомления с прекрасной персидской поэзией, чтобы вдохновить ваш день.\n\nХотите получать ежедневные стихи в 10:00?</string>
+    <string name="notification_permission_allow">Разрешить уведомления</string>
+    <string name="notification_permission_skip">Может быть позже</string>
+
+    <!-- New Works Notification -->
+    <string name="new_works_available">Доступны новые произведения</string>
+    <string name="close">Закрыть</string>
+    <string name="new_works_in_english">Новые произведения на английском</string>
+    <string name="new_works_in_russian">Новые произведения на русском</string>
+    <string name="new_works_in_tajik">Новые произведения на таджикском</string>
+    <string name="change_language_to_view_work">Чтобы просмотреть это произведение, измените язык в Настройках</string>
+</resources>

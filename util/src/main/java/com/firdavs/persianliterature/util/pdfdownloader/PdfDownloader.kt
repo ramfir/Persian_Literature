@@ -8,6 +8,8 @@ interface PdfDownloader {
         pdfUrl: String,
         fileName: String,
         @MainThread
+        onProgress: (Float) -> Unit = {},
+        @MainThread
         doOnSuccess: (File) -> Unit
     )
 }

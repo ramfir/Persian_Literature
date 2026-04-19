@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="drawer_title">Ганҷи Адабиёт</string>
+    <string name="about_app">Дар бораи барнома</string>
+    <string name="favourites">Интихобшуда</string>
+    <string name="settings">Танзимот</string>
+    <string name="authors">Муаллифон</string>
+    <string name="all_works">Ҳамаи асарҳо</string>
+    <string name="poem_of_day">Шеъри рӯз</string>
+    <string name="audio_books">Китобҳои савтӣ</string>
+    <string name="quiz">Имтиҳон</string>
+</resources>

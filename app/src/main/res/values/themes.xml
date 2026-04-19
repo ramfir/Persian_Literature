@@ -4,4 +4,10 @@
     <style name="Theme.PersianLiterature" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
+
+    <style name="Theme.PersianLiterature.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/gold</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.PersianLiterature</item>
+    </style>
 </resources>

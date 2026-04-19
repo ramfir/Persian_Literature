@@ -1,0 +1,33 @@
+<resources>
+    <string name="author">Муаллиф</string>
+    <string name="authors_list">Рӯйхати муаллифон</string>
+    <string name="favourites">Интихобшуда</string>
+    <string name="settings">Танзимот</string>
+    <string name="search_authors">Ҷустуҷӯи муаллифон…</string>
+    <string name="search_all_works">Ҷустуҷӯи асарҳо…</string>
+    <string name="bio">Тарҷумаи ҳол</string>
+    <string name="works">Асарҳо</string>
+    <string name="bio_loading">Боркунии тарҷумаи ҳол…</string>
+    <string name="no_works_found">Асарҳо ёфт нашуданд</string>
+    <string name="no_bio_found">Тарҷумаи ҳол ёфт нашуд</string>
+    <string name="published_at">нашр шуд дар %s</string>
+    <string name="no_favourite_authors">Муаллифони интихобшуда нест</string>
+    <string name="no_favourite_works">Асарҳои интихобшуда нест</string>
+    <string name="authors_fetched">Рӯйхати муаллифон аз нав гирифта шуд</string>
+    <string name="download_audio">Зеркашии Аудио</string>
+    <string name="downloading">Зеркашӣ шуда истодааст… %d%%</string>
+    <string name="play_audio">Пахш</string>
+    <string name="pause_audio">Таваққуф</string>
+    <string name="stop_audio">Истодан</string>
+    <string name="now_playing">Дар ҳоли пахш</string>
+    <string name="download_failed">Зеркашӣ ноком шуд</string>
+    <string name="retry_download">Аз нав кӯшиш кунед</string>
+    <string name="no_audio_books_found">Китобҳои савтӣ ҳанӯз дастрас нестанд</string>
+    <string name="fetch_error">Боргузорӣ ноком шуд. Лутфан пайвасти интернетро санҷед.</string>
+    <string name="audio_control_notification_info">Огоҳнома пайдо шуд. Шумо метавонед аудиоро аз он идора кунед.</string>
+    <string name="cached_percentage">Кэш карда шуд: %d%%</string>
+    <string name="available_offline">Дастрас дар офлайн</string>
+    <string name="streaming">Ҷараён…</string>
+    <string name="download_for_offline">Зеркашӣ барои офлайн</string>
+    <string name="cancel_download">Бекор кардан</string>
+</resources>

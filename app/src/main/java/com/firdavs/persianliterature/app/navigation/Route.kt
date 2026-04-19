@@ -8,14 +8,38 @@ sealed interface Route : NavKey {
     object AuthorsList : Route
 
     @Serializable
+    object AllWorks : Route
+
+    @Serializable
     data class AuthorDetails(val id: String) : Route
 
     @Serializable
     data class WorkDetails(val id: String) : Route
 
     @Serializable
+    data class PoemOfDay(val poemId: String? = null) : Route
+
+    @Serializable
+    object AudioBooks : Route
+
+    @Serializable
+    object Quiz : Route
+
+    @Serializable
+    data class QuizPlay(val id: String, val sessionId: Long = System.currentTimeMillis()) : Route
+
+    @Serializable
+    data class QuizResult(val progressId: String) : Route
+
+    @Serializable
     object AboutApp : Route
 
     @Serializable
     object Favourites : Route
+
+    @Serializable
+    object Settings : Route
+
+    @Serializable
+    object Language : Route
 }

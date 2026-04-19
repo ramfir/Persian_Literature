@@ -1,11 +1,11 @@
 package com.firdavs.persianliterature.author.ui.favourites
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,8 +22,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.firdavs.persianliterature.author.ui.R
 import com.firdavs.persianliterature.author.ui.list.AuthorItem
@@ -80,6 +81,7 @@ private fun FavouritesScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .background(LocalColors.current.primary)
                     .padding(horizontal = 8.dp)
             ) {
                 IconButton(
@@ -89,9 +91,12 @@ private fun FavouritesScreen(
                 }
                 H3Text(
                     modifier = Modifier
-                        .align(Alignment.Center),
+                        .align(Alignment.Center)
+                        .padding(horizontal = 56.dp),
                     text = stringResource(R.string.favourites),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         },
@@ -246,7 +251,9 @@ private fun FavouriteWorkItem(
     ) {
         Column(modifier = Modifier.weight(1f)) {
             H4Text(text = work.title)
-            H5Text(text = stringResource(R.string.published_at, work.publishYear))
+            work.publishYear?.let { year ->
+                H5Text(text = stringResource(R.string.published_at, year))
+            }
         }
         IconButton(
             onClick = { onRemoveFromFavourites(work.id) }

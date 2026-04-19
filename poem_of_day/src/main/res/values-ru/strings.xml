@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="poems_refreshed">Стихи успешно обновлены</string>
+    <string name="new_poem">Новый стих</string>
+    <string name="previous_poem">Предыдущий стих</string>
+    <string name="no_poems_available">Стихи пока недоступны</string>
+</resources>

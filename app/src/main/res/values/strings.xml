@@ -1,4 +1,28 @@
 <resources>
-    <string name="app_name">Persian Literature</string>
+    <string name="app_name">Treasure of Literature</string>
     <string name="exit_toast_message">Click again if you want to quit the app</string>
+
+    <!-- Update Feature -->
+    <string name="update_available_title">Update Available</string>
+    <string name="update_available_message">A new version of Treasure of Literature is available. Update now to get the latest features and improvements.</string>
+    <string name="update_button">Update</string>
+    <string name="update_later_button">Later</string>
+    <string name="update_downloading">Downloading update…</string>
+    <string name="update_ready_title">Update Ready</string>
+    <string name="update_ready_message">Update has been downloaded. Restart app to install.</string>
+    <string name="update_install_button">Install</string>
+
+    <!-- Notification Permission -->
+    <string name="notification_permission_title">Daily Poetry Reminders</string>
+    <string name="notification_permission_message">Treasure of Literature can send you daily notifications with beautiful Persian poetry to inspire your day.\n\nWould you like to receive daily poetry at 10:00 AM?</string>
+    <string name="notification_permission_allow">Allow Notifications</string>
+    <string name="notification_permission_skip">Maybe Later</string>
+
+    <!-- New Works Notification -->
+    <string name="new_works_available">New Works Available</string>
+    <string name="close">Close</string>
+    <string name="new_works_in_english">New works in English</string>
+    <string name="new_works_in_russian">New works in Russian</string>
+    <string name="new_works_in_tajik">New works in Tajik</string>
+    <string name="change_language_to_view_work">To view this work, please change the language in Settings</string>
 </resources>

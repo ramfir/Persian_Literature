@@ -1,0 +1,16 @@
+<resources>
+    <string name="select_language">Забонро интихоб кунед</string>
+    <string name="apply">Татбиқ кунед</string>
+    <string name="change_language">Забонро тағйир диҳед</string>
+
+    <!-- Notification Strings -->
+    <string name="enable_notifications">Фаъол кардани огоҳиҳои ҳаррӯза</string>
+    <string name="notification_description">Ҳар рӯз соати 10:00 шеър қабул кунед</string>
+    <string name="notification_permission_required">Иҷозат барои огоҳиҳо лозим аст</string>
+    <string name="notification_channel_name">Шеъри рӯз</string>
+    <string name="notification_channel_description">Огоҳиҳо дар бораи шеър</string>
+    <string name="notification_title">Шеъри рӯз</string>
+    <string name="notification_text">Ман шеъри форсиро дӯст медорам</string>
+    <string name="language_change_error">Тағйири пурраи забон ноком шуд. Лутфан пайвасти интернетро санҷед.</string>
+    <string name="language_change_success">Забон бомуваффақият тағйир ёфт</string>
+</resources>

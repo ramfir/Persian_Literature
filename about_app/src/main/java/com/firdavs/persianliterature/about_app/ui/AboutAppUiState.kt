@@ -9,6 +9,9 @@ data class AboutAppUiState(
     val features: List<Int> = listOf(
         R.string.authors_list_with_works,
         R.string.add_favourites,
-        R.string.languages
+        R.string.languages,
+        R.string.about_audio_books,
+        R.string.about_quizzes,
+        R.string.about_poem_of_day
     )
 ) : UiState()

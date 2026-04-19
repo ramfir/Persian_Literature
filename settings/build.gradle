@@ -1,0 +1,17 @@
+apply from: "$rootDir/gradle/scripts/compose-module.gradle"
+
+android {
+    namespace 'com.firdavs.persianliterature.settings'
+}
+
+dependencies {
+    implementation module.settings_api
+    implementation module.core
+    implementation module.ui_kit
+    implementation module.author
+    implementation module.quiz_api
+    implementation library.work_runtime
+    implementation library.room_runtime
+    implementation library.app_update_ktx
+    implementation library.coroutines_play_services
+}

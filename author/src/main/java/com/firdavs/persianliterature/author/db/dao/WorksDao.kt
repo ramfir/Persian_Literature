@@ -6,7 +6,15 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.firdavs.persianliterature.author.db.AuthorsDb
 import com.firdavs.persianliterature.author.db.model.WorkEntity
+import com.firdavs.persianliterature.author_api.model.AudioCacheStatus
+import com.firdavs.persianliterature.author_api.model.AudioDownloadStatus
 import kotlinx.coroutines.flow.Flow
+
+data class WorkAudioInfo(
+    val id: String,
+    val audioDownloadStatus: AudioDownloadStatus,
+    val audioLocalPath: String?
+)
 
 @Dao
 interface WorksDao {
@@ -28,4 +36,65 @@ interface WorksDao {
 
     @Query("SELECT id FROM ${AuthorsDb.WORKS} WHERE isFavourite = 1")
     suspend fun getFavouriteIds(): List<String>
+    @Query(
+        """
+        SELECT id, audioDownloadStatus, audioLocalPath 
+        FROM ${AuthorsDb.WORKS} 
+        WHERE audioDownloadStatus = 'DOWNLOADED'
+        """
+    )
+    suspend fun getDownloadedAudioInfo(): List<WorkAudioInfo>
+
+    @Query(
+        """
+        UPDATE ${AuthorsDb.WORKS} 
+        SET audioDownloadStatus = :status, audioLocalPath = :localPath 
+        WHERE id = :id
+        """
+    )
+    suspend fun updateAudioDownloadStatus(id: String, status: AudioDownloadStatus, localPath: String?)
+
+    @Query("UPDATE ${AuthorsDb.WORKS} SET audioDownloadStatus = :status WHERE id = :id")
+    suspend fun updateAudioDownloadStatusOnly(id: String, status: AudioDownloadStatus)
+
+    @Query(
+        """
+        SELECT *
+        FROM ${AuthorsDb.WORKS}
+        WHERE audioUrl IS NOT NULL AND audioDownloadStatus = 'DOWNLOADED'
+        """
+    )
+    fun getWorksWithDownloadedAudio(): Flow<List<WorkEntity>>
+
+    @Query("SELECT * FROM ${AuthorsDb.WORKS} WHERE audioUrl IS NOT NULL")
+    fun getWorksWithAudio(): Flow<List<WorkEntity>>
+
+    // New cache-related queries
+    @Query(
+        """
+        UPDATE ${AuthorsDb.WORKS}
+        SET audioCacheStatus = :status,
+            audioCachedBytes = :cachedBytes,
+            audioContentLength = :contentLength
+        WHERE id = :id
+        """
+    )
+    suspend fun updateAudioCacheStatus(
+        id: String,
+        status: AudioCacheStatus,
+        cachedBytes: Long,
+        contentLength: Long
+    )
+
+    @Query(
+        """
+        SELECT *
+        FROM ${AuthorsDb.WORKS}
+        WHERE audioCacheStatus = 'FULLY_CACHED'
+        """
+    )
+    fun getWorksWithFullyCachedAudio(): Flow<List<WorkEntity>>
+
+    @Query("DELETE FROM ${AuthorsDb.WORKS}")
+    suspend fun deleteAll()
 }

@@ -9,6 +9,22 @@
 .cxx
 local.properties
 /signing/signing.properties
+/signing/*.jks
+/signing/*.keystore
 /.kotlin/
 /app/google-services.json
+/audio/build
+/audio_api/build
+/quiz/build
+/quiz_api/build
+/quiz_ui/build
+/poem_of_day/build
 
+# Play Store assets
+/play-store-assets/
+
+# Firebase service account (sensitive)
+firebase-service-account.json
+
+# Release builds
+/app/release/

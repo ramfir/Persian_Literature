@@ -15,6 +15,5 @@ fun Author.toUi() = AuthorUiModel(
     name = this.name,
     born = this.born,
     died = this.died,
-    bioUrl = this.bioUrl,
     isFavourite = this.isFavourite
 )

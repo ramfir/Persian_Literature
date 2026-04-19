@@ -8,10 +8,12 @@ val LightColorScheme = lightColorScheme(
     primaryContainer = GoldContainer,
     onPrimaryContainer = GoldLight,
 
-    error = Melon,
+    error = RedError,
     onError = RedDark,
     errorContainer = Red,
     onErrorContainer = MelonLight,
+
+    tertiary = Green,
 
     background = GreyLight,
     onBackground = GoldLight,
@@ -25,10 +27,12 @@ val DarkColorScheme = lightColorScheme(
     primaryContainer = GoldContainer,
     onPrimaryContainer = GoldLight,
 
-    error = Melon,
+    error = RedError,
     onError = RedDark,
     errorContainer = Red,
     onErrorContainer = MelonLight,
+
+    tertiary = Green,
 
     background = GreyLight,
     onBackground = GoldLight,

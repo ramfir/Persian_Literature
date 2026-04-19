@@ -1,0 +1,16 @@
+<resources>
+    <string name="select_language">Select Language</string>
+    <string name="apply">Apply</string>
+    <string name="change_language">Change Language</string>
+
+    <!-- Notification Strings -->
+    <string name="enable_notifications">Enable Daily Notifications</string>
+    <string name="notification_description">Receive a daily poem at 10:00 AM</string>
+    <string name="notification_permission_required">Notification permission is required</string>
+    <string name="notification_channel_name">Daily Poem</string>
+    <string name="notification_channel_description">Daily poetry notifications</string>
+    <string name="notification_title">Poem of the day</string>
+    <string name="notification_text">I love persian poetry</string>
+    <string name="language_change_error">Failed to change language completely. Please check your internet connection.</string>
+    <string name="language_change_success">Language changed successfully</string>
+</resources>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="notification_channel_name">Audio Playback</string>
+    <string name="notification_channel_description">Controls for audio playback</string>
+    <string name="audio_error_network">Network error: Unable to download audio</string>
+    <string name="audio_error_format">Invalid audio file format</string>
+    <string name="audio_error_playback">Failed to play audio</string>
+</resources>

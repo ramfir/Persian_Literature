@@ -1,0 +1,33 @@
+<resources>
+    <string name="author">Автор</string>
+    <string name="authors_list">Список авторов</string>
+    <string name="favourites">Избранное</string>
+    <string name="settings">Настройки</string>
+    <string name="search_authors">Поиск авторов…</string>
+    <string name="search_all_works">Поиск произведений…</string>
+    <string name="bio">Биография</string>
+    <string name="works">Произведения</string>
+    <string name="bio_loading">Загрузка биографии…</string>
+    <string name="no_works_found">Произведения не найдены</string>
+    <string name="no_bio_found">Биография не найдена</string>
+    <string name="published_at">опубликовано %s</string>
+    <string name="no_favourite_authors">Нет избранных авторов</string>
+    <string name="no_favourite_works">Нет избранных произведений</string>
+    <string name="authors_fetched">Список авторов обновлен</string>
+    <string name="download_audio">Скачать Аудио</string>
+    <string name="downloading">Загрузка… %d%%</string>
+    <string name="play_audio">Воспроизвести</string>
+    <string name="pause_audio">Пауза</string>
+    <string name="stop_audio">Стоп</string>
+    <string name="now_playing">Воспроизведение</string>
+    <string name="download_failed">Ошибка Загрузки</string>
+    <string name="retry_download">Повторить</string>
+    <string name="no_audio_books_found">Аудиокниги пока недоступны</string>
+    <string name="fetch_error">Не удалось загрузить данные. Проверьте подключение к интернету.</string>
+    <string name="audio_control_notification_info">Появилось уведомление. Вы можете управлять воспроизведением через него.</string>
+    <string name="cached_percentage">Кэшировано: %d%%</string>
+    <string name="available_offline">Доступно Офлайн</string>
+    <string name="streaming">Стриминг…</string>
+    <string name="download_for_offline">Скачать для Офлайна</string>
+    <string name="cancel_download">Отменить</string>
+</resources>

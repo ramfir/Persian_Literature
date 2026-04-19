@@ -10,20 +10,48 @@ android {
     defaultConfig {
         applicationId "com.firdavs.persianliterature"
     }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+        }
+    }
+
+    bundle {
+        language {
+            // Disable split but ensure Tajik is always included with the default language
+            enableSplit = false
+        }
+    }
 }
 
 dependencies {
+    implementation module.author_api
     implementation module.core
     implementation module.ui_kit
     implementation module.author_ui
     implementation module.author
     implementation module.util
     implementation module.about_app
+    implementation module.settings_api
+    implementation module.settings
+    implementation module.audio_api
+    implementation module.audio
+    implementation module.quiz_api
+    implementation module.quiz
+    implementation module.quiz_ui
+    implementation module.poem_of_day
 
     implementation library.activity_compose
+    implementation library.appcompat
+    implementation library.splash_screen
     implementation platform(library.firebase_bom)
     implementation library.firestore_ktx
     implementation groups.navigation
+    implementation library.work_runtime
+    implementation library.koin_workmanager
+    implementation library.app_update_ktx
 }
 
 tasks.register("runKoinModuleTests", Test.class) {

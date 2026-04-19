@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Ганҷи Адабиёт</string>
+    <string name="exit_toast_message">Боз як маротиба пахш кунед, агар мехоҳед аз барнома баромад кунед</string>
+
+    <!-- Update Feature -->
+    <string name="update_available_title">Навсозӣ дастрас аст</string>
+    <string name="update_available_message">Версияи нави барномаи Ганҷи Адабиёт дастрас аст. Ҳозир навсозӣ кунед, то имконоти нав ва беҳтаршавиҳоро гиред.</string>
+    <string name="update_button">Навсозӣ кунед</string>
+    <string name="update_later_button">Баъдтар</string>
+    <string name="update_downloading">Боргирии навсозӣ…</string>
+    <string name="update_ready_title">Навсозӣ тайёр аст</string>
+    <string name="update_ready_message">Навсозӣ боргирӣ шуд. Барои насб барномаро аз нав оғоз кунед.</string>
+    <string name="update_install_button">Насб кунед</string>
+
+    <!-- Notification Permission -->
+    <string name="notification_permission_title">Ёдовариҳои рӯзонаи шеърӣ</string>
+    <string name="notification_permission_message">Ганҷи Адабиёт метавонад ба шумо ҳар рӯз огоҳиҳои зебо бо шеърҳои форсӣ фиристад, то рӯзатонро илҳом бахшад.\n\nМехоҳед ҳар рӯз соати 10:00 шеър қабул кунед?</string>
+    <string name="notification_permission_allow">Иҷозат додан ба огоҳиҳо</string>
+    <string name="notification_permission_skip">Баъдтар</string>
+
+    <!-- New Works Notification -->
+    <string name="new_works_available">Асарҳои нав дастрасанд</string>
+    <string name="close">Пӯшидан</string>
+    <string name="new_works_in_english">Асарҳои нав ба забони англисӣ</string>
+    <string name="new_works_in_russian">Асарҳои нав ба забони русӣ</string>
+    <string name="new_works_in_tajik">Асарҳои нав ба забони тоҷикӣ</string>
+    <string name="change_language_to_view_work">Барои дидани ин асар, лутфан забонро дар Танзимот иваз кунед</string>
+</resources>

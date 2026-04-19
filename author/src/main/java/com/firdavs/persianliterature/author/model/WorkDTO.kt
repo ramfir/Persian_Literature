@@ -9,10 +9,14 @@ data class WorkDTO(
     var authorId: String = "",
     @get:PropertyName("title") @set:PropertyName("title")
     var title: String = "",
+    @get:PropertyName("description") @set:PropertyName("description")
+    var description: String? = null,
     @get:PropertyName("publishYear") @set:PropertyName("publishYear")
     var publishYear: String? = null,
     @get:PropertyName("fileUrl") @set:PropertyName("fileUrl")
-    var fileUrl: String = ""
+    var fileUrl: String = "",
+    @get:PropertyName("audioUrl") @set:PropertyName("audioUrl")
+    var audioUrl: String? = null
 )
 
 fun List<WorkDTO>.toDb() = map { it.toDb() }
@@ -21,6 +25,8 @@ fun WorkDTO.toDb() = WorkEntity(
     id = id,
     authorId = authorId,
     title = title,
-    publishYear = publishYear ?: "",
-    fileUrl = fileUrl
+    description = description,
+    publishYear = publishYear,
+    fileUrl = fileUrl,
+    audioUrl = audioUrl
 )

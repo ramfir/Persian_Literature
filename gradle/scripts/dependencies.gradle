@@ -4,6 +4,8 @@ ext {
     library = [
             core_ktx               : ("androidx.core:core-ktx:$core_ktx_version"),
             activity_compose       : ("androidx.activity:activity-compose:$activity_compose_version"),
+            appcompat              : ("androidx.appcompat:appcompat:$appcompat_version"), // for locale change
+
             lifecycle_ktx          : ("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"),
             lifecycle_compose      : ("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"),
             lifecycle_navigation   : ("androidx.lifecycle:lifecycle-viewmodel-navigation3:$navigation_version"),
@@ -36,6 +38,7 @@ ext {
             koin_core_coroutines   : ("io.insert-koin:koin-core-coroutines:$koin_version"),
             koin_test              : ("io.insert-koin:koin-test-junit4:$koin_version"),
             koin_compose           : ("io.insert-koin:koin-androidx-compose:$koin_version"),
+            koin_workmanager       : ("io.insert-koin:koin-androidx-workmanager:$koin_version"),
 
             datastore              : ("androidx.datastore:datastore-preferences:$datastore_version"),
             room_runtime           : ("androidx.room:room-runtime:$room_version"),
@@ -47,7 +50,18 @@ ext {
 
             coroutines_play_services: ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_play_services_version"),
 
-            pdf_viewer             : ("io.github.afreakyelf:Pdf-Viewer:$pdf_viewer_version")
+            pdf_viewer             : ("io.github.afreakyelf:Pdf-Viewer:$pdf_viewer_version"),
+
+            media3_exoplayer       : ("androidx.media3:media3-exoplayer:$media3_version"),
+            media3_common          : ("androidx.media3:media3-common:$media3_version"),
+            media3_session         : ("androidx.media3:media3-session:$media3_version"),
+            media3_ui              : ("androidx.media3:media3-ui:$media3_version"),
+            media3_datasource      : ("androidx.media3:media3-datasource:$media3_version"),
+            media3_database        : ("androidx.media3:media3-database:$media3_version"),
+
+            work_runtime           : ("androidx.work:work-runtime-ktx:$work_version"),
+            splash_screen          : ("androidx.core:core-splashscreen:$splash_screen_version"),
+            app_update_ktx         : ("com.google.android.play:app-update-ktx:$app_update_version")
     ]
     module = [
             core            : project(":core"),
@@ -56,7 +70,15 @@ ext {
             author_api      : project(":author_api"),
             author          : project(":author"),
             util            : project(":util"),
-            about_app       : project(":about_app")
+            about_app       : project(":about_app"),
+            settings_api    : project(":settings_api"),
+            settings        : project(":settings"),
+            audio_api       : project(":audio_api"),
+            audio           : project(":audio"),
+            quiz_api        : project(":quiz_api"),
+            quiz            : project(":quiz"),
+            quiz_ui         : project(":quiz_ui"),
+            poem_of_day     : project(":poem_of_day")
     ]
     groups = [
             compose      : [

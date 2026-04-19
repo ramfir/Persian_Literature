@@ -5,7 +5,8 @@ android {
 }
 
 dependencies {
-    implementation module.author_api
+    api module.author_api
+    implementation module.settings_api
 
     implementation platform(library.firebase_bom)
     implementation library.firestore_ktx

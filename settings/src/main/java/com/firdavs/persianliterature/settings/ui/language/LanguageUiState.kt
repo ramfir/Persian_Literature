@@ -1,0 +1,13 @@
+package com.firdavs.persianliterature.settings.ui.language
+
+import com.firdavs.persianliterature.core.model.Chapter
+import com.firdavs.persianliterature.core.presentation.UiState
+import com.firdavs.persianliterature.settings.api.Language
+
+data class LanguageUiState(
+    val chapters: List<Chapter> = Chapter.all,
+    val selectedLanguage: Language = Language.ENGLISH,
+    val showErrorToast: Boolean = false,
+    val showSuccessToast: Boolean = false,
+    val isRefreshing: Boolean = false
+) : UiState()

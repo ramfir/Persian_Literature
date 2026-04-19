@@ -1,0 +1,11 @@
+apply from: "$rootDir/gradle/scripts/compose-module.gradle"
+
+android {
+    namespace 'com.firdavs.persianliterature.poem_of_day'
+}
+
+dependencies {
+    implementation module.core
+    implementation module.ui_kit
+    implementation module.author_api
+}
