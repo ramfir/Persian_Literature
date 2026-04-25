@@ -146,10 +146,6 @@ class MainViewModel(
         post { it.copy(notificationPoemId = null) }
     }
 
-    fun dismissWelcomeDialog() {
-        post { it.copy(showWelcomeDialog = false) }
-    }
-
     private fun fetchAllData() {
         fetchAuthors()
         fetchWorks()
@@ -194,7 +190,7 @@ class MainViewModel(
             val updateInfo = updateManager.checkForUpdate()
             when (updateInfo) {
                 is UpdateInfo.UpdateAvailable -> {
-                    post { it.copy(showUpdateDialog = true, updateInfo = updateInfo) }
+                    post { it.copy(showUpdateDialog = true) }
                 }
                 is UpdateInfo.UpdateDownloaded -> {
                     post { it.copy(showInstallPrompt = true) }

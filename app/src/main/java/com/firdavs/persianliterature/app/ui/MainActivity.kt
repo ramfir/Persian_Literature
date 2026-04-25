@@ -94,12 +94,6 @@ class MainActivity : ComponentActivity() {
                             }
                         )
 
-                        if (state.showWelcomeDialog) {
-                            WelcomeDialog(
-                                onDismiss = { viewModel.dismissWelcomeDialog() }
-                            )
-                        }
-
                         if (state.showLanguageSelectionDialog) {
                             LanguageSelectionDialog(
                                 onLanguageSelected = { language ->
