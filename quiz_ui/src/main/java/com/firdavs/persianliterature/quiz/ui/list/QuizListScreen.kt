@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerState
@@ -59,7 +58,6 @@ fun QuizListEntryPoint(
             state = state,
             onQuizClick = onQuizClick,
             onChapterClick = onChapterClick,
-            onRefreshClick = viewModel::onRefreshClick,
             resetShowToastFlag = viewModel::resetShowToastFlag,
             resetShowErrorToastFlag = viewModel::resetShowErrorToastFlag
         )
@@ -72,7 +70,6 @@ private fun QuizListScreen(
     state: QuizListUiState,
     onQuizClick: (String) -> Unit,
     onChapterClick: (Chapter) -> Unit,
-    onRefreshClick: () -> Unit,
     resetShowToastFlag: () -> Unit,
     resetShowErrorToastFlag: () -> Unit
 ) {
@@ -111,8 +108,7 @@ private fun QuizListScreen(
         topBar = { drawerState: DrawerState, scope: CoroutineScope ->
             TopBar(
                 drawerState = drawerState,
-                scope = scope,
-                onRefreshClick = onRefreshClick
+                scope = scope
             )
         },
         mainContent = {
@@ -144,8 +140,7 @@ private fun QuizListScreen(
 @Composable
 private fun TopBar(
     drawerState: DrawerState,
-    scope: CoroutineScope,
-    onRefreshClick: () -> Unit
+    scope: CoroutineScope
 ) {
     Row(
         modifier = Modifier
@@ -167,12 +162,6 @@ private fun TopBar(
             overflow = TextOverflow.Ellipsis
         )
         Spacer(Modifier.weight(1f))
-        IconButton(onClick = onRefreshClick) {
-            Icon(
-                Icons.Default.Refresh,
-                contentDescription = "Refresh"
-            )
-        }
     }
 }
 

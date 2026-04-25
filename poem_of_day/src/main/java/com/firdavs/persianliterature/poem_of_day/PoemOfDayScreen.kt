@@ -15,7 +15,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -53,7 +52,6 @@ fun PoemOfDayEntryPoint(
         PoemOfDayScreen(
             state = state,
             onChapterClick = onChapterClick,
-            onRefreshClick = viewModel::onRefreshClick,
             onNewPoemClick = viewModel::onNewPoemClick,
             onPreviousPoemClick = viewModel::onPreviousPoemClick,
             resetShowToastFlag = viewModel::resetShowToastFlag
@@ -65,7 +63,6 @@ fun PoemOfDayEntryPoint(
 private fun PoemOfDayScreen(
     state: PoemOfDayUiState,
     onChapterClick: (Chapter) -> Unit,
-    onRefreshClick: () -> Unit,
     onNewPoemClick: () -> Unit,
     onPreviousPoemClick: () -> Unit,
     resetShowToastFlag: () -> Unit
@@ -112,25 +109,6 @@ private fun PoemOfDayScreen(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                if (!state.isRefreshing) {
-                    IconButton(
-                        modifier = Modifier.align(Alignment.CenterEnd),
-                        onClick = onRefreshClick
-                    ) {
-                        Icon(Icons.Default.Refresh, "Refresh poems")
-                    }
-                } else {
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.CenterEnd)
-                            .padding(end = 12.dp)
-                    ) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.padding(4.dp),
-                            color = LocalColors.current.onPrimary
-                        )
-                    }
-                }
             }
         },
         mainContent = {

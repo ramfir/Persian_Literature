@@ -21,7 +21,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.DrawerState
@@ -85,7 +84,6 @@ fun AuthorsListEntryPoint(
             filterAuthorsList = viewModel::filterAuthorsList,
             onChapterClick = onChapterClick,
             onToggleFavourite = viewModel::onToggleFavourite,
-            onRefreshClick = viewModel::onRefreshClick,
             resetShowToastFlag = viewModel::resetShowToastFlag,
             resetShowErrorToastFlag = viewModel::resetShowErrorToastFlag
         )
@@ -104,7 +102,6 @@ private fun AuthorsListScreen(
     filterAuthorsList: () -> Unit,
     onChapterClick: (Chapter) -> Unit,
     onToggleFavourite: (String, Boolean) -> Unit,
-    onRefreshClick: () -> Unit,
     resetShowToastFlag: () -> Unit,
     resetShowErrorToastFlag: () -> Unit
 ) {
@@ -148,9 +145,7 @@ private fun AuthorsListScreen(
                 onClearSearchQueryClick = onClearSearchQueryClick,
                 onSearchClick = onSearchClick,
                 onExitSearchClick = onExitSearchClick,
-                filterAuthorsList = filterAuthorsList,
-                isRefreshing = state.isRefreshing,
-                onRefreshClick = onRefreshClick
+                filterAuthorsList = filterAuthorsList
             )
         },
         mainContent = {
@@ -199,9 +194,7 @@ private fun TopBar(
     onClearSearchQueryClick: () -> Unit,
     onSearchClick: () -> Unit,
     onExitSearchClick: () -> Unit,
-    filterAuthorsList: () -> Unit,
-    isRefreshing: Boolean,
-    onRefreshClick: () -> Unit
+    filterAuthorsList: () -> Unit
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -281,15 +274,6 @@ private fun TopBar(
                 overflow = TextOverflow.Ellipsis
             )
             Spacer(Modifier.weight(1f))
-            IconButton(
-                onClick = onRefreshClick,
-                enabled = !isRefreshing
-            ) {
-                Icon(
-                    Icons.Default.Refresh,
-                    contentDescription = "Refresh"
-                )
-            }
             IconButton(onClick = onSearchClick) {
                 Icon(
                     Icons.Default.Search,
@@ -400,7 +384,6 @@ private fun AuthorsListScreenPreview(
             filterAuthorsList = {},
             onChapterClick = {},
             onToggleFavourite = { _, _ -> },
-            onRefreshClick = {},
             resetShowToastFlag = {},
             resetShowErrorToastFlag = {}
         )
