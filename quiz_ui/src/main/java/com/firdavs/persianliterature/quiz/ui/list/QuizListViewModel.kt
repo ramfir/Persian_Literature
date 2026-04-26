@@ -1,16 +1,13 @@
 package com.firdavs.persianliterature.quiz.ui.list
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.firdavs.persianliterature.core.presentation.BaseViewModel
-import com.firdavs.persianliterature.quiz_api.repository.QuizRepository
-import com.firdavs.persianliterature.quiz_api.repository.QuestionRepository
 import com.firdavs.persianliterature.quiz_api.repository.QuizProgressRepository
+import com.firdavs.persianliterature.quiz_api.repository.QuizRepository
 import kotlinx.coroutines.launch
 
 class QuizListViewModel(
     private val quizRepository: QuizRepository,
-    private val questionRepository: QuestionRepository,
     private val quizProgressRepository: QuizProgressRepository
 ) : BaseViewModel<QuizListUiState>(QuizListUiState()) {
 
@@ -33,32 +30,5 @@ class QuizListViewModel(
                 post { it.copy(attemptSummaries = summaries) }
             }
         }
-    }
-
-    fun onRefreshClick() {
-        post { it.copy(isRefreshing = true) }
-        viewModelScope.launch {
-            runCatching {
-                quizRepository.fetchQuizzes()
-                questionRepository.fetchQuestions()
-            }.onFailure { error ->
-                Log.e(TAG, "onRefreshClick error", error)
-                post { it.copy(isRefreshing = false, showErrorToast = true) }
-            }.onSuccess {
-                post { it.copy(isRefreshing = false, showToast = true) }
-            }
-        }
-    }
-
-    fun resetShowToastFlag() {
-        post { it.copy(showToast = false) }
-    }
-
-    fun resetShowErrorToastFlag() {
-        post { it.copy(showErrorToast = false) }
-    }
-
-    companion object {
-        private const val TAG = "QuizListViewModel"
     }
 }

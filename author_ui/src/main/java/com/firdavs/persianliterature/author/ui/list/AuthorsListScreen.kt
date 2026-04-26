@@ -1,7 +1,7 @@
 package com.firdavs.persianliterature.author.ui.list
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,7 +20,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.DrawerState
@@ -43,7 +41,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
-import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -62,7 +59,7 @@ import com.firdavs.persianliterature.ui.kit.components.ProgressIndicator
 import com.firdavs.persianliterature.ui.kit.theme.AppPreviewTheme
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import com.firdavs.persianliterature.ui.kit.theme.LocalTypography
-import com.firdavs.persianliterature.ui.kit.theme.localizedContext
+import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
@@ -84,10 +81,7 @@ fun AuthorsListEntryPoint(
             onAuthorClick = onAuthorClick,
             filterAuthorsList = viewModel::filterAuthorsList,
             onChapterClick = onChapterClick,
-            onToggleFavourite = viewModel::onToggleFavourite,
-            onRefreshClick = viewModel::onRefreshClick,
-            resetShowToastFlag = viewModel::resetShowToastFlag,
-            resetShowErrorToastFlag = viewModel::resetShowErrorToastFlag
+            onToggleFavourite = viewModel::onToggleFavourite
         )
     }
 }
@@ -103,33 +97,8 @@ private fun AuthorsListScreen(
     onAuthorClick: (String) -> Unit,
     filterAuthorsList: () -> Unit,
     onChapterClick: (Chapter) -> Unit,
-    onToggleFavourite: (String, Boolean) -> Unit,
-    onRefreshClick: () -> Unit,
-    resetShowToastFlag: () -> Unit,
-    resetShowErrorToastFlag: () -> Unit
+    onToggleFavourite: (String, Boolean) -> Unit
 ) {
-    val context = localizedContext()
-    LaunchedEffect(state.showToast) {
-        if (state.showToast) {
-            Toast.makeText(
-                context,
-                R.string.authors_fetched,
-                Toast.LENGTH_SHORT
-            ).show()
-            resetShowToastFlag()
-        }
-    }
-
-    LaunchedEffect(state.showErrorToast) {
-        if (state.showErrorToast) {
-            Toast.makeText(
-                context,
-                R.string.fetch_error,
-                Toast.LENGTH_LONG
-            ).show()
-            resetShowErrorToastFlag()
-        }
-    }
     BaseScreen(
         drawerContent = {
             DrawerSheet(
@@ -148,9 +117,7 @@ private fun AuthorsListScreen(
                 onClearSearchQueryClick = onClearSearchQueryClick,
                 onSearchClick = onSearchClick,
                 onExitSearchClick = onExitSearchClick,
-                filterAuthorsList = filterAuthorsList,
-                isRefreshing = state.isRefreshing,
-                onRefreshClick = onRefreshClick
+                filterAuthorsList = filterAuthorsList
             )
         },
         mainContent = {
@@ -199,9 +166,7 @@ private fun TopBar(
     onClearSearchQueryClick: () -> Unit,
     onSearchClick: () -> Unit,
     onExitSearchClick: () -> Unit,
-    filterAuthorsList: () -> Unit,
-    isRefreshing: Boolean,
-    onRefreshClick: () -> Unit
+    filterAuthorsList: () -> Unit
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -281,15 +246,6 @@ private fun TopBar(
                 overflow = TextOverflow.Ellipsis
             )
             Spacer(Modifier.weight(1f))
-            IconButton(
-                onClick = onRefreshClick,
-                enabled = !isRefreshing
-            ) {
-                Icon(
-                    Icons.Default.Refresh,
-                    contentDescription = "Refresh"
-                )
-            }
             IconButton(onClick = onSearchClick) {
                 Icon(
                     Icons.Default.Search,
@@ -399,10 +355,7 @@ private fun AuthorsListScreenPreview(
             onAuthorClick = {},
             filterAuthorsList = {},
             onChapterClick = {},
-            onToggleFavourite = { _, _ -> },
-            onRefreshClick = {},
-            resetShowToastFlag = {},
-            resetShowErrorToastFlag = {}
+            onToggleFavourite = { _, _ -> }
         )
     }
 }

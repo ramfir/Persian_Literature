@@ -2,6 +2,7 @@ package com.firdavs.persianliterature.author.ui.all_works
 
 import com.firdavs.persianliterature.author_api.model.AuthorWithWorks
 
+@Suppress("NestedBlockDepth")
 sealed class AllWorksListItem {
     data class AuthorHeader(val authorId: String, val authorName: String) : AllWorksListItem()
     data class WorkItem(val work: com.firdavs.persianliterature.author_api.model.Work) : AllWorksListItem()

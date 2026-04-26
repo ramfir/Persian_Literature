@@ -112,7 +112,7 @@ fun WorkDetailsScreen(
 
     BaseScreen(
         applyTopPadding = isBarsVisible,
-        topBar = { drawerState, scope ->
+        topBar = { _, _ ->
             AnimatedVisibility(isBarsVisible) {
                 Box(
                     modifier = Modifier
@@ -406,6 +406,7 @@ fun AudioControlsSection(
 }
 
 @SuppressLint("DefaultLocale", "ImplicitDefaultLocale")
+@Suppress("ImplicitDefaultLocale")
 private fun formatTime(milliseconds: Long): String {
     val totalSeconds = milliseconds / MILLIS_IN_SECOND
     val hours = totalSeconds / SECONDS_IN_HOUR

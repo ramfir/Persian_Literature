@@ -1,19 +1,16 @@
 package com.firdavs.persianliterature.author.ui.list
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.firdavs.persianliterature.author_api.repository.AuthorRepository
 import com.firdavs.persianliterature.author.ui.mapper.AuthorUiMapper
 import com.firdavs.persianliterature.author.ui.model.AuthorUiModel
+import com.firdavs.persianliterature.author_api.repository.AuthorRepository
 import com.firdavs.persianliterature.author_api.repository.FavouritesRepository
-import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import com.firdavs.persianliterature.core.presentation.BaseViewModel
 import kotlinx.coroutines.launch
 
 class AuthorsListViewModel(
     private val authorRepository: AuthorRepository,
     private val authorUiMapper: AuthorUiMapper,
-    private val worksRepository: WorksRepository,
     private val favouritesRepository: FavouritesRepository
 ) :
     BaseViewModel<AuthorsListUiState>(AuthorsListUiState()) {
@@ -61,33 +58,5 @@ class AuthorsListViewModel(
         viewModelScope.launch {
             favouritesRepository.toggleAuthorFavourite(authorId, isFavourite)
         }
-    }
-
-    fun resetShowToastFlag() {
-        post { it.copy(showToast = false) }
-    }
-
-    fun resetShowErrorToastFlag() {
-        post { it.copy(showErrorToast = false) }
-    }
-
-    fun onRefreshClick() {
-        post { it.copy(isRefreshing = true) }
-        viewModelScope.launch {
-            runCatching {
-                authorRepository.fetchAuthors()
-                worksRepository.fetchWorks()
-            }.onFailure {
-                Log.e(TAG, "onRefreshClick error ", it)
-                post { it.copy(isRefreshing = false, showErrorToast = true) }
-            }.onSuccess {
-                post { it.copy(isRefreshing = false) }
-                post { it.copy(showToast = true) }
-            }
-        }
-    }
-
-    companion object {
-        private const val TAG = "AuthorsListViewModel"
     }
 }
