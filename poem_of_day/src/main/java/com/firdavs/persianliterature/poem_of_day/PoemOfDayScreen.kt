@@ -1,6 +1,5 @@
 package com.firdavs.persianliterature.poem_of_day
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,7 +20,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -38,7 +36,6 @@ import com.firdavs.persianliterature.ui.kit.T2Text
 import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
 import com.firdavs.persianliterature.ui.kit.components.buttons.PrimaryButton
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
-import com.firdavs.persianliterature.ui.kit.theme.localizedContext
 import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import kotlinx.coroutines.launch
 import com.firdavs.persianliterature.core.R as UiR
@@ -53,8 +50,7 @@ fun PoemOfDayEntryPoint(
             state = state,
             onChapterClick = onChapterClick,
             onNewPoemClick = viewModel::onNewPoemClick,
-            onPreviousPoemClick = viewModel::onPreviousPoemClick,
-            resetShowToastFlag = viewModel::resetShowToastFlag
+            onPreviousPoemClick = viewModel::onPreviousPoemClick
         )
     }
 }
@@ -64,21 +60,8 @@ private fun PoemOfDayScreen(
     state: PoemOfDayUiState,
     onChapterClick: (Chapter) -> Unit,
     onNewPoemClick: () -> Unit,
-    onPreviousPoemClick: () -> Unit,
-    resetShowToastFlag: () -> Unit
+    onPreviousPoemClick: () -> Unit
 ) {
-    val context = localizedContext()
-
-    LaunchedEffect(state.showToast) {
-        if (state.showToast) {
-            Toast.makeText(
-                context,
-                context.getString(R.string.poems_refreshed),
-                Toast.LENGTH_SHORT
-            ).show()
-            resetShowToastFlag()
-        }
-    }
 
     BaseScreen(
         drawerContent = {

@@ -41,6 +41,7 @@ class AllWorksViewModel(
         post { it.copy(searchQuery = "") }
     }
 
+    @Suppress("NestedBlockDepth")
     fun applySearchFilter() {
         val searchQuery = state.value.searchQuery
 
