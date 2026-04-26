@@ -51,6 +51,7 @@ fun Navigator(
     val toastContext = localizedContext()
     val coroutineScope = rememberCoroutineScope()
     var lastBackPressed by remember { mutableLongStateOf(0L) }
+    var lastNavigatedBackTime by remember { mutableLongStateOf(0L) }
 
     // Handle notification navigation
     LaunchedEffect(state.notificationPoemId) {
@@ -76,17 +77,25 @@ fun Navigator(
         val isRootScreen = backStack.size == 1
 
         if (isRootScreen) {
-            if (System.currentTimeMillis() - lastBackPressed < 3000) {
-                (context as? Activity)?.finish()
-            } else {
-                lastBackPressed = System.currentTimeMillis()
-                Toast.makeText(
-                    toastContext,
-                    R.string.exit_toast_message,
-                    Toast.LENGTH_SHORT
-                ).show()
+            // Guard against spurious triggers right after programmatic back navigation.
+            // backStack.size updates synchronously but recomposition is async, so a second
+            // touch event or predictive-back callback can arrive while the stack is already
+            // at 1 and incorrectly show the exit toast.
+            val recentlyNavigatedBack = System.currentTimeMillis() - lastNavigatedBackTime < 500L
+            if (!recentlyNavigatedBack) {
+                if (System.currentTimeMillis() - lastBackPressed < 3000) {
+                    (context as? Activity)?.finish()
+                } else {
+                    lastBackPressed = System.currentTimeMillis()
+                    Toast.makeText(
+                        toastContext,
+                        R.string.exit_toast_message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         } else {
+            lastNavigatedBackTime = System.currentTimeMillis()
             backStack.back()
         }
     }
