@@ -148,6 +148,10 @@ private fun PoemOfDayScreen(
                         .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
+                    val scrollState = rememberScrollState()
+                    LaunchedEffect(state.poem) {
+                        scrollState.scrollTo(0)
+                    }
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -160,7 +164,7 @@ private fun PoemOfDayScreen(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .verticalScroll(rememberScrollState())
+                                .verticalScroll(scrollState)
                                 .padding(24.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
