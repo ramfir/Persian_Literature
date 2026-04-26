@@ -13,6 +13,6 @@ enum class Chapter(val titleRes: Int) {
     Settings(R.string.settings);
 
     companion object {
-        val all = listOf(Authors, AllWorks, PoemOfDay, AudioBooks, Quiz, AboutApp, Favourites, Settings)
+        val all = listOf(Authors, AllWorks, PoemOfDay, AudioBooks, Quiz, Favourites, Settings, AboutApp)
     }
 }
