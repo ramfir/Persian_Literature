@@ -22,9 +22,13 @@ class AuthorsListViewModel(
 
     private fun observeAuthors() {
         viewModelScope.launch {
+            var firstEmission = true
             authorRepository.getAuthors().collect { authors ->
                 allAuthors = authorUiMapper.map(authors)
-                post { it.copy(authors = allAuthors, isLoading = false) }
+                // Keep loading if the first DB emission is empty (first launch, data not yet fetched from server).
+                val stillLoading = firstEmission && authors.isEmpty()
+                post { it.copy(authors = allAuthors, isLoading = stillLoading) }
+                firstEmission = false
             }
         }
     }
