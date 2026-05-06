@@ -1,11 +1,15 @@
 package com.firdavs.persianliterature.ui.kit
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,8 +49,14 @@ fun BaseScreen(
             modifier = modifier.fillMaxSize(),
             containerColor = backgroundColor,
             topBar = {
-                topBar?.let {
-                    topBar(drawerState, scope)
+                topBar?.let { topBarContent ->
+                    Box(
+                        modifier = Modifier
+                            .background(LocalColors.current.primary)
+                            .windowInsetsPadding(WindowInsets.statusBars)
+                    ) {
+                        topBarContent(drawerState, scope)
+                    }
                 }
             },
             content = { innerPadding ->
@@ -55,7 +65,10 @@ fun BaseScreen(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth()
-                            .padding(top = if (applyTopPadding) innerPadding.calculateTopPadding() else 0.dp)
+                            .padding(
+                                top = if (applyTopPadding) innerPadding.calculateTopPadding() else 0.dp,
+                                bottom = if (footerContent == null) innerPadding.calculateBottomPadding() else 0.dp
+                            )
                             .thenIfNotNull(footerContent) { drawShadow() }
                     ) {
                         mainContent()
@@ -64,7 +77,8 @@ fun BaseScreen(
                     if (footerContent != null) {
                         Box(
                             modifier = Modifier
-                                .fillMaxWidth(),
+                                .fillMaxWidth()
+                                .padding(bottom = innerPadding.calculateBottomPadding()),
                             content = footerContent
                         )
                     }
