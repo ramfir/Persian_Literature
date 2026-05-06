@@ -77,11 +77,7 @@ fun Navigator(
         val isRootScreen = backStack.size == 1
 
         if (isRootScreen) {
-            // Guard against spurious triggers right after programmatic back navigation.
-            // backStack.size updates synchronously but recomposition is async, so a second
-            // touch event or predictive-back callback can arrive while the stack is already
-            // at 1 and incorrectly show the exit toast.
-            val recentlyNavigatedBack = System.currentTimeMillis() - lastNavigatedBackTime < 500L
+            val recentlyNavigatedBack = System.currentTimeMillis() - lastNavigatedBackTime < 700L
             if (!recentlyNavigatedBack) {
                 if (System.currentTimeMillis() - lastBackPressed < 3000) {
                     (context as? Activity)?.finish()
