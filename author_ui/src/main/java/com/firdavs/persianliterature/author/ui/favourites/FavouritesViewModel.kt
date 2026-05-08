@@ -14,6 +14,7 @@ class FavouritesViewModel(
     init {
         observeFavouriteAuthors()
         observeFavouriteWorks()
+        observeFavouritePoems()
     }
 
     private fun observeFavouriteAuthors() {
@@ -32,6 +33,14 @@ class FavouritesViewModel(
         }
     }
 
+    private fun observeFavouritePoems() {
+        viewModelScope.launch {
+            favouritesRepository.getFavouritePoems().collect { poems ->
+                post { it.copy(favouritePoems = poems) }
+            }
+        }
+    }
+
     fun onTabSelected(tab: FavouritesTab) {
         post { it.copy(selectedTab = tab) }
     }
@@ -45,6 +54,12 @@ class FavouritesViewModel(
     fun onRemoveWorkFromFavourites(workId: String) {
         viewModelScope.launch {
             favouritesRepository.toggleWorkFavourite(workId, false)
+        }
+    }
+
+    fun onRemovePoemFromFavourites(poemId: String) {
+        viewModelScope.launch {
+            favouritesRepository.togglePoemFavourite(poemId, false)
         }
     }
 }

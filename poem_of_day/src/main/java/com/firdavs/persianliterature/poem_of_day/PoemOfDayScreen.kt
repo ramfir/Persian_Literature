@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -51,7 +53,8 @@ fun PoemOfDayEntryPoint(
             state = state,
             onChapterClick = onChapterClick,
             onNewPoemClick = viewModel::onNewPoemClick,
-            onPreviousPoemClick = viewModel::onPreviousPoemClick
+            onPreviousPoemClick = viewModel::onPreviousPoemClick,
+            onToggleFavourite = viewModel::onToggleFavourite
         )
     }
 }
@@ -61,7 +64,8 @@ private fun PoemOfDayScreen(
     state: PoemOfDayUiState,
     onChapterClick: (Chapter) -> Unit,
     onNewPoemClick: () -> Unit,
-    onPreviousPoemClick: () -> Unit
+    onPreviousPoemClick: () -> Unit,
+    onToggleFavourite: () -> Unit
 ) {
 
     BaseScreen(
@@ -93,6 +97,26 @@ private fun PoemOfDayScreen(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
+                if (state.poem != null) {
+                    IconButton(
+                        modifier = Modifier.align(Alignment.CenterEnd),
+                        onClick = onToggleFavourite
+                    ) {
+                        Icon(
+                            imageVector = if (state.poem.isFavourite) {
+                                Icons.Filled.Favorite
+                            } else {
+                                Icons.Outlined.FavoriteBorder
+                            },
+                            contentDescription = "Toggle favourite",
+                            tint = if (state.poem.isFavourite) {
+                                LocalColors.current.onPrimary
+                            } else {
+                                LocalColors.current.onPrimary.copy(alpha = 0.6f)
+                            }
+                        )
+                    }
+                }
             }
         },
         mainContent = {

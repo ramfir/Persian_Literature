@@ -263,7 +263,8 @@ fun Navigator(
                         }
                     },
                     onAuthorClick = { backStack.next(Route.AuthorDetails(it)) },
-                    onWorkClick = { backStack.next(Route.WorkDetails(it)) }
+                    onWorkClick = { backStack.next(Route.WorkDetails(it)) },
+                    onPoemClick = { backStack.next(Route.PoemOfDay(it)) }
                 )
             }
             entry<Route.Settings> {

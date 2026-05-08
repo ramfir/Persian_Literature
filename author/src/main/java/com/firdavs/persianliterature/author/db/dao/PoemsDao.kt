@@ -27,4 +27,13 @@ interface PoemsDao {
 
     @Query("SELECT * FROM ${AuthorsDb.POEMS}")
     suspend fun getAllPoems(): List<PoemEntity>
+
+    @Query("SELECT * FROM ${AuthorsDb.POEMS} WHERE isFavourite = 1")
+    fun getFavouritesFlow(): Flow<List<PoemEntity>>
+
+    @Query("SELECT id FROM ${AuthorsDb.POEMS} WHERE isFavourite = 1")
+    suspend fun getFavouriteIds(): List<String>
+
+    @Query("UPDATE ${AuthorsDb.POEMS} SET isFavourite = :isFavourite WHERE id = :id")
+    suspend fun updateFavourite(id: String, isFavourite: Boolean)
 }
