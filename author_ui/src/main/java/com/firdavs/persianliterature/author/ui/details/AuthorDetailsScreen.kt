@@ -16,7 +16,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -69,7 +70,7 @@ fun AuthorDetailsScreen(
     onToggleWorkFavourite: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     BaseScreen(
-        topBar = { drawerState, scope ->
+        topBar = { _, _ ->
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -107,11 +108,7 @@ fun AuthorDetailsScreen(
                                 Icons.Outlined.FavoriteBorder
                             },
                             contentDescription = null,
-                            tint = if (author.isFavourite) {
-                                LocalColors.current.primary
-                            } else {
-                                LocalColors.current.onPrimary
-                            }
+                            tint = LocalColors.current.onPrimary
                         )
                     }
                 }
@@ -183,11 +180,6 @@ private fun AuthorWithWorksContent(
                         onWorkClick = onWorkClick,
                         onToggleFavourite = onToggleWorkFavourite
                     )
-                    HorizontalDivider(
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        thickness = 1.dp,
-                        color = LocalColors.current.primary
-                    )
                 }
             }
         }
@@ -200,38 +192,45 @@ private fun WorkItem(
     onWorkClick: (String) -> Unit,
     onToggleFavourite: (String, Boolean) -> Unit
 ) {
-    Row(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = {
-                onWorkClick(work.id)
-            })
-            .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        shape = com.firdavs.persianliterature.ui.kit.theme.AppTheme.shapes.large,
+        colors = CardDefaults.cardColors(
+            containerColor = LocalColors.current.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Column(modifier = Modifier.weight(1f)) {
-            H4Text(text = work.title)
-            work.publishYear?.let { year ->
-                H5Text(text = stringResource(R.string.published_at, year))
-            }
-        }
-        IconButton(
-            onClick = { onToggleFavourite(work.id, !work.isFavourite) }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = {
+                    onWorkClick(work.id)
+                })
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = if (work.isFavourite) {
-                    Icons.Filled.Favorite
-                } else {
-                    Icons.Outlined.FavoriteBorder
-                },
-                contentDescription = null,
-                tint = if (work.isFavourite) {
-                    LocalColors.current.primary
-                } else {
-                    LocalColors.current.onPrimary
+            Column(modifier = Modifier.weight(1f)) {
+                H4Text(text = work.title)
+                work.publishYear?.let { year ->
+                    H5Text(text = stringResource(R.string.published_at, year))
                 }
-            )
+            }
+            IconButton(
+                onClick = { onToggleFavourite(work.id, !work.isFavourite) }
+            ) {
+                Icon(
+                    imageVector = if (work.isFavourite) {
+                        Icons.Filled.Favorite
+                    } else {
+                        Icons.Outlined.FavoriteBorder
+                    },
+                    contentDescription = null,
+                    tint = LocalColors.current.primary
+                )
+            }
         }
     }
 }

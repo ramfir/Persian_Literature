@@ -151,11 +151,7 @@ fun WorkDetailsScreen(
                                     Icons.Outlined.FavoriteBorder
                                 },
                                 contentDescription = null,
-                                tint = if (work.isFavourite) {
-                                    LocalColors.current.primary
-                                } else {
-                                    LocalColors.current.onPrimary
-                                }
+                                tint = LocalColors.current.onPrimary
                             )
                         }
                     }
@@ -209,7 +205,6 @@ fun WorkDetailsScreen(
                             )
                         }
                     } else if (state.work != null) {
-                        // Show PDF viewer with tap-to-toggle
                         state.workFile?.let { workFile ->
                             PdfRendererViewCompose(
                                 modifier = Modifier
@@ -282,11 +277,9 @@ fun AudioControlsSection(
             .padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalAlignment = CenterHorizontally
     ) {
-        // Audio controls - supports streaming with automatic caching
         when {
             state.work?.audioUrl != null -> {
                 if (state.playbackState.isPreparing && !state.hasCompletedInitialPreparation) {
-                    // Show loading indicator only during initial preparation
                     Column(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = CenterHorizontally
@@ -297,7 +290,6 @@ fun AudioControlsSection(
                     Column(
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        // Progress slider with time display
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
@@ -335,8 +327,6 @@ fun AudioControlsSection(
                                 modifier = Modifier.padding(start = 4.dp)
                             )
                         }
-
-                        // Play/Pause/Repeat button with skip controls
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.Center,
@@ -344,19 +334,15 @@ fun AudioControlsSection(
                         ) {
                             val hasReachedEnd = state.playbackState.duration > 0 &&
                                 state.playbackState.currentPosition >= state.playbackState.duration - 100
-
-                            // Skip 10 seconds backward
                             IconButton(
                                 onClick = onSkipBackward
                             ) {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_skip_backward_10),
                                     contentDescription = "Skip 10 seconds backward",
-                                    tint = LocalColors.current.onPrimary
+                                    tint = LocalColors.current.primary
                                 )
                             }
-
-                            // Play/Pause/Repeat button
                             IconButton(
                                 onClick = {
                                     when {
@@ -373,7 +359,7 @@ fun AudioControlsSection(
                                     Icon(
                                         painter = painterResource(R.drawable.ic_pause),
                                         contentDescription = "Pause",
-                                        tint = LocalColors.current.onPrimary
+                                        tint = LocalColors.current.primary
                                     )
                                 } else {
                                     Icon(
@@ -382,19 +368,17 @@ fun AudioControlsSection(
                                             else -> Icons.Filled.PlayArrow
                                         },
                                         contentDescription = null,
-                                        tint = LocalColors.current.onPrimary
+                                        tint = LocalColors.current.primary
                                     )
                                 }
                             }
-
-                            // Skip 10 seconds forward
                             IconButton(
                                 onClick = onSkipForward
                             ) {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_skip_forward_10),
                                     contentDescription = "Skip 10 seconds forward",
-                                    tint = LocalColors.current.onPrimary
+                                    tint = LocalColors.current.primary
                                 )
                             }
                         }

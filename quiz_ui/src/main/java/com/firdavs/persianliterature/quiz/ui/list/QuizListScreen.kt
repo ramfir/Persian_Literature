@@ -175,8 +175,7 @@ private fun QuizCard(
                 },
                 modifier = Modifier
                     .background(colors.primary, RoundedCornerShape(8.dp))
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                color = colors.onPrimary
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
             )
         }
     }

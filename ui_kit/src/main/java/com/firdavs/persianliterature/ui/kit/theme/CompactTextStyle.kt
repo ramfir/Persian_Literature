@@ -1,11 +1,18 @@
 package com.firdavs.persianliterature.ui.kit.theme
 
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.firdavs.persianliterature.ui.kit.R
 
-private val default = TextStyle(fontFamily = FontFamily.Default, letterSpacing = 0.sp)
+private val loraFontFamily = FontFamily(
+    Font(R.font.lora, FontWeight.Normal),
+    Font(R.font.lora, FontWeight.Medium)
+)
+
+private val default = TextStyle(fontFamily = loraFontFamily, letterSpacing = 0.sp)
 private val defaultW400 = default.copy(fontWeight = FontWeight.Normal)
 private val defaultW500 = default.copy(fontWeight = FontWeight.Medium)
 

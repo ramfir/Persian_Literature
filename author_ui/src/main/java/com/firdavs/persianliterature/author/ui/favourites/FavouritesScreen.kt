@@ -16,7 +16,8 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.Create
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -159,11 +160,6 @@ private fun FavouriteAuthorsContent(
                     onAuthorClick = onAuthorClick,
                     onRemoveFromFavourites = onRemoveFromFavourites
                 )
-                HorizontalDivider(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    thickness = 1.dp,
-                    color = LocalColors.current.primary
-                )
             }
         }
     }
@@ -175,25 +171,11 @@ private fun FavouriteAuthorItem(
     onAuthorClick: (String) -> Unit,
     onRemoveFromFavourites: (String) -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onAuthorClick(author.id) },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(modifier = Modifier.weight(1f)) {
-            AuthorItem(author = author, onAuthorClick = onAuthorClick)
-        }
-        IconButton(
-            onClick = { onRemoveFromFavourites(author.id) }
-        ) {
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                contentDescription = "Remove from favourites",
-                tint = LocalColors.current.primary
-            )
-        }
-    }
+    AuthorItem(
+        author = author,
+        onAuthorClick = onAuthorClick,
+        onToggleFavourite = { id, _ -> onRemoveFromFavourites(id) }
+    )
 }
 
 @Composable
@@ -225,11 +207,6 @@ private fun FavouriteWorksContent(
                     onWorkClick = onWorkClick,
                     onRemoveFromFavourites = onRemoveFromFavourites
                 )
-                HorizontalDivider(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    thickness = 1.dp,
-                    color = LocalColors.current.primary
-                )
             }
         }
     }
@@ -241,28 +218,39 @@ private fun FavouriteWorkItem(
     onWorkClick: (String) -> Unit,
     onRemoveFromFavourites: (String) -> Unit
 ) {
-    Row(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onWorkClick(work.id) }
-            .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        shape = com.firdavs.persianliterature.ui.kit.theme.AppTheme.shapes.large,
+        colors = CardDefaults.cardColors(
+            containerColor = LocalColors.current.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Column(modifier = Modifier.weight(1f)) {
-            H4Text(text = work.title)
-            work.publishYear?.let { year ->
-                H5Text(text = stringResource(R.string.published_at, year))
-            }
-        }
-        IconButton(
-            onClick = { onRemoveFromFavourites(work.id) }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onWorkClick(work.id) }
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                contentDescription = "Remove from favourites",
-                tint = LocalColors.current.primary
-            )
+            Column(modifier = Modifier.weight(1f)) {
+                H4Text(text = work.title)
+                work.publishYear?.let { year ->
+                    H5Text(text = stringResource(R.string.published_at, year))
+                }
+            }
+            IconButton(
+                onClick = { onRemoveFromFavourites(work.id) }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Favorite,
+                    contentDescription = "Remove from favourites",
+                    tint = LocalColors.current.primary
+                )
+            }
         }
     }
 }
@@ -284,9 +272,9 @@ private fun FavouritesFooter(
                 imageVector = Icons.Outlined.Person,
                 contentDescription = "Authors",
                 tint = if (selectedTab == FavouritesTab.Authors) {
-                    LocalColors.current.onPrimary
+                    LocalColors.current.primary
                 } else {
-                    LocalColors.current.onPrimary.copy(alpha = 0.5f)
+                    LocalColors.current.primary.copy(alpha = 0.5f)
                 }
             )
         }
@@ -298,9 +286,9 @@ private fun FavouritesFooter(
                 imageVector = Icons.Outlined.Create,
                 contentDescription = "Works",
                 tint = if (selectedTab == FavouritesTab.Works) {
-                    LocalColors.current.onPrimary
+                    LocalColors.current.primary
                 } else {
-                    LocalColors.current.onPrimary.copy(alpha = 0.5f)
+                    LocalColors.current.primary.copy(alpha = 0.5f)
                 }
             )
         }

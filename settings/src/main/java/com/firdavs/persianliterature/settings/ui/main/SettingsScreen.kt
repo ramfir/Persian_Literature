@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +34,7 @@ import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.BaseScreen
 import com.firdavs.persianliterature.ui.kit.H3Text
 import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
-import com.firdavs.persianliterature.ui.kit.components.buttons.PrimaryButton
+import com.firdavs.persianliterature.ui.kit.theme.AppTheme
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import kotlinx.coroutines.launch
@@ -111,36 +113,53 @@ private fun SettingsScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                PrimaryButton(
+                Card(
                     modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(R.string.change_language),
+                    shape = AppTheme.shapes.large,
+                    colors = CardDefaults.cardColors(containerColor = colors.surface),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                     onClick = onChangeLanguageClick
-                )
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        H3Text(text = stringResource(R.string.enable_notifications))
-                        Text(
-                            text = stringResource(R.string.notification_description),
-                            style = MaterialTheme.typography.bodySmall
+                    H3Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        text = stringResource(R.string.change_language),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = AppTheme.shapes.large,
+                    colors = CardDefaults.cardColors(containerColor = colors.surface),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            H3Text(text = stringResource(R.string.enable_notifications))
+                            Text(
+                                text = stringResource(R.string.notification_description),
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                        Switch(
+                            checked = state.notificationsEnabled,
+                            onCheckedChange = onNotificationToggle,
+                            colors = SwitchDefaults.colors().copy(
+                                checkedThumbColor = colors.primary,
+                                checkedTrackColor = colors.primary.copy(alpha = 0.5f)
+                            )
                         )
                     }
-                    Switch(
-                        checked = state.notificationsEnabled,
-                        onCheckedChange = onNotificationToggle,
-                        colors = SwitchDefaults.colors().copy(
-                            checkedThumbColor = colors.primary,
-                            checkedTrackColor = colors.primary.copy(alpha = 0.5f)
-                        )
-                    )
                 }
             }
         }
