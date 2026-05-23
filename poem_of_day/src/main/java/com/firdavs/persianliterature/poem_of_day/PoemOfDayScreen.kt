@@ -1,8 +1,8 @@
 package com.firdavs.persianliterature.poem_of_day
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -35,6 +37,7 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -45,6 +48,7 @@ import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.BaseScreen
 import com.firdavs.persianliterature.ui.kit.H2Text
 import com.firdavs.persianliterature.ui.kit.H3Text
+import com.firdavs.persianliterature.ui.kit.H5Text
 import com.firdavs.persianliterature.ui.kit.T1Text
 import com.firdavs.persianliterature.ui.kit.T2Text
 import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
@@ -188,7 +192,7 @@ private fun PoemOfDayScreen(
                     LaunchedEffect(state.poem) {
                         scrollState.scrollTo(0)
                     }
-                    Card(
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f)
@@ -197,36 +201,61 @@ private fun PoemOfDayScreen(
                                     this@drawWithContent.drawContent()
                                 }
                                 drawLayer(graphicsLayer)
-                            },
-                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = LocalColors.current.surface
-                        )
+                            }
                     ) {
-                        Column(
+                        Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .verticalScroll(scrollState)
-                                .padding(24.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                                .weight(1f),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = LocalColors.current.surface
+                            )
                         ) {
-                            H2Text(
-                                text = state.poem.title,
-                                textAlign = TextAlign.Center,
-                                color = LocalColors.current.primary
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .verticalScroll(scrollState)
+                                    .padding(24.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                H2Text(
+                                    text = state.poem.title,
+                                    textAlign = TextAlign.Center,
+                                    color = LocalColors.current.primary
+                                )
+                                Spacer(modifier = Modifier.height(24.dp))
+                                T1Text(
+                                    text = state.poem.text,
+                                    textAlign = TextAlign.Center,
+                                    color = LocalColors.current.onSurface
+                                )
+                                Spacer(modifier = Modifier.height(24.dp))
+                                T2Text(
+                                    text = "— ${state.poem.author}",
+                                    textAlign = TextAlign.End,
+                                    color = LocalColors.current.onSurfaceVariant,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                            }
+                        }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(LocalColors.current.primary)
+                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Image(
+                                painter = painterResource(id = UiR.drawable.ic_app_icon),
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp)
                             )
-                            Spacer(modifier = Modifier.height(24.dp))
-                            T1Text(
-                                text = state.poem.text,
-                                textAlign = TextAlign.Center,
-                                color = LocalColors.current.onSurface
-                            )
-                            Spacer(modifier = Modifier.height(24.dp))
-                            T2Text(
-                                text = "— ${state.poem.author}",
-                                textAlign = TextAlign.End,
-                                color = LocalColors.current.onSurfaceVariant,
-                                modifier = Modifier.fillMaxWidth()
+                            Spacer(modifier = Modifier.width(8.dp))
+                            H5Text(
+                                text = stringResource(UiR.string.drawer_title),
+                                color = LocalColors.current.onPrimary
                             )
                         }
                     }
