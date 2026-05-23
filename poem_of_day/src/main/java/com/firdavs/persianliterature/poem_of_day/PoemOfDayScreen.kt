@@ -1,5 +1,8 @@
 package com.firdavs.persianliterature.poem_of_day
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +18,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -23,12 +27,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.FileProvider
 import com.firdavs.persianliterature.core.model.Chapter
 import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.BaseScreen
@@ -40,7 +51,10 @@ import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
 import com.firdavs.persianliterature.ui.kit.components.buttons.PrimaryButton
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import com.firdavs.persianliterature.ui.kit.theme.stringResource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 import com.firdavs.persianliterature.core.R as UiR
 
 @Composable
@@ -67,8 +81,18 @@ private fun PoemOfDayScreen(
     onPreviousPoemClick: () -> Unit,
     onToggleFavourite: () -> Unit
 ) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    val graphicsLayer = rememberGraphicsLayer()
 
     BaseScreen(
+        modifier = Modifier
+            .drawWithContent {
+                graphicsLayer.record {
+                    this@drawWithContent.drawContent()
+                }
+                drawLayer(graphicsLayer)
+            },
         drawerContent = {
             DrawerSheet(
                 chapters = state.chapters,
@@ -98,23 +122,61 @@ private fun PoemOfDayScreen(
                     overflow = TextOverflow.Ellipsis
                 )
                 if (state.poem != null) {
-                    IconButton(
-                        modifier = Modifier.align(Alignment.CenterEnd),
-                        onClick = onToggleFavourite
+                    Row(
+                        modifier = Modifier.align(Alignment.CenterEnd)
                     ) {
-                        Icon(
-                            imageVector = if (state.poem.isFavourite) {
-                                Icons.Filled.Favorite
-                            } else {
-                                Icons.Outlined.FavoriteBorder
-                            },
-                            contentDescription = "Toggle favourite",
-                            tint = if (state.poem.isFavourite) {
-                                LocalColors.current.onPrimary
-                            } else {
-                                LocalColors.current.onPrimary.copy(alpha = 0.6f)
+                        IconButton(
+                            onClick = {
+                                coroutineScope.launch {
+                                    try {
+                                        val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
+                                        val file = File(context.cacheDir, "poem_of_day.png")
+                                        withContext(Dispatchers.IO) {
+                                            file.outputStream().use { out ->
+                                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+                                            }
+                                        }
+                                        val uri = FileProvider.getUriForFile(
+                                            context,
+                                            "${context.packageName}.fileprovider",
+                                            file
+                                        )
+                                        val intent = Intent(Intent.ACTION_SEND).apply {
+                                            type = "image/png"
+                                            putExtra(Intent.EXTRA_STREAM, uri)
+                                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                        }
+                                        context.startActivity(Intent.createChooser(intent, null))
+                                    } catch (e: Exception) {
+                                        withContext(Dispatchers.Main) {
+                                            Toast.makeText(
+                                                context,
+                                                context.getString(R.string.share_poem_error),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    }
+                                }
                             }
-                        )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Share,
+                                contentDescription = stringResource(R.string.share_poem)
+                            )
+                        }
+                        IconButton(
+                            onClick = onToggleFavourite
+                        ) {
+                            Icon(
+                                imageVector = if (state.poem.isFavourite) {
+                                    Icons.Filled.Favorite
+                                } else {
+                                    Icons.Outlined.FavoriteBorder
+                                },
+                                contentDescription = "Toggle favourite",
+                                tint = LocalColors.current.onPrimary
+                            )
+                        }
                     }
                 }
             }

@@ -8,4 +8,5 @@ dependencies {
     implementation module.core
     implementation module.ui_kit
     implementation module.author_api
+    implementation library.core_ktx
 }
