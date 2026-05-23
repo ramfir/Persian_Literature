@@ -14,8 +14,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.outlined.AutoStories
 import androidx.compose.material.icons.outlined.Create
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -298,11 +298,6 @@ private fun FavouritePoemsContent(
                     onPoemClick = onPoemClick,
                     onRemoveFromFavourites = onRemoveFromFavourites
                 )
-                HorizontalDivider(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    thickness = 1.dp,
-                    color = LocalColors.current.primary
-                )
             }
         }
     }
@@ -314,26 +309,37 @@ private fun FavouritePoemItem(
     onPoemClick: (String) -> Unit,
     onRemoveFromFavourites: (String) -> Unit
 ) {
-    Row(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onPoemClick(poem.id) }
-            .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        shape = com.firdavs.persianliterature.ui.kit.theme.AppTheme.shapes.large,
+        colors = CardDefaults.cardColors(
+            containerColor = LocalColors.current.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Column(modifier = Modifier.weight(1f)) {
-            H4Text(text = poem.title)
-            H5Text(text = poem.author)
-        }
-        IconButton(
-            onClick = { onRemoveFromFavourites(poem.id) }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onPoemClick(poem.id) }
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                contentDescription = "Remove from favourites",
-                tint = LocalColors.current.primary
-            )
+            Column(modifier = Modifier.weight(1f)) {
+                H4Text(text = poem.title)
+                H5Text(text = poem.author)
+            }
+            IconButton(
+                onClick = { onRemoveFromFavourites(poem.id) }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Favorite,
+                    contentDescription = "Remove from favourites",
+                    tint = LocalColors.current.primary
+                )
+            }
         }
     }
 }
@@ -355,9 +361,9 @@ private fun FavouritesFooter(
                 imageVector = Icons.Outlined.Person,
                 contentDescription = "Authors",
                 tint = if (selectedTab == FavouritesTab.Authors) {
-                    LocalColors.current.primary
+                    LocalColors.current.onPrimary
                 } else {
-                    LocalColors.current.primary.copy(alpha = 0.5f)
+                    LocalColors.current.primary
                 }
             )
         }
@@ -369,9 +375,9 @@ private fun FavouritesFooter(
                 imageVector = Icons.Outlined.Create,
                 contentDescription = "Works",
                 tint = if (selectedTab == FavouritesTab.Works) {
-                    LocalColors.current.primary
+                    LocalColors.current.onPrimary
                 } else {
-                    LocalColors.current.primary.copy(alpha = 0.5f)
+                    LocalColors.current.primary
                 }
             )
         }
@@ -380,12 +386,12 @@ private fun FavouritesFooter(
             onClick = { onTabSelected(FavouritesTab.Poems) }
         ) {
             Icon(
-                imageVector = Icons.Outlined.AutoStories,
+                imageVector = Icons.Outlined.Menu,
                 contentDescription = "Poems",
                 tint = if (selectedTab == FavouritesTab.Poems) {
                     LocalColors.current.onPrimary
                 } else {
-                    LocalColors.current.onPrimary.copy(alpha = 0.5f)
+                    LocalColors.current.primary
                 }
             )
         }
