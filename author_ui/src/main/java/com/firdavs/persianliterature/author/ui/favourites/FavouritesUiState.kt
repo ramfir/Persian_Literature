@@ -11,9 +11,16 @@ data class FavouritesUiState(
     val favouriteWorks: List<Work> = emptyList(),
     val favouritePoems: List<Poem> = emptyList(),
     val selectedTab: FavouritesTab = FavouritesTab.Authors,
-    val chapters: List<Chapter> = Chapter.all
+    val chapters: List<Chapter> = Chapter.all,
+    val pendingRemoval: PendingRemoval? = null
 ) : UiState()
 
 enum class FavouritesTab {
     Authors, Works, Poems
+}
+
+sealed class PendingRemoval {
+    data class Author(val id: String) : PendingRemoval()
+    data class Work(val id: String) : PendingRemoval()
+    data class Poem(val id: String) : PendingRemoval()
 }

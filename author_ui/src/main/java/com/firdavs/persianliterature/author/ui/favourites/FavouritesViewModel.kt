@@ -45,21 +45,31 @@ class FavouritesViewModel(
         post { it.copy(selectedTab = tab) }
     }
 
-    fun onRemoveAuthorFromFavourites(authorId: String) {
+    fun onRequestRemoveAuthor(authorId: String) {
+        post { it.copy(pendingRemoval = PendingRemoval.Author(authorId)) }
+    }
+
+    fun onRequestRemoveWork(workId: String) {
+        post { it.copy(pendingRemoval = PendingRemoval.Work(workId)) }
+    }
+
+    fun onRequestRemovePoem(poemId: String) {
+        post { it.copy(pendingRemoval = PendingRemoval.Poem(poemId)) }
+    }
+
+    fun onConfirmRemoval() {
+        val pending = state.value.pendingRemoval ?: return
+        post { it.copy(pendingRemoval = null) }
         viewModelScope.launch {
-            favouritesRepository.toggleAuthorFavourite(authorId, false)
+            when (pending) {
+                is PendingRemoval.Author -> favouritesRepository.toggleAuthorFavourite(pending.id, false)
+                is PendingRemoval.Work -> favouritesRepository.toggleWorkFavourite(pending.id, false)
+                is PendingRemoval.Poem -> favouritesRepository.togglePoemFavourite(pending.id, false)
+            }
         }
     }
 
-    fun onRemoveWorkFromFavourites(workId: String) {
-        viewModelScope.launch {
-            favouritesRepository.toggleWorkFavourite(workId, false)
-        }
-    }
-
-    fun onRemovePoemFromFavourites(poemId: String) {
-        viewModelScope.launch {
-            favouritesRepository.togglePoemFavourite(poemId, false)
-        }
+    fun onDismissRemoval() {
+        post { it.copy(pendingRemoval = null) }
     }
 }

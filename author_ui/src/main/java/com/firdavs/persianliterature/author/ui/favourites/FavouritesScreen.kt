@@ -17,10 +17,12 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.Create
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,9 +60,11 @@ fun FavouritesEntryPoint(
             onAuthorClick = onAuthorClick,
             onWorkClick = onWorkClick,
             onPoemClick = onPoemClick,
-            onRemoveAuthorFromFavourites = viewModel::onRemoveAuthorFromFavourites,
-            onRemoveWorkFromFavourites = viewModel::onRemoveWorkFromFavourites,
-            onRemovePoemFromFavourites = viewModel::onRemovePoemFromFavourites
+            onRequestRemoveAuthor = viewModel::onRequestRemoveAuthor,
+            onRequestRemoveWork = viewModel::onRequestRemoveWork,
+            onRequestRemovePoem = viewModel::onRequestRemovePoem,
+            onConfirmRemoval = viewModel::onConfirmRemoval,
+            onDismissRemoval = viewModel::onDismissRemoval
         )
     }
 }
@@ -73,10 +77,19 @@ private fun FavouritesScreen(
     onAuthorClick: (String) -> Unit,
     onWorkClick: (String) -> Unit,
     onPoemClick: (String) -> Unit,
-    onRemoveAuthorFromFavourites: (String) -> Unit,
-    onRemoveWorkFromFavourites: (String) -> Unit,
-    onRemovePoemFromFavourites: (String) -> Unit
+    onRequestRemoveAuthor: (String) -> Unit,
+    onRequestRemoveWork: (String) -> Unit,
+    onRequestRemovePoem: (String) -> Unit,
+    onConfirmRemoval: () -> Unit,
+    onDismissRemoval: () -> Unit
 ) {
+    if (state.pendingRemoval != null) {
+        RemoveFromFavouritesDialog(
+            onConfirm = onConfirmRemoval,
+            onDismiss = onDismissRemoval
+        )
+    }
+
     BaseScreen(
         drawerContent = {
             DrawerSheet(
@@ -118,21 +131,21 @@ private fun FavouritesScreen(
                         FavouriteAuthorsContent(
                             authors = state.favouriteAuthors,
                             onAuthorClick = onAuthorClick,
-                            onRemoveFromFavourites = onRemoveAuthorFromFavourites
+                            onRemoveFromFavourites = onRequestRemoveAuthor
                         )
                     }
                     FavouritesTab.Works -> {
                         FavouriteWorksContent(
                             works = state.favouriteWorks,
                             onWorkClick = onWorkClick,
-                            onRemoveFromFavourites = onRemoveWorkFromFavourites
+                            onRemoveFromFavourites = onRequestRemoveWork
                         )
                     }
                     FavouritesTab.Poems -> {
                         FavouritePoemsContent(
                             poems = state.favouritePoems,
                             onPoemClick = onPoemClick,
-                            onRemoveFromFavourites = onRemovePoemFromFavourites
+                            onRemoveFromFavourites = onRequestRemovePoem
                         )
                     }
                 }
@@ -143,6 +156,28 @@ private fun FavouritesScreen(
                 selectedTab = state.selectedTab,
                 onTabSelected = onTabSelected
             )
+        }
+    )
+}
+
+@Composable
+private fun RemoveFromFavouritesDialog(
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { H4Text(text = stringResource(R.string.remove_from_favourites_title)) },
+        text = { H5Text(text = stringResource(R.string.remove_from_favourites_message)) },
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                H5Text(text = stringResource(R.string.remove), color = LocalColors.current.primary)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                H5Text(text = stringResource(R.string.cancel), color = LocalColors.current.primary)
+            }
         }
     )
 }
@@ -361,9 +396,9 @@ private fun FavouritesFooter(
                 imageVector = Icons.Outlined.Person,
                 contentDescription = "Authors",
                 tint = if (selectedTab == FavouritesTab.Authors) {
-                    LocalColors.current.onPrimary
-                } else {
                     LocalColors.current.primary
+                } else {
+                    LocalColors.current.onPrimary
                 }
             )
         }
@@ -375,9 +410,9 @@ private fun FavouritesFooter(
                 imageVector = Icons.Outlined.Create,
                 contentDescription = "Works",
                 tint = if (selectedTab == FavouritesTab.Works) {
-                    LocalColors.current.onPrimary
-                } else {
                     LocalColors.current.primary
+                } else {
+                    LocalColors.current.onPrimary
                 }
             )
         }
@@ -389,9 +424,9 @@ private fun FavouritesFooter(
                 imageVector = Icons.Outlined.Menu,
                 contentDescription = "Poems",
                 tint = if (selectedTab == FavouritesTab.Poems) {
-                    LocalColors.current.onPrimary
-                } else {
                     LocalColors.current.primary
+                } else {
+                    LocalColors.current.onPrimary
                 }
             )
         }

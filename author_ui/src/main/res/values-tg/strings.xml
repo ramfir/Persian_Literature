@@ -31,4 +31,8 @@
     <string name="streaming">Ҷараён…</string>
     <string name="download_for_offline">Зеркашӣ барои офлайн</string>
     <string name="cancel_download">Бекор кардан</string>
+    <string name="remove_from_favourites_title">Аз интихобшуда хориҷ карда шавад?</string>
+    <string name="remove_from_favourites_message">Ин элемент аз рӯйхати интихобшудаи шумо хориҷ карда мешавад.</string>
+    <string name="remove">Хориҷ кардан</string>
+    <string name="cancel">Бекор кардан</string>
 </resources>
