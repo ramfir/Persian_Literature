@@ -5,4 +5,5 @@
     <string name="previous_poem">Шеъри пешин</string>
     <string name="no_poems_available">Шеърҳо ҳанӯз дастрас нестанд</string>
     <string name="share_poem">Мубодилаи шеър</string>
+    <string name="share_poem_error">Мубодилаи шеър номуваффақ буд</string>
 </resources>

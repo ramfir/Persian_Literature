@@ -2,6 +2,7 @@ package com.firdavs.persianliterature.poem_of_day
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -127,25 +128,34 @@ private fun PoemOfDayScreen(
                         IconButton(
                             onClick = {
                                 coroutineScope.launch {
-                                    val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
-                                    withContext(Dispatchers.IO) {
+                                    try {
+                                        val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
                                         val file = File(context.cacheDir, "poem_of_day.png")
-                                        file.outputStream().use { out ->
-                                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+                                        withContext(Dispatchers.IO) {
+                                            file.outputStream().use { out ->
+                                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+                                            }
+                                        }
+                                        val uri = FileProvider.getUriForFile(
+                                            context,
+                                            "${context.packageName}.fileprovider",
+                                            file
+                                        )
+                                        val intent = Intent(Intent.ACTION_SEND).apply {
+                                            type = "image/png"
+                                            putExtra(Intent.EXTRA_STREAM, uri)
+                                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                        }
+                                        context.startActivity(Intent.createChooser(intent, null))
+                                    } catch (e: Exception) {
+                                        withContext(Dispatchers.Main) {
+                                            Toast.makeText(
+                                                context,
+                                                context.getString(R.string.share_poem_error),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         }
                                     }
-                                    val file = File(context.cacheDir, "poem_of_day.png")
-                                    val uri = FileProvider.getUriForFile(
-                                        context,
-                                        "${context.packageName}.fileprovider",
-                                        file
-                                    )
-                                    val intent = Intent(Intent.ACTION_SEND).apply {
-                                        type = "image/png"
-                                        putExtra(Intent.EXTRA_STREAM, uri)
-                                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                    }
-                                    context.startActivity(Intent.createChooser(intent, null))
                                 }
                             }
                         ) {

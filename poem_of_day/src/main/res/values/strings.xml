@@ -5,4 +5,5 @@
     <string name="previous_poem">Previous Poem</string>
     <string name="no_poems_available">No poems available yet</string>
     <string name="share_poem">Share poem</string>
+    <string name="share_poem_error">Failed to share poem</string>
 </resources>
