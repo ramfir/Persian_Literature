@@ -4,4 +4,5 @@
     <string name="new_poem">Новый стих</string>
     <string name="previous_poem">Предыдущий стих</string>
     <string name="no_poems_available">Стихи пока недоступны</string>
+    <string name="share_poem">Поделиться стихом</string>
 </resources>
