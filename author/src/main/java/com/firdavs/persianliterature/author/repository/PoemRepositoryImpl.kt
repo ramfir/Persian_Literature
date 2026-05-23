@@ -27,8 +27,10 @@ class PoemRepositoryImpl(
             val poemDto = document.toObject(PoemDTO::class.java)
             poemDto?.copy(id = document.id)
         }
+        val favouriteIds = poemsDao.getFavouriteIds().toSet()
         poemsDao.deleteAll()
         poemsDao.insert(poemsDTO.toDb())
+        favouriteIds.forEach { id -> poemsDao.updateFavourite(id, true) }
     }
 
     override suspend fun getRandomPoem(): Poem? {

@@ -13,6 +13,7 @@
     <string name="published_at">нашр шуд дар %s</string>
     <string name="no_favourite_authors">Муаллифони интихобшуда нест</string>
     <string name="no_favourite_works">Асарҳои интихобшуда нест</string>
+    <string name="no_favourite_poems">Шеърҳои интихобшуда нест</string>
     <string name="authors_fetched">Рӯйхати муаллифон аз нав гирифта шуд</string>
     <string name="download_audio">Зеркашии Аудио</string>
     <string name="downloading">Зеркашӣ шуда истодааст… %d%%</string>
@@ -30,4 +31,8 @@
     <string name="streaming">Ҷараён…</string>
     <string name="download_for_offline">Зеркашӣ барои офлайн</string>
     <string name="cancel_download">Бекор кардан</string>
+    <string name="remove_from_favourites_title">Аз интихобшуда хориҷ карда шавад?</string>
+    <string name="remove_from_favourites_message">Ин элемент аз рӯйхати интихобшудаи шумо хориҷ карда мешавад.</string>
+    <string name="remove">Хориҷ кардан</string>
+    <string name="cancel">Бекор кардан</string>
 </resources>

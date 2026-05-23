@@ -13,6 +13,7 @@
     <string name="published_at">published at %s</string>
     <string name="no_favourite_authors">No favourite authors yet</string>
     <string name="no_favourite_works">No favourite works yet</string>
+    <string name="no_favourite_poems">No favourite poems yet</string>
     <string name="authors_fetched">Authors fetched successfully</string>
     <string name="download_audio">Download Audio</string>
     <string name="downloading">Downloading… %d%%</string>
@@ -30,4 +31,8 @@
     <string name="streaming">Streaming…</string>
     <string name="download_for_offline">Download for Offline</string>
     <string name="cancel_download">Cancel</string>
+    <string name="remove_from_favourites_title">Remove from favourites?</string>
+    <string name="remove_from_favourites_message">This item will be removed from your favourites list.</string>
+    <string name="remove">Remove</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -4,7 +4,7 @@ import androidx.compose.material3.lightColorScheme
 
 val LightColorScheme = lightColorScheme(
     primary = Gold,
-    onPrimary = WhiteOnPrimary,
+    onPrimary = DarkOnPrimary,
     primaryContainer = GoldContainer,
     onPrimaryContainer = GoldLight,
 

@@ -8,7 +8,8 @@ val poemOfDayModule = module {
     viewModel { (args: Array<Any?>) ->
         PoemOfDayViewModel(
             poemId = args.firstOrNull() as? String,
-            poemRepository = get()
+            poemRepository = get(),
+            favouritesRepository = get()
         )
     }
 }
