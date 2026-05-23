@@ -17,8 +17,8 @@ class AllWorksViewModel(
 
     private fun observeAuthorsWithWorks() {
         viewModelScope.launch {
-            authorRepository.getAllAuthorsWithWorks().collect { authorsWithWorks ->
-                allGroups = authorsWithWorks.toGroups().filter { it.works.size >= 2 }
+            authorRepository.getAuthorsWithAtLeastTwoWorks().collect { authorsWithWorks ->
+                allGroups = authorsWithWorks.toGroups()
                 applySearchFilter()
             }
         }

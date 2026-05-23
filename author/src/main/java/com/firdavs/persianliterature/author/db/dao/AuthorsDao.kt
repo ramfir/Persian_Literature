@@ -77,4 +77,32 @@ interface AuthorsDao {
         """
     )
     fun getAllAuthorsWithWorksFlow(): Flow<List<AuthorWithWorksRow>>
+
+    @Query(
+        """
+        SELECT
+            a.id,
+            a.name,
+            w.id as work_id,
+            w.authorId as work_authorId,
+            w.title as work_title,
+            w.description as work_description,
+            w.publishYear as work_publishYear,
+            w.fileUrl as work_fileUrl,
+            w.audioUrl as work_audioUrl,
+            w.audioCacheStatus as work_audioCacheStatus,
+            w.audioContentLength as work_audioContentLength,
+            w.audioCachedBytes as work_audioCachedBytes,
+            w.audioDownloadStatus as work_audioDownloadStatus,
+            w.audioLocalPath as work_audioLocalPath,
+            w.isFavourite as work_isFavourite
+        FROM ${AuthorsDb.AUTHORS} a
+        INNER JOIN ${AuthorsDb.WORKS} w ON a.id = w.authorId
+        WHERE a.id IN (
+            SELECT authorId FROM ${AuthorsDb.WORKS} GROUP BY authorId HAVING COUNT(*) >= 2
+        )
+        ORDER BY a.name COLLATE NOCASE, w.title COLLATE NOCASE
+        """
+    )
+    fun getAuthorsWithAtLeastTwoWorksFlow(): Flow<List<AuthorWithWorksRow>>
 }

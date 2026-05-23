@@ -9,4 +9,5 @@ interface AuthorRepository {
     fun getAuthors(): Flow<List<Author>>
     fun getAuthor(id: String): Flow<Author>
     fun getAllAuthorsWithWorks(): Flow<List<AuthorWithWorks>>
+    fun getAuthorsWithAtLeastTwoWorks(): Flow<List<AuthorWithWorks>>
 }
