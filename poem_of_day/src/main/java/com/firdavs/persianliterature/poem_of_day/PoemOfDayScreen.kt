@@ -1,6 +1,5 @@
 package com.firdavs.persianliterature.poem_of_day
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import androidx.compose.foundation.background
@@ -86,6 +85,13 @@ private fun PoemOfDayScreen(
     val graphicsLayer = rememberGraphicsLayer()
 
     BaseScreen(
+        modifier = Modifier
+            .drawWithContent {
+                graphicsLayer.record {
+                    this@drawWithContent.drawContent()
+                }
+                drawLayer(graphicsLayer)
+            },
         drawerContent = {
             DrawerSheet(
                 chapters = state.chapters,
@@ -158,11 +164,7 @@ private fun PoemOfDayScreen(
                                     Icons.Outlined.FavoriteBorder
                                 },
                                 contentDescription = "Toggle favourite",
-                                tint = if (state.poem.isFavourite) {
-                                    LocalColors.current.onPrimary
-                                } else {
-                                    LocalColors.current.onPrimary.copy(alpha = 0.6f)
-                                }
+                                tint = LocalColors.current.onPrimary
                             )
                         }
                     }
@@ -191,13 +193,7 @@ private fun PoemOfDayScreen(
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1f)
-                            .drawWithContent {
-                                graphicsLayer.record {
-                                    this@drawWithContent.drawContent()
-                                }
-                                drawLayer(graphicsLayer)
-                            },
+                            .weight(1f),
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                         colors = CardDefaults.cardColors(
                             containerColor = LocalColors.current.surface
