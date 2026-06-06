@@ -15,5 +15,6 @@ data class WorkDetailsUiState(
     val playbackState: PlaybackState = PlaybackState(),
     val currentlyPreparedAudioPath: String? = null,
     val hasCompletedInitialPreparation: Boolean = false,
-    val showAudioControlToast: Boolean = false
+    val showAudioControlToast: Boolean = false,
+    val savedPage: Int = 0
 ) : UiState()

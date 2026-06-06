@@ -2,6 +2,7 @@ package com.firdavs.persianliterature.author.ui.work_details
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.viewModelScope
 import com.firdavs.persianliterature.audio.api.player.PlaybackState
 import com.firdavs.persianliterature.audio.api.service.AudioServiceController
@@ -29,6 +30,8 @@ class WorkDetailsViewModel(
 ) : BaseViewModel<WorkDetailsUiState>(WorkDetailsUiState(null)) {
     private val downloadPdfScope = CoroutineScope(Job() + Dispatchers.IO)
     private var firstAudioPlay = true
+    private val readingProgressPrefs: SharedPreferences =
+        context.getSharedPreferences(PREFS_READING_PROGRESS, Context.MODE_PRIVATE)
 
     init {
         audioServiceController.connect()
@@ -42,11 +45,17 @@ class WorkDetailsViewModel(
         audioServiceController.syncPlaybackState()
     }
 
+    fun onPageChanged(page: Int) {
+        readingProgressPrefs.edit().putInt(pageKey(id), page).apply()
+        post { it.copy(savedPage = page) }
+    }
+
     private fun observeWork() {
         viewModelScope.launch {
             worksRepository.getWork(id).collect { work ->
+                val savedPage = readingProgressPrefs.getInt(pageKey(id), 0)
                 post {
-                    it.copy(work = work)
+                    it.copy(work = work, savedPage = savedPage)
                 }
                 // Handle PDF download (existing logic)
                 work.fileUrl?.let {
@@ -229,5 +238,7 @@ class WorkDetailsViewModel(
 
     companion object {
         private const val SKIP_DURATION_MS = 10000L
+        private const val PREFS_READING_PROGRESS = "reading_progress_preferences"
+        private fun pageKey(workId: String) = "page_$workId"
     }
 }

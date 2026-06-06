@@ -91,7 +91,8 @@ fun WorkDetailsEntryPoint(
             onPauseAudio = viewModel::onPauseAudio,
             onSeekTo = viewModel::onSeekTo,
             onSkipBackward = viewModel::onSkipBackward,
-            onSkipForward = viewModel::onSkipForward
+            onSkipForward = viewModel::onSkipForward,
+            onPageChanged = viewModel::onPageChanged
         )
     }
 }
@@ -106,7 +107,8 @@ fun WorkDetailsScreen(
     onPauseAudio: () -> Unit = {},
     onSeekTo: (Long) -> Unit = {},
     onSkipBackward: () -> Unit = {},
-    onSkipForward: () -> Unit = {}
+    onSkipForward: () -> Unit = {},
+    onPageChanged: (Int) -> Unit = {}
 ) {
     var isBarsVisible by remember { mutableStateOf(true) }
 
@@ -209,7 +211,9 @@ fun WorkDetailsScreen(
                             PdfRendererViewCompose(
                                 modifier = Modifier
                                     .fillMaxSize(),
-                                source = PdfSource.LocalFile(workFile)
+                                source = PdfSource.LocalFile(workFile),
+                                scrollTo = state.savedPage,
+                                onPageChanged = { page, _ -> onPageChanged(page) }
                             )
                             IconButton(
                                 modifier = Modifier
