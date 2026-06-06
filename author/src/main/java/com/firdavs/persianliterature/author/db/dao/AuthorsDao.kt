@@ -35,7 +35,17 @@ interface AuthorsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(authors: List<AuthorEntity>)
 
-    @Query("SELECT * FROM ${AuthorsDb.AUTHORS} ORDER BY name COLLATE NOCASE")
+    @Query(
+        """
+        SELECT a.* FROM ${AuthorsDb.AUTHORS} a
+        LEFT JOIN (
+            SELECT authorId, COUNT(*) AS workCount
+            FROM ${AuthorsDb.WORKS}
+            GROUP BY authorId
+        ) wc ON a.id = wc.authorId
+        ORDER BY COALESCE(wc.workCount, 0) DESC, a.name COLLATE NOCASE
+        """
+    )
     fun getAllFlow(): Flow<List<AuthorEntity>>
 
     @Query("SELECT * FROM ${AuthorsDb.AUTHORS} WHERE id = :id")
