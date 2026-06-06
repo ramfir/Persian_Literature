@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,7 +13,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -31,6 +33,7 @@ import com.firdavs.persianliterature.ui.kit.H3Text
 import com.firdavs.persianliterature.ui.kit.H4Text
 import com.firdavs.persianliterature.ui.kit.H5Text
 import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
+import com.firdavs.persianliterature.ui.kit.theme.AppTheme
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import kotlinx.coroutines.launch
 
@@ -113,21 +116,15 @@ private fun AudioBooksContent(
         }
     } else {
         LazyColumn(
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(vertical = 8.dp)
         ) {
             items(works) { work ->
-                AudioBookItem(
+                AudioBookCard(
                     work = work,
                     authorName = authorsMap[work.authorId] ?: "",
                     onWorkClick = onWorkClick
-                )
-                HorizontalDivider(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    thickness = 1.dp,
-                    color = LocalColors.current.primary
                 )
             }
         }
@@ -135,23 +132,34 @@ private fun AudioBooksContent(
 }
 
 @Composable
-private fun AudioBookItem(
+private fun AudioBookCard(
     work: Work,
     authorName: String,
     onWorkClick: (String) -> Unit
 ) {
-    Column(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onWorkClick(work.id) }
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        shape = AppTheme.shapes.large,
+        colors = CardDefaults.cardColors(
+            containerColor = LocalColors.current.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        H3Text(text = work.title)
-        if (authorName.isNotEmpty()) {
-            H5Text(text = authorName)
-        }
-        work.publishYear?.let { year ->
-            H5Text(text = stringResource(R.string.published_at, year))
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onWorkClick(work.id) }
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+        ) {
+            H3Text(text = work.title)
+            if (authorName.isNotEmpty()) {
+                H5Text(text = authorName)
+            }
+            work.publishYear?.let { year ->
+                H5Text(text = stringResource(R.string.published_at, year))
+            }
         }
     }
 }

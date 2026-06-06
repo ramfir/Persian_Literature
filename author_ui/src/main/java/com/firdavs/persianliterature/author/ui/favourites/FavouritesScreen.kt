@@ -15,10 +15,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.Create
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.firdavs.persianliterature.author.ui.R
 import com.firdavs.persianliterature.author.ui.list.AuthorItem
 import com.firdavs.persianliterature.author.ui.model.AuthorUiModel
+import com.firdavs.persianliterature.author_api.model.Poem
 import com.firdavs.persianliterature.author_api.model.Work
 import com.firdavs.persianliterature.core.model.Chapter
 import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
@@ -44,7 +49,8 @@ import kotlinx.coroutines.launch
 fun FavouritesEntryPoint(
     onChapterClick: (Chapter) -> Unit,
     onAuthorClick: (String) -> Unit,
-    onWorkClick: (String) -> Unit
+    onWorkClick: (String) -> Unit,
+    onPoemClick: (String) -> Unit
 ) {
     BaseEntryPoint(FavouritesViewModel::class) { state, viewModel ->
         FavouritesScreen(
@@ -53,8 +59,12 @@ fun FavouritesEntryPoint(
             onTabSelected = viewModel::onTabSelected,
             onAuthorClick = onAuthorClick,
             onWorkClick = onWorkClick,
-            onRemoveAuthorFromFavourites = viewModel::onRemoveAuthorFromFavourites,
-            onRemoveWorkFromFavourites = viewModel::onRemoveWorkFromFavourites
+            onPoemClick = onPoemClick,
+            onRequestRemoveAuthor = viewModel::onRequestRemoveAuthor,
+            onRequestRemoveWork = viewModel::onRequestRemoveWork,
+            onRequestRemovePoem = viewModel::onRequestRemovePoem,
+            onConfirmRemoval = viewModel::onConfirmRemoval,
+            onDismissRemoval = viewModel::onDismissRemoval
         )
     }
 }
@@ -66,9 +76,20 @@ private fun FavouritesScreen(
     onTabSelected: (FavouritesTab) -> Unit,
     onAuthorClick: (String) -> Unit,
     onWorkClick: (String) -> Unit,
-    onRemoveAuthorFromFavourites: (String) -> Unit,
-    onRemoveWorkFromFavourites: (String) -> Unit
+    onPoemClick: (String) -> Unit,
+    onRequestRemoveAuthor: (String) -> Unit,
+    onRequestRemoveWork: (String) -> Unit,
+    onRequestRemovePoem: (String) -> Unit,
+    onConfirmRemoval: () -> Unit,
+    onDismissRemoval: () -> Unit
 ) {
+    if (state.pendingRemoval != null) {
+        RemoveFromFavouritesDialog(
+            onConfirm = onConfirmRemoval,
+            onDismiss = onDismissRemoval
+        )
+    }
+
     BaseScreen(
         drawerContent = {
             DrawerSheet(
@@ -110,14 +131,21 @@ private fun FavouritesScreen(
                         FavouriteAuthorsContent(
                             authors = state.favouriteAuthors,
                             onAuthorClick = onAuthorClick,
-                            onRemoveFromFavourites = onRemoveAuthorFromFavourites
+                            onRemoveFromFavourites = onRequestRemoveAuthor
                         )
                     }
                     FavouritesTab.Works -> {
                         FavouriteWorksContent(
                             works = state.favouriteWorks,
                             onWorkClick = onWorkClick,
-                            onRemoveFromFavourites = onRemoveWorkFromFavourites
+                            onRemoveFromFavourites = onRequestRemoveWork
+                        )
+                    }
+                    FavouritesTab.Poems -> {
+                        FavouritePoemsContent(
+                            poems = state.favouritePoems,
+                            onPoemClick = onPoemClick,
+                            onRemoveFromFavourites = onRequestRemovePoem
                         )
                     }
                 }
@@ -128,6 +156,28 @@ private fun FavouritesScreen(
                 selectedTab = state.selectedTab,
                 onTabSelected = onTabSelected
             )
+        }
+    )
+}
+
+@Composable
+private fun RemoveFromFavouritesDialog(
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { H4Text(text = stringResource(R.string.remove_from_favourites_title)) },
+        text = { H5Text(text = stringResource(R.string.remove_from_favourites_message)) },
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                H5Text(text = stringResource(R.string.remove), color = LocalColors.current.primary)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                H5Text(text = stringResource(R.string.cancel), color = LocalColors.current.primary)
+            }
         }
     )
 }
@@ -159,11 +209,6 @@ private fun FavouriteAuthorsContent(
                     onAuthorClick = onAuthorClick,
                     onRemoveFromFavourites = onRemoveFromFavourites
                 )
-                HorizontalDivider(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    thickness = 1.dp,
-                    color = LocalColors.current.primary
-                )
             }
         }
     }
@@ -175,25 +220,11 @@ private fun FavouriteAuthorItem(
     onAuthorClick: (String) -> Unit,
     onRemoveFromFavourites: (String) -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onAuthorClick(author.id) },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(modifier = Modifier.weight(1f)) {
-            AuthorItem(author = author, onAuthorClick = onAuthorClick)
-        }
-        IconButton(
-            onClick = { onRemoveFromFavourites(author.id) }
-        ) {
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                contentDescription = "Remove from favourites",
-                tint = LocalColors.current.primary
-            )
-        }
-    }
+    AuthorItem(
+        author = author,
+        onAuthorClick = onAuthorClick,
+        onToggleFavourite = { id, _ -> onRemoveFromFavourites(id) }
+    )
 }
 
 @Composable
@@ -225,11 +256,6 @@ private fun FavouriteWorksContent(
                     onWorkClick = onWorkClick,
                     onRemoveFromFavourites = onRemoveFromFavourites
                 )
-                HorizontalDivider(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    thickness = 1.dp,
-                    color = LocalColors.current.primary
-                )
             }
         }
     }
@@ -241,28 +267,114 @@ private fun FavouriteWorkItem(
     onWorkClick: (String) -> Unit,
     onRemoveFromFavourites: (String) -> Unit
 ) {
-    Row(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onWorkClick(work.id) }
-            .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        shape = com.firdavs.persianliterature.ui.kit.theme.AppTheme.shapes.large,
+        colors = CardDefaults.cardColors(
+            containerColor = LocalColors.current.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Column(modifier = Modifier.weight(1f)) {
-            H4Text(text = work.title)
-            work.publishYear?.let { year ->
-                H5Text(text = stringResource(R.string.published_at, year))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onWorkClick(work.id) }
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                H4Text(text = work.title)
+                work.publishYear?.let { year ->
+                    H5Text(text = stringResource(R.string.published_at, year))
+                }
+            }
+            IconButton(
+                onClick = { onRemoveFromFavourites(work.id) }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Favorite,
+                    contentDescription = "Remove from favourites",
+                    tint = LocalColors.current.primary
+                )
             }
         }
-        IconButton(
-            onClick = { onRemoveFromFavourites(work.id) }
+    }
+}
+
+@Composable
+private fun FavouritePoemsContent(
+    poems: List<Poem>,
+    onPoemClick: (String) -> Unit,
+    onRemoveFromFavourites: (String) -> Unit
+) {
+    if (poems.isEmpty()) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                contentDescription = "Remove from favourites",
-                tint = LocalColors.current.primary
+            H4Text(
+                text = stringResource(R.string.no_favourite_poems),
+                textAlign = TextAlign.Center
             )
+        }
+    } else {
+        LazyColumn(
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(poems) { poem ->
+                FavouritePoemItem(
+                    poem = poem,
+                    onPoemClick = onPoemClick,
+                    onRemoveFromFavourites = onRemoveFromFavourites
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun FavouritePoemItem(
+    poem: Poem,
+    onPoemClick: (String) -> Unit,
+    onRemoveFromFavourites: (String) -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        shape = com.firdavs.persianliterature.ui.kit.theme.AppTheme.shapes.large,
+        colors = CardDefaults.cardColors(
+            containerColor = LocalColors.current.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onPoemClick(poem.id) }
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                H4Text(text = poem.title)
+                H5Text(text = poem.author)
+            }
+            IconButton(
+                onClick = { onRemoveFromFavourites(poem.id) }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Favorite,
+                    contentDescription = "Remove from favourites",
+                    tint = LocalColors.current.primary
+                )
+            }
         }
     }
 }
@@ -284,9 +396,9 @@ private fun FavouritesFooter(
                 imageVector = Icons.Outlined.Person,
                 contentDescription = "Authors",
                 tint = if (selectedTab == FavouritesTab.Authors) {
-                    LocalColors.current.onPrimary
+                    LocalColors.current.primary
                 } else {
-                    LocalColors.current.onPrimary.copy(alpha = 0.5f)
+                    LocalColors.current.onPrimary
                 }
             )
         }
@@ -298,9 +410,23 @@ private fun FavouritesFooter(
                 imageVector = Icons.Outlined.Create,
                 contentDescription = "Works",
                 tint = if (selectedTab == FavouritesTab.Works) {
-                    LocalColors.current.onPrimary
+                    LocalColors.current.primary
                 } else {
-                    LocalColors.current.onPrimary.copy(alpha = 0.5f)
+                    LocalColors.current.onPrimary
+                }
+            )
+        }
+        IconButton(
+            modifier = Modifier.weight(1f),
+            onClick = { onTabSelected(FavouritesTab.Poems) }
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Menu,
+                contentDescription = "Poems",
+                tint = if (selectedTab == FavouritesTab.Poems) {
+                    LocalColors.current.primary
+                } else {
+                    LocalColors.current.onPrimary
                 }
             )
         }

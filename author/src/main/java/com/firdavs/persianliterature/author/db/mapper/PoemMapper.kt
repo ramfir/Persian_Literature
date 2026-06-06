@@ -7,5 +7,6 @@ fun PoemEntity.toDomain() = Poem(
     id = id,
     title = title,
     text = text,
-    author = author
+    author = author,
+    isFavourite = isFavourite
 )

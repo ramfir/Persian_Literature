@@ -10,9 +10,9 @@ interface AppShapes {
     val extraLarge: RoundedCornerShape
 
     object Default : AppShapes {
-        override val small = RoundedCornerShape(6.dp)
-        override val medium = RoundedCornerShape(8.dp)
-        override val large = RoundedCornerShape(12.dp)
-        override val extraLarge = RoundedCornerShape(16.dp)
+        override val small = RoundedCornerShape(8.dp)
+        override val medium = RoundedCornerShape(12.dp)
+        override val large = RoundedCornerShape(16.dp)
+        override val extraLarge = RoundedCornerShape(24.dp)
     }
 }

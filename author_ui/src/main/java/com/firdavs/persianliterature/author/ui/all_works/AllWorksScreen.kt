@@ -17,8 +17,11 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.TextField
@@ -45,6 +48,7 @@ import com.firdavs.persianliterature.ui.kit.H4Text
 import com.firdavs.persianliterature.ui.kit.H5Text
 import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
 import com.firdavs.persianliterature.ui.kit.components.ProgressIndicator
+import com.firdavs.persianliterature.ui.kit.theme.AppTheme
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import com.firdavs.persianliterature.ui.kit.theme.LocalTypography
 import com.firdavs.persianliterature.ui.kit.theme.stringResource
@@ -122,33 +126,15 @@ private fun AllWorksScreen(
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize(),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 8.dp)
                     ) {
-                        items(state.items) { item ->
-                            when (item) {
-                                is AllWorksListItem.AuthorHeader -> {
-                                    AuthorHeaderItem(
-                                        authorName = item.authorName,
-                                        authorId = item.authorId,
-                                        onAuthorClick = onAuthorClick
-                                    )
-                                }
-                                is AllWorksListItem.WorkItem -> {
-                                    WorkItem(
-                                        work = item.work,
-                                        onWorkClick = onWorkClick
-                                    )
-                                }
-                                is AllWorksListItem.EmptyWorksMessage -> {
-                                    H3Text(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(16.dp),
-                                        res = R.string.no_works_found,
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
-                            }
+                        items(state.groups) { group ->
+                            AuthorWorksCard(
+                                group = group,
+                                onAuthorClick = onAuthorClick,
+                                onWorkClick = onWorkClick
+                            )
                         }
                     }
                 }
@@ -259,23 +245,51 @@ private fun TopBar(
 }
 
 @Composable
-private fun AuthorHeaderItem(
-    authorName: String,
-    authorId: String,
-    onAuthorClick: (String) -> Unit
+private fun AuthorWorksCard(
+    group: AuthorWorksGroup,
+    onAuthorClick: (String) -> Unit,
+    onWorkClick: (String) -> Unit
 ) {
-    Box(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onAuthorClick(authorId) }
-            .background(LocalColors.current.primary.copy(alpha = 0.5f))
-            .padding(16.dp)
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        shape = AppTheme.shapes.large,
+        colors = CardDefaults.cardColors(
+            containerColor = LocalColors.current.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        H3Text(
-            text = authorName,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
+        Column {
+            H3Text(
+                text = group.authorName,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onAuthorClick(group.authorId) }
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
+            )
+            HorizontalDivider()
+            if (group.works.isEmpty()) {
+                H5Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    res = R.string.no_works_found,
+                    textAlign = TextAlign.Center
+                )
+            } else {
+                group.works.forEachIndexed { index, work ->
+                    WorkItem(
+                        work = work,
+                        onWorkClick = onWorkClick
+                    )
+                    if (index < group.works.lastIndex) {
+                        HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -287,10 +301,8 @@ private fun WorkItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = {
-                onWorkClick(work.id)
-            })
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clickable { onWorkClick(work.id) }
+            .padding(horizontal = 16.dp, vertical = 10.dp)
     ) {
         H4Text(text = work.title)
         work.publishYear?.let { year ->

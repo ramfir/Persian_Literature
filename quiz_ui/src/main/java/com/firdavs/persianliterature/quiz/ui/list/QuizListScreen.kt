@@ -1,6 +1,5 @@
 package com.firdavs.persianliterature.quiz.ui.list
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +16,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerState
@@ -25,10 +23,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -39,13 +35,13 @@ import com.firdavs.persianliterature.quiz_api.model.QuizAttemptSummary
 import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.BaseScreen
 import com.firdavs.persianliterature.ui.kit.H3Text
-import com.firdavs.persianliterature.ui.kit.theme.localizedContext
 import com.firdavs.persianliterature.ui.kit.H4Text
 import com.firdavs.persianliterature.ui.kit.T1Text
 import com.firdavs.persianliterature.ui.kit.T2Text
 import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
 import com.firdavs.persianliterature.ui.kit.components.ProgressIndicator
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
+import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -54,14 +50,11 @@ fun QuizListEntryPoint(
     onQuizClick: (String) -> Unit,
     onChapterClick: (Chapter) -> Unit
 ) {
-    BaseEntryPoint(QuizListViewModel::class) { state, viewModel ->
+    BaseEntryPoint(QuizListViewModel::class) { state, _ ->
         QuizListScreen(
             state = state,
             onQuizClick = onQuizClick,
-            onChapterClick = onChapterClick,
-            onRefreshClick = viewModel::onRefreshClick,
-            resetShowToastFlag = viewModel::resetShowToastFlag,
-            resetShowErrorToastFlag = viewModel::resetShowErrorToastFlag
+            onChapterClick = onChapterClick
         )
     }
 }
@@ -71,35 +64,8 @@ fun QuizListEntryPoint(
 private fun QuizListScreen(
     state: QuizListUiState,
     onQuizClick: (String) -> Unit,
-    onChapterClick: (Chapter) -> Unit,
-    onRefreshClick: () -> Unit,
-    resetShowToastFlag: () -> Unit,
-    resetShowErrorToastFlag: () -> Unit
+    onChapterClick: (Chapter) -> Unit
 ) {
-    val context = localizedContext()
-
-    LaunchedEffect(state.showToast) {
-        if (state.showToast) {
-            Toast.makeText(
-                context,
-                R.string.quizzes_fetched,
-                Toast.LENGTH_SHORT
-            ).show()
-            resetShowToastFlag()
-        }
-    }
-
-    LaunchedEffect(state.showErrorToast) {
-        if (state.showErrorToast) {
-            Toast.makeText(
-                context,
-                R.string.fetch_error,
-                Toast.LENGTH_LONG
-            ).show()
-            resetShowErrorToastFlag()
-        }
-    }
-
     BaseScreen(
         drawerContent = {
             DrawerSheet(
@@ -111,8 +77,7 @@ private fun QuizListScreen(
         topBar = { drawerState: DrawerState, scope: CoroutineScope ->
             TopBar(
                 drawerState = drawerState,
-                scope = scope,
-                onRefreshClick = onRefreshClick
+                scope = scope
             )
         },
         mainContent = {
@@ -144,8 +109,7 @@ private fun QuizListScreen(
 @Composable
 private fun TopBar(
     drawerState: DrawerState,
-    scope: CoroutineScope,
-    onRefreshClick: () -> Unit
+    scope: CoroutineScope
 ) {
     Row(
         modifier = Modifier
@@ -167,12 +131,6 @@ private fun TopBar(
             overflow = TextOverflow.Ellipsis
         )
         Spacer(Modifier.weight(1f))
-        IconButton(onClick = onRefreshClick) {
-            Icon(
-                Icons.Default.Refresh,
-                contentDescription = "Refresh"
-            )
-        }
     }
 }
 
@@ -217,8 +175,7 @@ private fun QuizCard(
                 },
                 modifier = Modifier
                     .background(colors.primary, RoundedCornerShape(8.dp))
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                color = colors.onPrimary
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
             )
         }
     }

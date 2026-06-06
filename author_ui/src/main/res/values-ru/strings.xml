@@ -13,6 +13,7 @@
     <string name="published_at">опубликовано %s</string>
     <string name="no_favourite_authors">Нет избранных авторов</string>
     <string name="no_favourite_works">Нет избранных произведений</string>
+    <string name="no_favourite_poems">Нет избранных стихов</string>
     <string name="authors_fetched">Список авторов обновлен</string>
     <string name="download_audio">Скачать Аудио</string>
     <string name="downloading">Загрузка… %d%%</string>
@@ -30,4 +31,8 @@
     <string name="streaming">Стриминг…</string>
     <string name="download_for_offline">Скачать для Офлайна</string>
     <string name="cancel_download">Отменить</string>
+    <string name="remove_from_favourites_title">Убрать из избранного?</string>
+    <string name="remove_from_favourites_message">Этот элемент будет удалён из вашего списка избранного.</string>
+    <string name="remove">Убрать</string>
+    <string name="cancel">Отмена</string>
 </resources>

@@ -55,7 +55,7 @@ import com.firdavs.persianliterature.core.R as UiR
 fun AboutAppEntryPoint(
     onChapterClick: (Chapter) -> Unit
 ) {
-    BaseEntryPoint(AboutAppViewModel::class) { state, viewModel ->
+    BaseEntryPoint(AboutAppViewModel::class) { state, _ ->
         AboutAppScreen(
             state = state,
             onChapterClick = onChapterClick
@@ -118,7 +118,7 @@ private fun AboutAppScreen(
                         Icons.Default.Settings,
                         Icons.Default.PlayArrow,
                         Icons.Default.Star,
-                        Icons.Default.Notifications,
+                        Icons.Default.Notifications
                     )
                     state.features.zip(featureIcons).forEach { (featureRes, icon) ->
                         FeatureRow(icon = icon, text = stringResource(featureRes))
@@ -151,6 +151,7 @@ private fun AboutAppScreen(
     )
 }
 
+@Suppress("MagicNumber")
 @Composable
 private fun AboutSection(
     title: String,

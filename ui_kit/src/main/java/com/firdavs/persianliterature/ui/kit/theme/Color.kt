@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Color
 
 internal val Gold = Color(0xFFE5B973)
 internal val GoldOnPrimary = Color(0xFF432C00)
+internal val DarkOnPrimary = Color(0xFF1C1B1F)
 internal val GoldContainer = Color(0xFF5E4000)
 internal val GoldLight = Color(0xFFDAA520)
 internal val Melon = Color(0xFFB4ABFF)

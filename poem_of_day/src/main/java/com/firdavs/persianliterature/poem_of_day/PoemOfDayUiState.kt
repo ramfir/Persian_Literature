@@ -9,7 +9,5 @@ data class PoemOfDayUiState(
     val allPoems: List<Poem> = emptyList(),
     val currentIndex: Int = -1,
     val isLoading: Boolean = true,
-    val isRefreshing: Boolean = false,
-    val showToast: Boolean = false,
     val chapters: List<Chapter> = Chapter.all
 ) : UiState()

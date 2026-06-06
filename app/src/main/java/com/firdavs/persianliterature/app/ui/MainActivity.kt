@@ -7,8 +7,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -32,9 +34,8 @@ class MainActivity : ComponentActivity() {
     private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Install splash screen before calling super.onCreate()
         installSplashScreen()
-
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         // Handle initial intent
@@ -83,7 +84,8 @@ class MainActivity : ComponentActivity() {
                 CompositionLocalProvider(LocalAppLocale provides currentLocale) {
                     Scaffold(
                         modifier = Modifier.fillMaxSize(),
-                        containerColor = AppTheme.colors.background
+                        containerColor = AppTheme.colors.background,
+                        contentWindowInsets = WindowInsets(0, 0, 0, 0)
                     ) { innerPadding ->
                         Navigator(
                             state = state,
@@ -93,12 +95,6 @@ class MainActivity : ComponentActivity() {
                                 viewModel.clearNavigationWorkId()
                             }
                         )
-
-                        if (state.showWelcomeDialog) {
-                            WelcomeDialog(
-                                onDismiss = { viewModel.dismissWelcomeDialog() }
-                            )
-                        }
 
                         if (state.showLanguageSelectionDialog) {
                             LanguageSelectionDialog(

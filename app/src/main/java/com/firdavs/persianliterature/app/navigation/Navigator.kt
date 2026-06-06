@@ -51,6 +51,7 @@ fun Navigator(
     val toastContext = localizedContext()
     val coroutineScope = rememberCoroutineScope()
     var lastBackPressed by remember { mutableLongStateOf(0L) }
+    var lastNavigatedBackTime by remember { mutableLongStateOf(0L) }
 
     // Handle notification navigation
     LaunchedEffect(state.notificationPoemId) {
@@ -76,17 +77,21 @@ fun Navigator(
         val isRootScreen = backStack.size == 1
 
         if (isRootScreen) {
-            if (System.currentTimeMillis() - lastBackPressed < 3000) {
-                (context as? Activity)?.finish()
-            } else {
-                lastBackPressed = System.currentTimeMillis()
-                Toast.makeText(
-                    toastContext,
-                    R.string.exit_toast_message,
-                    Toast.LENGTH_SHORT
-                ).show()
+            val recentlyNavigatedBack = System.currentTimeMillis() - lastNavigatedBackTime < 700L
+            if (!recentlyNavigatedBack) {
+                if (System.currentTimeMillis() - lastBackPressed < 3000) {
+                    (context as? Activity)?.finish()
+                } else {
+                    lastBackPressed = System.currentTimeMillis()
+                    Toast.makeText(
+                        toastContext,
+                        R.string.exit_toast_message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         } else {
+            lastNavigatedBackTime = System.currentTimeMillis()
             backStack.back()
         }
     }
@@ -258,7 +263,8 @@ fun Navigator(
                         }
                     },
                     onAuthorClick = { backStack.next(Route.AuthorDetails(it)) },
-                    onWorkClick = { backStack.next(Route.WorkDetails(it)) }
+                    onWorkClick = { backStack.next(Route.WorkDetails(it)) },
+                    onPoemClick = { backStack.next(Route.PoemOfDay(it)) }
                 )
             }
             entry<Route.Settings> {

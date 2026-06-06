@@ -15,6 +15,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 import java.io.File
@@ -62,7 +63,7 @@ class WorksRepositoryImpl(
     }
 
     override fun getWork(id: String): Flow<Work> {
-        return worksDao.getByIdFlow(id).map {
+        return worksDao.getByIdFlow(id).filterNotNull().map {
             it.toDomain()
         }
     }

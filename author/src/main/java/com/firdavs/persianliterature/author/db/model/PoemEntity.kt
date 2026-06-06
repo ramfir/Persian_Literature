@@ -9,5 +9,6 @@ data class PoemEntity(
     @PrimaryKey val id: String,
     val title: String,
     val text: String,
-    val author: String
+    val author: String,
+    val isFavourite: Boolean = false
 )
