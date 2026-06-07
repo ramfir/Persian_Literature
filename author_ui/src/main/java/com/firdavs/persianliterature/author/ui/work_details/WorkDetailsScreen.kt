@@ -212,7 +212,6 @@ fun WorkDetailsScreen(
                                 modifier = Modifier
                                     .fillMaxSize(),
                                 source = PdfSource.LocalFile(workFile),
-                                scrollTo = state.savedPage,
                                 onPageChanged = { page, _ -> onPageChanged(page) }
                             )
                             IconButton(
