@@ -25,7 +25,8 @@ data class WorkEntity(
     // Deprecated - kept for backward compatibility during migration
     val audioDownloadStatus: AudioDownloadStatus = AudioDownloadStatus.NOT_DOWNLOADED,
     val audioLocalPath: String? = null,
-    val isFavourite: Boolean = false
+    val isFavourite: Boolean = false,
+    val lastReadPage: Int = 0
 )
 
 fun List<WorkEntity>.toDomain() = map { it.toDomain() }
@@ -43,5 +44,6 @@ fun WorkEntity.toDomain() = Work(
     audioCachedBytes = audioCachedBytes,
     audioDownloadStatus = audioDownloadStatus,
     audioLocalPath = audioLocalPath,
-    isFavourite = isFavourite
+    isFavourite = isFavourite,
+    lastReadPage = lastReadPage
 )

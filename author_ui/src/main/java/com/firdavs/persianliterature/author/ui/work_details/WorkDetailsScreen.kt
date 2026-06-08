@@ -29,11 +29,16 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -51,6 +56,7 @@ import com.firdavs.persianliterature.ui.kit.components.ProgressIndicator
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import com.firdavs.persianliterature.ui.kit.theme.localizedContext
 import com.firdavs.persianliterature.ui.kit.theme.stringResource
+import com.rajat.pdfviewer.PdfRendererView
 import com.rajat.pdfviewer.compose.PdfRendererViewCompose
 import com.rajat.pdfviewer.util.PdfSource
 
@@ -61,6 +67,19 @@ fun WorkDetailsEntryPoint(
 ) {
     BaseEntryPoint(WorkDetailsViewModel::class, id) { state, viewModel ->
         val toastContext = localizedContext()
+        val lifecycleOwner = LocalLifecycleOwner.current
+        val persistReadingProgress = rememberUpdatedState(viewModel::persistReadingProgress)
+        DisposableEffect(lifecycleOwner) {
+            val observer = LifecycleEventObserver { _, event ->
+                if (event == Lifecycle.Event.ON_STOP) {
+                    persistReadingProgress.value()
+                }
+            }
+            lifecycleOwner.lifecycle.addObserver(observer)
+            onDispose {
+                lifecycleOwner.lifecycle.removeObserver(observer)
+            }
+        }
         LaunchedEffect(state.showAudioControlToast) {
             if (state.showAudioControlToast) {
                 Toast.makeText(
@@ -212,8 +231,14 @@ fun WorkDetailsScreen(
                                 modifier = Modifier
                                     .fillMaxSize(),
                                 source = PdfSource.LocalFile(workFile),
-                                scrollTo = state.savedPage,
-                                onPageChanged = { page, _ -> onPageChanged(page) }
+                                jumpToPage = state.savedPage,
+                                statusCallBack = remember(onPageChanged) {
+                                    object : PdfRendererView.StatusCallBack {
+                                        override fun onPageChanged(currentPage: Int, totalPage: Int) {
+                                            onPageChanged(currentPage)
+                                        }
+                                    }
+                                }
                             )
                             IconButton(
                                 modifier = Modifier

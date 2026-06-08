@@ -9,6 +9,7 @@ import com.firdavs.persianliterature.author.db.mapper.AuthorsEntityToDomainMappe
 import com.firdavs.persianliterature.author.db.mapper.AuthorsEntityToDomainMapperImpl
 import com.firdavs.persianliterature.author.db.migration.MIGRATION_1_2
 import com.firdavs.persianliterature.author.db.migration.MIGRATION_2_3
+import com.firdavs.persianliterature.author.db.migration.MIGRATION_3_4
 import com.firdavs.persianliterature.author.manager.NewWorksNotificationManagerImpl
 import com.firdavs.persianliterature.author.repository.AuthorRepositoryImpl
 import com.firdavs.persianliterature.author.repository.FavouritesRepositoryImpl
@@ -47,7 +48,7 @@ val authorModule = module {
             AuthorsDb::class.java,
             AuthorsDb.DATABASE_NAME
         )
-            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
             .build()
     }
     single<AuthorsDao> { get<AuthorsDb>().getAuthorsDao() }

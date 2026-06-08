@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
-import java.io.File
 
 class WorksRepositoryImpl(
     private val worksDao: WorksDao,
@@ -33,27 +32,23 @@ class WorksRepositoryImpl(
             val workDto = document.toObject(WorkDTO::class.java)
             workDto?.copy(id = document.id)
         }
-        deleteDownloadedAudioFiles()
-        deleteDownloadedPdfFiles()
+        // Preserve locally-stored state (favourites, audio cache/download progress, reading progress)
+        val existingWorksById = worksDao.getAll().associateBy { it.id }
+        val worksWithLocalState = worksDTO.toDb().map { work ->
+            existingWorksById[work.id]?.let { existing ->
+                work.copy(
+                    audioCacheStatus = existing.audioCacheStatus,
+                    audioContentLength = existing.audioContentLength,
+                    audioCachedBytes = existing.audioCachedBytes,
+                    audioDownloadStatus = existing.audioDownloadStatus,
+                    audioLocalPath = existing.audioLocalPath,
+                    isFavourite = existing.isFavourite,
+                    lastReadPage = existing.lastReadPage
+                )
+            } ?: work
+        }
         worksDao.deleteAll()
-        worksDao.insert(worksDTO.toDb())
-    }
-
-    private fun deleteDownloadedAudioFiles() {
-        val audioDir = File(context.filesDir, "audio")
-        if (audioDir.exists() && audioDir.isDirectory) {
-            audioDir.listFiles()?.forEach { file ->
-                file.delete()
-            }
-        }
-    }
-
-    private fun deleteDownloadedPdfFiles() {
-        context.filesDir.listFiles()?.forEach { file ->
-            if (file.isFile && file.extension.equals("pdf", ignoreCase = true)) {
-                file.delete()
-            }
-        }
+        worksDao.insert(worksWithLocalState)
     }
 
     override fun getWorksByAuthorId(authorId: String): Flow<List<Work>> {
@@ -66,6 +61,10 @@ class WorksRepositoryImpl(
         return worksDao.getByIdFlow(id).filterNotNull().map {
             it.toDomain()
         }
+    }
+
+    override suspend fun updateLastReadPage(workId: String, page: Int) {
+        worksDao.updateLastReadPage(workId, page)
     }
 
     override suspend fun updateAudioDownloadStatus(

@@ -31,7 +31,7 @@ abstract class AuthorsDb : RoomDatabase() {
     abstract fun getPoemsDao(): PoemsDao
 
     companion object {
-        const val VERSION = 3
+        const val VERSION = 4
         const val AUTHORS = "authors"
         const val WORKS = "works"
         const val POEMS = "poems"

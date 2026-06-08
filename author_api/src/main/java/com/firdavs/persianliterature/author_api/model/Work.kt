@@ -19,5 +19,6 @@ data class Work(
     val audioDownloadStatus: AudioDownloadStatus = AudioDownloadStatus.NOT_DOWNLOADED,
     @Deprecated("No longer used - cache managed by ExoPlayer")
     val audioLocalPath: String? = null,
-    val isFavourite: Boolean = false
+    val isFavourite: Boolean = false,
+    val lastReadPage: Int = 0
 )

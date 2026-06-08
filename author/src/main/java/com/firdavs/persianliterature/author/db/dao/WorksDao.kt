@@ -22,6 +22,9 @@ interface WorksDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(works: List<WorkEntity>)
 
+    @Query("SELECT * FROM ${AuthorsDb.WORKS}")
+    suspend fun getAll(): List<WorkEntity>
+
     @Query("SELECT * FROM ${AuthorsDb.WORKS} WHERE authorId = :id")
     fun getByAuthorIdFlow(id: String): Flow<List<WorkEntity>>
 
@@ -33,6 +36,9 @@ interface WorksDao {
 
     @Query("UPDATE ${AuthorsDb.WORKS} SET isFavourite = :isFavourite WHERE id = :id")
     suspend fun updateFavourite(id: String, isFavourite: Boolean)
+
+    @Query("UPDATE ${AuthorsDb.WORKS} SET lastReadPage = :page WHERE id = :id")
+    suspend fun updateLastReadPage(id: String, page: Int)
 
     @Query("SELECT id FROM ${AuthorsDb.WORKS} WHERE isFavourite = 1")
     suspend fun getFavouriteIds(): List<String>
