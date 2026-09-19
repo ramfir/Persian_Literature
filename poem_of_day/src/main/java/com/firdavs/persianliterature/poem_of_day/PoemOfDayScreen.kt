@@ -194,7 +194,7 @@ private fun PoemOfDayScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     val scrollState = rememberScrollState()
                     LaunchedEffect(state.poem) {

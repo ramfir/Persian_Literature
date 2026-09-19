@@ -43,7 +43,8 @@ class WorksRepositoryImpl(
                     audioDownloadStatus = existing.audioDownloadStatus,
                     audioLocalPath = existing.audioLocalPath,
                     isFavourite = existing.isFavourite,
-                    lastReadPage = existing.lastReadPage
+                    lastReadPage = existing.lastReadPage,
+                    lastReadTextPosition = existing.lastReadTextPosition
                 )
             } ?: work
         }
@@ -65,6 +66,10 @@ class WorksRepositoryImpl(
 
     override suspend fun updateLastReadPage(workId: String, page: Int) {
         worksDao.updateLastReadPage(workId, page)
+    }
+
+    override suspend fun updateLastReadTextPosition(workId: String, position: Int) {
+        worksDao.updateLastReadTextPosition(workId, position)
     }
 
     override suspend fun updateAudioDownloadStatus(

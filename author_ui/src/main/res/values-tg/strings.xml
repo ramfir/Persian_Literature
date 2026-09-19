@@ -35,4 +35,6 @@
     <string name="remove_from_favourites_message">Ин элемент аз рӯйхати интихобшудаи шумо хориҷ карда мешавад.</string>
     <string name="remove">Хориҷ кардан</string>
     <string name="cancel">Бекор кардан</string>
+    <string name="page_number">Саҳифаи %d</string>
+    <string name="first_page">Саҳифаи аввал</string>
 </resources>

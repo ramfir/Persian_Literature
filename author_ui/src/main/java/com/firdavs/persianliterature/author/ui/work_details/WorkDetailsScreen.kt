@@ -13,10 +13,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.FavoriteBorder
@@ -34,8 +39,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -43,9 +50,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.firdavs.persianliterature.author.ui.R
 import com.firdavs.persianliterature.ui.kit.BaseEntryPoint
 import com.firdavs.persianliterature.ui.kit.BaseScreen
@@ -59,6 +68,7 @@ import com.firdavs.persianliterature.ui.kit.theme.stringResource
 import com.rajat.pdfviewer.PdfRendererView
 import com.rajat.pdfviewer.compose.PdfRendererViewCompose
 import com.rajat.pdfviewer.util.PdfSource
+import kotlinx.coroutines.launch
 
 @Composable
 fun WorkDetailsEntryPoint(
@@ -111,7 +121,12 @@ fun WorkDetailsEntryPoint(
             onSeekTo = viewModel::onSeekTo,
             onSkipBackward = viewModel::onSkipBackward,
             onSkipForward = viewModel::onSkipForward,
-            onPageChanged = viewModel::onPageChanged
+            onPageChanged = viewModel::onPageChanged,
+            onTextScrollPositionChanged = viewModel::onTextScrollPositionChanged,
+            onToggleReadMode = viewModel::onToggleReadMode,
+            onIncreaseFont = viewModel::onIncreaseFont,
+            onDecreaseFont = viewModel::onDecreaseFont,
+            onRetryLoadText = viewModel::retryLoadText
         )
     }
 }
@@ -127,7 +142,12 @@ fun WorkDetailsScreen(
     onSeekTo: (Long) -> Unit = {},
     onSkipBackward: () -> Unit = {},
     onSkipForward: () -> Unit = {},
-    onPageChanged: (Int) -> Unit = {}
+    onPageChanged: (Int) -> Unit = {},
+    onTextScrollPositionChanged: (Int) -> Unit = {},
+    onToggleReadMode: () -> Unit = {},
+    onIncreaseFont: () -> Unit = {},
+    onDecreaseFont: () -> Unit = {},
+    onRetryLoadText: () -> Unit = {}
 ) {
     var isBarsVisible by remember { mutableStateOf(true) }
 
@@ -160,20 +180,39 @@ fun WorkDetailsScreen(
                         overflow = TextOverflow.Ellipsis
                     )
                     state.work?.let { work ->
-                        IconButton(
+                        Row(
                             modifier = Modifier
                                 .align(Alignment.CenterEnd),
-                            onClick = { onToggleFavourite(!work.isFavourite) }
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(
-                                imageVector = if (work.isFavourite) {
-                                    Icons.Filled.Favorite
-                                } else {
-                                    Icons.Outlined.FavoriteBorder
-                                },
-                                contentDescription = null,
-                                tint = LocalColors.current.onPrimary
-                            )
+                            if (state.hasText) {
+                                IconButton(onClick = onToggleReadMode) {
+                                    Icon(
+                                        painter = painterResource(
+                                            if (state.isTextMode) {
+                                                R.drawable.ic_pdf_style
+                                            } else {
+                                                R.drawable.ic_text_style
+                                            }
+                                        ),
+                                        contentDescription = null,
+                                        tint = LocalColors.current.onPrimary
+                                    )
+                                }
+                            }
+                            IconButton(
+                                onClick = { onToggleFavourite(!work.isFavourite) }
+                            ) {
+                                Icon(
+                                    imageVector = if (work.isFavourite) {
+                                        Icons.Filled.Favorite
+                                    } else {
+                                        Icons.Outlined.FavoriteBorder
+                                    },
+                                    contentDescription = null,
+                                    tint = LocalColors.current.onPrimary
+                                )
+                            }
                         }
                     }
                 }
@@ -201,7 +240,16 @@ fun WorkDetailsScreen(
                 Box(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    if (state.isDownloadingPdf) {
+                    if (state.isTextMode) {
+                        WorkTextReader(
+                            state = state,
+                            onToggleBars = { isBarsVisible = !isBarsVisible },
+                            onIncreaseFont = onIncreaseFont,
+                            onDecreaseFont = onDecreaseFont,
+                            onRetryLoadText = onRetryLoadText,
+                            onScrollPositionChanged = onTextScrollPositionChanged
+                        )
+                    } else if (state.isDownloadingPdf) {
                         Column(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -227,6 +275,7 @@ fun WorkDetailsScreen(
                         }
                     } else if (state.work != null) {
                         state.workFile?.let { workFile ->
+                            var pdfViewRef by remember { mutableStateOf<PdfRendererView?>(null) }
                             PdfRendererViewCompose(
                                 modifier = Modifier
                                     .fillMaxSize(),
@@ -238,7 +287,8 @@ fun WorkDetailsScreen(
                                             onPageChanged(currentPage)
                                         }
                                     }
-                                }
+                                },
+                                onReady = { pdfViewRef = it }
                             )
                             IconButton(
                                 modifier = Modifier
@@ -253,6 +303,21 @@ fun WorkDetailsScreen(
                                 Icon(
                                     painter = painterResource(R.drawable.ic_hide),
                                     contentDescription = null
+                                )
+                            }
+                            IconButton(
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .background(
+                                        color = LocalColors.current.primary,
+                                        shape = CircleShape
+                                    )
+                                    .align(Alignment.BottomEnd),
+                                onClick = { pdfViewRef?.jumpToPage(0) }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.KeyboardArrowUp,
+                                    contentDescription = stringResource(R.string.first_page)
                                 )
                             }
                         } ?: Column(
@@ -286,6 +351,153 @@ fun WorkDetailsScreen(
             null
         }
     )
+}
+
+@Suppress("LongMethod")
+@Composable
+private fun WorkTextReader(
+    state: WorkDetailsUiState,
+    onToggleBars: () -> Unit,
+    onIncreaseFont: () -> Unit,
+    onDecreaseFont: () -> Unit,
+    onRetryLoadText: () -> Unit,
+    onScrollPositionChanged: (Int) -> Unit
+) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        when {
+            state.isLoadingText -> {
+                ProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+            state.textLoadFailed -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .align(Alignment.Center),
+                    horizontalAlignment = CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    H3Text(
+                        text = stringResource(R.string.fetch_error),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(horizontal = 32.dp)
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    IconButton(onClick = onRetryLoadText) {
+                        Icon(
+                            imageVector = Icons.Filled.Refresh,
+                            contentDescription = stringResource(R.string.retry_download),
+                            tint = LocalColors.current.primary
+                        )
+                    }
+                }
+            }
+            state.workText != null -> {
+                val lineHeight = (state.fontSizeSp * LINE_HEIGHT_FACTOR).sp
+                val listState = rememberLazyListState(
+                    initialFirstVisibleItemIndex = state.savedTextPosition
+                )
+                val coroutineScope = rememberCoroutineScope()
+                LaunchedEffect(listState) {
+                    snapshotFlow { listState.firstVisibleItemIndex }
+                        .collect { onScrollPositionChanged(it) }
+                }
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                ) {
+                    state.workText.pages.forEach { page ->
+                        items(page.lines) { line ->
+                            Text(
+                                text = line,
+                                fontSize = state.fontSizeSp.sp,
+                                lineHeight = lineHeight,
+                                color = LocalColors.current.onSurface,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 2.dp)
+                            )
+                        }
+                        item {
+                            Text(
+                                text = stringResource(R.string.page_number, page.page),
+                                fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                                color = LocalColors.current.onSurface.copy(alpha = PAGE_NUMBER_ALPHA),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 8.dp, bottom = 20.dp)
+                            )
+                        }
+                    }
+                }
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(8.dp)
+                ) {
+                    IconButton(
+                        modifier = Modifier
+                            .size(44.dp)
+                            .background(
+                                color = LocalColors.current.primary,
+                                shape = CircleShape
+                            ),
+                        onClick = { coroutineScope.launch { listState.animateScrollToItem(0) } }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowUp,
+                            contentDescription = stringResource(R.string.first_page)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    FontSizeButton(label = "A+", onClick = onIncreaseFont)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    FontSizeButton(label = "A−", onClick = onDecreaseFont)
+                }
+                IconButton(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .background(
+                            color = LocalColors.current.primary,
+                            shape = CircleShape
+                        )
+                        .align(Alignment.BottomStart),
+                    onClick = onToggleBars
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_hide),
+                        contentDescription = null
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun FontSizeButton(
+    label: String,
+    onClick: () -> Unit
+) {
+    IconButton(
+        modifier = Modifier
+            .size(44.dp)
+            .background(
+                color = LocalColors.current.primary,
+                shape = CircleShape
+            ),
+        onClick = onClick
+    ) {
+        Text(
+            text = label,
+            color = LocalColors.current.onPrimary,
+            fontWeight = FontWeight.Bold
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -432,3 +644,5 @@ private const val SECONDS_IN_MINUTE = 60
 private const val SECONDS_IN_HOUR = 3600
 private const val MILLIS_IN_SECOND = 1000
 private const val FULL_PERCENT = 100
+private const val LINE_HEIGHT_FACTOR = 1.5f
+private const val PAGE_NUMBER_ALPHA = 0.5f

@@ -40,6 +40,9 @@ interface WorksDao {
     @Query("UPDATE ${AuthorsDb.WORKS} SET lastReadPage = :page WHERE id = :id")
     suspend fun updateLastReadPage(id: String, page: Int)
 
+    @Query("UPDATE ${AuthorsDb.WORKS} SET lastReadTextPosition = :position WHERE id = :id")
+    suspend fun updateLastReadTextPosition(id: String, position: Int)
+
     @Query("SELECT id FROM ${AuthorsDb.WORKS} WHERE isFavourite = 1")
     suspend fun getFavouriteIds(): List<String>
     @Query(

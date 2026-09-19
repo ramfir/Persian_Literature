@@ -31,10 +31,64 @@ class WorkDetailsViewModel(
     private val downloadPdfScope = CoroutineScope(Job() + Dispatchers.IO)
     private var firstAudioPlay = true
 
+    private val readerPrefs by lazy {
+        context.getSharedPreferences(READER_PREFS, Context.MODE_PRIVATE)
+    }
+
     init {
         audioServiceController.connect()
+        post { it.copy(fontSizeSp = readerPrefs.getInt(KEY_FONT_SIZE, WorkDetailsUiState.DEFAULT_FONT_SIZE_SP)) }
         observeWork()
         observeAudioPlayback()
+    }
+
+    fun onToggleReadMode() {
+        val current = state.value
+        val goingToText = !current.isTextMode
+        post { it.copy(isTextMode = goingToText) }
+        if (goingToText && current.workText == null && !current.isLoadingText) {
+            loadWorkText()
+        }
+    }
+
+    fun onIncreaseFont() = changeFontSize(WorkDetailsUiState.FONT_SIZE_STEP_SP)
+
+    fun onDecreaseFont() = changeFontSize(-WorkDetailsUiState.FONT_SIZE_STEP_SP)
+
+    private fun changeFontSize(delta: Int) {
+        val newSize = (state.value.fontSizeSp + delta)
+            .coerceIn(WorkDetailsUiState.MIN_FONT_SIZE_SP, WorkDetailsUiState.MAX_FONT_SIZE_SP)
+        if (newSize == state.value.fontSizeSp) return
+        readerPrefs.edit().putInt(KEY_FONT_SIZE, newSize).apply()
+        post { it.copy(fontSizeSp = newSize) }
+    }
+
+    fun retryLoadText() = loadWorkText()
+
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
+    private fun loadWorkText() {
+        val work = state.value.work ?: return
+        val textUrl = work.textUrl?.takeIf { it.isNotBlank() } ?: return
+        downloadPdfScope.launch {
+            post { it.copy(isLoadingText = true, textLoadFailed = false) }
+            val languageCode = languageManager.getSavedLanguage(context).firebaseCode
+            val fileName = "${work.id}_${languageCode}_text.json"
+            val cachedFile = File(context.filesDir, fileName)
+            try {
+                if (cachedFile.exists().not()) {
+                    pdfDownloader.downloadPdfFile(
+                        pdfUrl = textUrl,
+                        fileName = fileName,
+                        doOnSuccess = {}
+                    )
+                }
+                val parsed = WorkText.fromFile(File(context.filesDir, fileName))
+                post { it.copy(workText = parsed, isLoadingText = false) }
+            } catch (e: Exception) {
+                if (cachedFile.exists()) cachedFile.delete()
+                post { it.copy(isLoadingText = false, textLoadFailed = true) }
+            }
+        }
     }
 
     override fun onViewResumed() {
@@ -46,10 +100,17 @@ class WorkDetailsViewModel(
     fun onPageChanged(page: Int) {
         post { it.copy(savedPage = page) }
     }
+
+    fun onTextScrollPositionChanged(position: Int) {
+        post { it.copy(savedTextPosition = position) }
+    }
+
     fun persistReadingProgress() {
         val page = state.value.savedPage
+        val textPosition = state.value.savedTextPosition
         runBlocking(Dispatchers.IO) {
             worksRepository.updateLastReadPage(id, page)
+            worksRepository.updateLastReadTextPosition(id, textPosition)
         }
     }
 
@@ -57,7 +118,11 @@ class WorkDetailsViewModel(
         viewModelScope.launch {
             worksRepository.getWork(id).collect { work ->
                 post {
-                    it.copy(work = work, savedPage = work.lastReadPage)
+                    it.copy(
+                        work = work,
+                        savedPage = work.lastReadPage,
+                        savedTextPosition = work.lastReadTextPosition
+                    )
                 }
                 // Handle PDF download (existing logic)
                 work.fileUrl?.let {
@@ -240,5 +305,7 @@ class WorkDetailsViewModel(
 
     companion object {
         private const val SKIP_DURATION_MS = 10000L
+        private const val READER_PREFS = "reader_preferences"
+        private const val KEY_FONT_SIZE = "reader_font_size_sp"
     }
 }
