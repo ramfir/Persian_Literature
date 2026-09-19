@@ -15,6 +15,8 @@ data class WorkDTO(
     var publishYear: String? = null,
     @get:PropertyName("fileUrl") @set:PropertyName("fileUrl")
     var fileUrl: String = "",
+    @get:PropertyName("textUrl") @set:PropertyName("textUrl")
+    var textUrl: String? = null,
     @get:PropertyName("audioUrl") @set:PropertyName("audioUrl")
     var audioUrl: String? = null
 )
@@ -28,5 +30,6 @@ fun WorkDTO.toDb() = WorkEntity(
     description = description,
     publishYear = publishYear,
     fileUrl = fileUrl,
+    textUrl = textUrl,
     audioUrl = audioUrl
 )

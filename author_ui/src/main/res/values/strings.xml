@@ -35,4 +35,6 @@
     <string name="remove_from_favourites_message">This item will be removed from your favourites list.</string>
     <string name="remove">Remove</string>
     <string name="cancel">Cancel</string>
+    <string name="page_number">Page %d</string>
+    <string name="first_page">First page</string>
 </resources>

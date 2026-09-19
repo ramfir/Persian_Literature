@@ -15,6 +15,7 @@ data class WorkEntity(
     val description: String? = null,
     val publishYear: String?,
     val fileUrl: String?,
+    val textUrl: String? = null,
     val audioUrl: String? = null,
 
     // New cache-related fields
@@ -26,7 +27,8 @@ data class WorkEntity(
     val audioDownloadStatus: AudioDownloadStatus = AudioDownloadStatus.NOT_DOWNLOADED,
     val audioLocalPath: String? = null,
     val isFavourite: Boolean = false,
-    val lastReadPage: Int = 0
+    val lastReadPage: Int = 0,
+    val lastReadTextPosition: Int = 0
 )
 
 fun List<WorkEntity>.toDomain() = map { it.toDomain() }
@@ -38,6 +40,7 @@ fun WorkEntity.toDomain() = Work(
     description = description,
     publishYear = publishYear,
     fileUrl = fileUrl,
+    textUrl = textUrl,
     audioUrl = audioUrl,
     audioCacheStatus = audioCacheStatus,
     audioContentLength = audioContentLength,
@@ -45,5 +48,6 @@ fun WorkEntity.toDomain() = Work(
     audioDownloadStatus = audioDownloadStatus,
     audioLocalPath = audioLocalPath,
     isFavourite = isFavourite,
-    lastReadPage = lastReadPage
+    lastReadPage = lastReadPage,
+    lastReadTextPosition = lastReadTextPosition
 )
