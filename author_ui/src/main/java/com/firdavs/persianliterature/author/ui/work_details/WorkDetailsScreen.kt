@@ -173,7 +173,7 @@ fun WorkDetailsScreen(
                     H2Text(
                         modifier = Modifier
                             .align(Alignment.Center)
-                            .padding(horizontal = 56.dp),
+                            .padding(horizontal = if (state.hasText) 80.dp else 56.dp),
                         text = state.work?.title ?: "",
                         textAlign = TextAlign.Center,
                         maxLines = 1,
