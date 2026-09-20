@@ -18,6 +18,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.selection.DisableSelection
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
@@ -403,34 +405,38 @@ private fun WorkTextReader(
                     snapshotFlow { listState.firstVisibleItemIndex }
                         .collect { onScrollPositionChanged(it) }
                 }
-                LazyColumn(
-                    state = listState,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    state.workText.pages.forEach { page ->
-                        items(page.lines) { line ->
-                            Text(
-                                text = line,
-                                fontSize = state.fontSizeSp.sp,
-                                lineHeight = lineHeight,
-                                color = LocalColors.current.onSurface,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 2.dp)
-                            )
-                        }
-                        item {
-                            Text(
-                                text = stringResource(R.string.page_number, page.page),
-                                fontSize = MaterialTheme.typography.labelMedium.fontSize,
-                                color = LocalColors.current.onSurface.copy(alpha = PAGE_NUMBER_ALPHA),
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 8.dp, bottom = 20.dp)
-                            )
+                SelectionContainer {
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+                        state.workText.pages.forEach { page ->
+                            items(page.lines) { line ->
+                                Text(
+                                    text = line,
+                                    fontSize = state.fontSizeSp.sp,
+                                    lineHeight = lineHeight,
+                                    color = LocalColors.current.onSurface,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 2.dp)
+                                )
+                            }
+                            item {
+                                DisableSelection {
+                                    Text(
+                                        text = stringResource(R.string.page_number, page.page),
+                                        fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                                        color = LocalColors.current.onSurface.copy(alpha = PAGE_NUMBER_ALPHA),
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(top = 8.dp, bottom = 20.dp)
+                                    )
+                                }
+                            }
                         }
                     }
                 }
