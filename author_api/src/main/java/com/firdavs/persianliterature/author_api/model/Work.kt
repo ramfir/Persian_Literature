@@ -7,6 +7,7 @@ data class Work(
     val description: String? = null,
     val publishYear: String?,
     val fileUrl: String?,
+    val textUrl: String? = null,
     val audioUrl: String? = null,
 
     // New cache-related fields
@@ -19,5 +20,7 @@ data class Work(
     val audioDownloadStatus: AudioDownloadStatus = AudioDownloadStatus.NOT_DOWNLOADED,
     @Deprecated("No longer used - cache managed by ExoPlayer")
     val audioLocalPath: String? = null,
-    val isFavourite: Boolean = false
+    val isFavourite: Boolean = false,
+    val lastReadPage: Int = 0,
+    val lastReadTextPosition: Int = 0
 )

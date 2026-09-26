@@ -9,6 +9,8 @@ interface WorksRepository {
     suspend fun fetchWorks()
     fun getWorksByAuthorId(authorId: String): Flow<List<Work>>
     fun getWork(id: String): Flow<Work>
+    suspend fun updateLastReadPage(workId: String, page: Int)
+    suspend fun updateLastReadTextPosition(workId: String, position: Int)
 
     // Audio cache management (new)
     suspend fun updateAudioCacheStatus(
