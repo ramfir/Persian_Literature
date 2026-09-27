@@ -8,7 +8,7 @@ ext {
 
             lifecycle_ktx          : ("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"),
             lifecycle_compose      : ("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"),
-            lifecycle_navigation   : ("androidx.lifecycle:lifecycle-viewmodel-navigation3:$navigation_version"),
+            lifecycle_navigation   : ("androidx.lifecycle:lifecycle-viewmodel-navigation3:$lifecycle_version"),
 
             desugaring             : ("com.android.tools:desugar_jdk_libs:$desugaring_version"),
 
