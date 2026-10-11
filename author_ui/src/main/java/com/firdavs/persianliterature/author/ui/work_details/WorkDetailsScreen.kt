@@ -64,6 +64,7 @@ import com.firdavs.persianliterature.ui.kit.H2Text
 import com.firdavs.persianliterature.ui.kit.H3Text
 import com.firdavs.persianliterature.ui.kit.H5Text
 import com.firdavs.persianliterature.ui.kit.components.ProgressIndicator
+import com.firdavs.persianliterature.ui.kit.drawShadow
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import com.firdavs.persianliterature.ui.kit.theme.localizedContext
 import com.firdavs.persianliterature.ui.kit.theme.stringResource
@@ -231,6 +232,7 @@ fun WorkDetailsScreen(
                                 text = description,
                                 modifier = Modifier
                                     .fillMaxWidth()
+                                    .drawShadow()
                                     .padding(horizontal = 16.dp, vertical = 8.dp),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = LocalColors.current.onSurface

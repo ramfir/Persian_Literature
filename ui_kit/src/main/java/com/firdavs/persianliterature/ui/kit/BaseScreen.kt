@@ -98,11 +98,11 @@ fun BaseScreen(
     }
 }
 
-private fun Modifier.drawShadow() = drawBehind {
-    val shadowHeight = 7.dp.toPx()
+fun Modifier.drawShadow() = drawBehind {
+    val shadowHeight = SHADOW_HEIGHT.toPx()
     drawRect(
         brush = Brush.verticalGradient(
-            colors = listOf(Black.copy(alpha = 0.02f), Color.Transparent),
+            colors = listOf(Black.copy(alpha = SHADOW_ALPHA), Color.Transparent),
             startY = size.height,
             endY = size.height - shadowHeight
         ),
@@ -110,3 +110,6 @@ private fun Modifier.drawShadow() = drawBehind {
         size = Size(size.width, shadowHeight)
     )
 }
+
+private val SHADOW_HEIGHT = 10.dp
+private const val SHADOW_ALPHA = 0.12f
