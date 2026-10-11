@@ -9,4 +9,5 @@
     <string name="poem_of_day">Poem of the Day</string>
     <string name="audio_books">Audio books</string>
     <string name="quiz">Quiz</string>
+    <string name="suggest_poem">Suggest a poem</string>
 </resources>

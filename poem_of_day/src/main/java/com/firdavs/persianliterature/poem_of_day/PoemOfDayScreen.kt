@@ -22,7 +22,6 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -48,6 +47,7 @@ import com.firdavs.persianliterature.ui.kit.H3Text
 import com.firdavs.persianliterature.ui.kit.T1Text
 import com.firdavs.persianliterature.ui.kit.T2Text
 import com.firdavs.persianliterature.ui.kit.components.DrawerSheet
+import com.firdavs.persianliterature.ui.kit.components.ProgressIndicator
 import com.firdavs.persianliterature.ui.kit.components.buttons.PrimaryButton
 import com.firdavs.persianliterature.ui.kit.theme.LocalColors
 import com.firdavs.persianliterature.ui.kit.theme.stringResource
@@ -60,12 +60,14 @@ import com.firdavs.persianliterature.core.R as UiR
 @Composable
 fun PoemOfDayEntryPoint(
     poemId: String?,
+    onSuggestPoemClick: () -> Unit,
     onChapterClick: (Chapter) -> Unit
 ) {
     BaseEntryPoint(PoemOfDayViewModel::class, poemId) { state, viewModel ->
         PoemOfDayScreen(
             state = state,
             onChapterClick = onChapterClick,
+            onSuggestPoemClick = onSuggestPoemClick,
             onNewPoemClick = viewModel::onNewPoemClick,
             onPreviousPoemClick = viewModel::onPreviousPoemClick,
             onToggleFavourite = viewModel::onToggleFavourite
@@ -77,6 +79,7 @@ fun PoemOfDayEntryPoint(
 private fun PoemOfDayScreen(
     state: PoemOfDayUiState,
     onChapterClick: (Chapter) -> Unit,
+    onSuggestPoemClick: () -> Unit,
     onNewPoemClick: () -> Unit,
     onPreviousPoemClick: () -> Unit,
     onToggleFavourite: () -> Unit
@@ -187,7 +190,7 @@ private fun PoemOfDayScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator()
+                    ProgressIndicator()
                 }
             } else if (state.poem != null) {
                 Column(
@@ -260,18 +263,44 @@ private fun PoemOfDayScreen(
                             onClick = onNewPoemClick
                         )
                     }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    SuggestPoemButton(onClick = onSuggestPoemClick)
                 }
             } else {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    T1Text(
-                        text = stringResource(R.string.no_poems_available),
-                        textAlign = TextAlign.Center
-                    )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        T1Text(
+                            text = stringResource(R.string.no_poems_available),
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(24.dp))
+                        SuggestPoemButton(
+                            onClick = onSuggestPoemClick,
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        )
+                    }
                 }
             }
         }
+    )
+}
+
+@Composable
+private fun SuggestPoemButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    PrimaryButton(
+        modifier = modifier.fillMaxWidth(),
+        text = stringResource(UiR.string.suggest_poem),
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        fontSize = 14.sp,
+        onClick = onClick
     )
 }

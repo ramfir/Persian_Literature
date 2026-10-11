@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="suggest_poem_hint">Шеъре, ки ба шумо писанд аст, фиристед. Мо онро месанҷем ва ба барнома илова мекунем.</string>
+    <string name="suggest_poem_title_field">Номи шеър (ихтиёрӣ)</string>
+    <string name="suggest_poem_author_field">Муаллиф</string>
+    <string name="suggest_poem_text_field">Матни шеър</string>
+    <string name="suggest_poem_name_field">Номи шумо (ихтиёрӣ)</string>
+    <string name="suggest_poem_submit">Фиристодан</string>
+    <string name="suggest_poem_error_empty_fields">Муаллиф ва матни шеърро пур кунед</string>
+    <string name="suggest_poem_error_short_text">Матни шеър хеле кӯтоҳ аст</string>
+    <string name="suggest_poem_error_limit">Шумо ба ҳадди имрӯза расидед. Фардо кӯшиш кунед</string>
+    <string name="suggest_poem_error_network">Фиристодан нашуд. Пайвасти интернетро санҷед</string>
+    <string name="suggest_poem_success_title">Ташаккур!</string>
+    <string name="suggest_poem_success_message">Шеъри шумо барои санҷиш фиристода шуд. Агар ҳама чиз хуб бошад, он ба зудӣ дар барнома пайдо мешавад.</string>
+    <string name="suggest_poem_send_another">Боз як шеър пешниҳод кардан</string>
+    <string name="suggest_poem_error_rejected">Фиристодани дархостҳо барои ин дастгоҳ дастрас нест</string>
+</resources>

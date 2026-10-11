@@ -10,6 +10,7 @@ dependencies {
 
     implementation platform(library.firebase_bom)
     implementation library.firestore_ktx
+    implementation library.firebase_auth
     implementation library.coroutines_play_services
 
     implementation library.room_runtime

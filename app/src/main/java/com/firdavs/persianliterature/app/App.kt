@@ -4,6 +4,7 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import com.firdavs.persianliterature.app.appcheck.installAppCheck
 import com.firdavs.persianliterature.app.di.appModule
 import com.firdavs.persianliterature.settings.R
 import com.firdavs.persianliterature.settings.worker.DailyNotificationWorker
@@ -16,6 +17,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         FirebaseFirestore.setLoggingEnabled(true)
+        installAppCheck()
 
         createNotificationChannel()
 

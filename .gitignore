@@ -13,12 +13,7 @@ local.properties
 /signing/*.keystore
 /.kotlin/
 /app/google-services.json
-/audio/build
-/audio_api/build
-/quiz/build
-/quiz_api/build
-/quiz_ui/build
-/poem_of_day/build
+build/
 
 # Play Store assets
 /play-store-assets/

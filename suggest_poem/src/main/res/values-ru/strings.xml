@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="suggest_poem_hint">Пришлите стих, который вам нравится. Мы проверим его и добавим в приложение.</string>
+    <string name="suggest_poem_title_field">Название стиха (необязательно)</string>
+    <string name="suggest_poem_author_field">Автор</string>
+    <string name="suggest_poem_text_field">Текст стиха</string>
+    <string name="suggest_poem_name_field">Ваше имя (необязательно)</string>
+    <string name="suggest_poem_submit">Отправить</string>
+    <string name="suggest_poem_error_empty_fields">Заполните автора и текст стиха</string>
+    <string name="suggest_poem_error_short_text">Текст стиха слишком короткий</string>
+    <string name="suggest_poem_error_limit">Вы достигли лимита на сегодня. Попробуйте завтра</string>
+    <string name="suggest_poem_error_network">Не удалось отправить. Проверьте подключение к интернету</string>
+    <string name="suggest_poem_success_title">Спасибо!</string>
+    <string name="suggest_poem_success_message">Ваш стих отправлен на проверку. Если всё хорошо, он скоро появится в приложении.</string>
+    <string name="suggest_poem_send_another">Предложить ещё один стих</string>
+    <string name="suggest_poem_error_rejected">Отправка заявок для этого устройства недоступна</string>
+</resources>

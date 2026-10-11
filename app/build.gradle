@@ -42,12 +42,15 @@ dependencies {
     implementation module.quiz
     implementation module.quiz_ui
     implementation module.poem_of_day
+    implementation module.suggest_poem
 
     implementation library.activity_compose
     implementation library.appcompat
     implementation library.splash_screen
     implementation platform(library.firebase_bom)
     implementation library.firestore_ktx
+    implementation library.app_check_play_integrity
+    debugImplementation library.app_check_debug
     implementation groups.navigation
     implementation library.work_runtime
     implementation library.koin_workmanager

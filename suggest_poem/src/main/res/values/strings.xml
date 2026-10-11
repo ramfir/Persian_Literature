@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="suggest_poem_hint">Send us a poem you love. We will check it and add it to the app.</string>
+    <string name="suggest_poem_title_field">Poem title (optional)</string>
+    <string name="suggest_poem_author_field">Author</string>
+    <string name="suggest_poem_text_field">Poem text</string>
+    <string name="suggest_poem_name_field">Your name (optional)</string>
+    <string name="suggest_poem_submit">Send</string>
+    <string name="suggest_poem_error_empty_fields">Please fill in the author and the poem text</string>
+    <string name="suggest_poem_error_short_text">The poem text is too short</string>
+    <string name="suggest_poem_error_limit">You have reached today\'s limit. Please try again tomorrow</string>
+    <string name="suggest_poem_error_network">Could not send the suggestion. Please check your connection</string>
+    <string name="suggest_poem_success_title">Thank you!</string>
+    <string name="suggest_poem_success_message">Your poem has been sent for review. If everything is fine, it will appear in the app soon.</string>
+    <string name="suggest_poem_send_another">Suggest another poem</string>
+    <string name="suggest_poem_error_rejected">Sending suggestions is not available for this device</string>
+</resources>

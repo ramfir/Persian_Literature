@@ -47,6 +47,9 @@ ext {
 
             firebase_bom           : ("com.google.firebase:firebase-bom:$firebase_bom_version"),
             firestore_ktx          :("com.google.firebase:firebase-firestore-ktx"),
+            firebase_auth          :("com.google.firebase:firebase-auth"),
+            app_check_play_integrity:("com.google.firebase:firebase-appcheck-playintegrity"),
+            app_check_debug        :("com.google.firebase:firebase-appcheck-debug"),
 
             coroutines_play_services: ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_play_services_version"),
 
@@ -78,7 +81,8 @@ ext {
             quiz_api        : project(":quiz_api"),
             quiz            : project(":quiz"),
             quiz_ui         : project(":quiz_ui"),
-            poem_of_day     : project(":poem_of_day")
+            poem_of_day     : project(":poem_of_day"),
+            suggest_poem    : project(":suggest_poem")
     ]
     groups = [
             compose      : [

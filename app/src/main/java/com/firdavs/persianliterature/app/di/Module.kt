@@ -9,6 +9,7 @@ import com.firdavs.persianliterature.author.ui.di.authorUiModule
 import com.firdavs.persianliterature.poem_of_day.di.poemOfDayModule
 import com.firdavs.persianliterature.quiz.di.quizModule
 import com.firdavs.persianliterature.quiz.ui.di.quizUiModule
+import com.firdavs.persianliterature.suggest_poem.di.suggestPoemModule
 import com.firdavs.persianliterature.settings.data.LanguageManagerImpl
 import com.firdavs.persianliterature.settings.data.NotificationManagerImpl
 import com.firdavs.persianliterature.settings.data.UpdateManagerImpl
@@ -51,6 +52,7 @@ val appModule = module {
         audioModule,
         quizModule,
         quizUiModule,
-        poemOfDayModule
+        poemOfDayModule,
+        suggestPoemModule
     )
 }

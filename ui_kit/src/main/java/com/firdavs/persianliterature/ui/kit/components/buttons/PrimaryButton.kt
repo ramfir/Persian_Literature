@@ -7,6 +7,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import com.firdavs.persianliterature.ui.kit.H4Text
@@ -27,6 +28,7 @@ fun PrimaryButton(
     maxLines: Int = Int.MAX_VALUE,
     overflow: TextOverflow = TextOverflow.Clip,
     fontSize: TextUnit = TextUnit.Unspecified,
+    textAlign: TextAlign = TextAlign.Center,
     onClick: () -> Unit
 ) {
     Button(
@@ -40,7 +42,8 @@ fun PrimaryButton(
             text = text,
             maxLines = maxLines,
             overflow = overflow,
-            fontSize = fontSize
+            fontSize = fontSize,
+            textAlign = textAlign
         )
     }
 }

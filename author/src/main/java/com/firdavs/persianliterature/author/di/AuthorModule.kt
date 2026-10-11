@@ -11,15 +11,19 @@ import com.firdavs.persianliterature.author.db.migration.MIGRATION_1_2
 import com.firdavs.persianliterature.author.db.migration.MIGRATION_2_3
 import com.firdavs.persianliterature.author.db.migration.MIGRATION_3_4
 import com.firdavs.persianliterature.author.db.migration.MIGRATION_4_5
+import com.firdavs.persianliterature.author.manager.AnonymousAuthManagerImpl
 import com.firdavs.persianliterature.author.manager.NewWorksNotificationManagerImpl
 import com.firdavs.persianliterature.author.repository.AuthorRepositoryImpl
 import com.firdavs.persianliterature.author.repository.FavouritesRepositoryImpl
 import com.firdavs.persianliterature.author.repository.PoemRepositoryImpl
+import com.firdavs.persianliterature.author.repository.PoemSuggestionRepositoryImpl
 import com.firdavs.persianliterature.author.repository.WorksRepositoryImpl
+import com.firdavs.persianliterature.author_api.manager.AnonymousAuthManager
 import com.firdavs.persianliterature.author_api.manager.NewWorksNotificationManager
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
 import com.firdavs.persianliterature.author_api.repository.FavouritesRepository
 import com.firdavs.persianliterature.author_api.repository.PoemRepository
+import com.firdavs.persianliterature.author_api.repository.PoemSuggestionRepository
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
@@ -58,6 +62,14 @@ val authorModule = module {
     single<PoemRepository> {
         PoemRepositoryImpl(
             poemsDao = get(),
+            languageManager = get(),
+            context = androidContext()
+        )
+    }
+    single<AnonymousAuthManager> { AnonymousAuthManagerImpl() }
+    single<PoemSuggestionRepository> {
+        PoemSuggestionRepositoryImpl(
+            anonymousAuthManager = get(),
             languageManager = get(),
             context = androidContext()
         )

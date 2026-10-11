@@ -2,6 +2,7 @@ package com.firdavs.persianliterature.author.ui.work_details
 
 import android.annotation.SuppressLint
 import android.content.Context
+import androidx.core.content.edit
 import androidx.lifecycle.viewModelScope
 import com.firdavs.persianliterature.audio.api.player.PlaybackState
 import com.firdavs.persianliterature.audio.api.service.AudioServiceController
@@ -59,7 +60,7 @@ class WorkDetailsViewModel(
         val newSize = (state.value.fontSizeSp + delta)
             .coerceIn(WorkDetailsUiState.MIN_FONT_SIZE_SP, WorkDetailsUiState.MAX_FONT_SIZE_SP)
         if (newSize == state.value.fontSizeSp) return
-        readerPrefs.edit().putInt(KEY_FONT_SIZE, newSize).apply()
+        readerPrefs.edit { putInt(KEY_FONT_SIZE, newSize) }
         post { it.copy(fontSizeSp = newSize) }
     }
 

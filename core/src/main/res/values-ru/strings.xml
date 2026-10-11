@@ -9,4 +9,5 @@
     <string name="poem_of_day">Стих дня</string>
     <string name="audio_books">Аудиокниги</string>
     <string name="quiz">Викторина</string>
+    <string name="suggest_poem">Предложить стих</string>
 </resources>

@@ -35,6 +35,7 @@ import com.firdavs.persianliterature.core.model.Chapter
 import com.firdavs.persianliterature.quiz.ui.list.QuizListEntryPoint
 import com.firdavs.persianliterature.quiz.ui.play.QuizPlayEntryPoint
 import com.firdavs.persianliterature.quiz.ui.result.QuizResultEntryPoint
+import com.firdavs.persianliterature.suggest_poem.SuggestPoemEntryPoint
 import com.firdavs.persianliterature.ui.kit.theme.localizedContext
 
 @Suppress("MagicNumber", "LongMethod")
@@ -96,6 +97,10 @@ fun Navigator(
 
     BackHandler(onBack = onBack)
 
+    val onChapterClick: (Chapter) -> Unit = { chapter ->
+        backStack.startNewRoot(chapter.toRoute())
+    }
+
     NavDisplay(
         modifier = modifier,
         backStack = backStack,
@@ -107,53 +112,26 @@ fun Navigator(
             entry<Route.AuthorsList> {
                 AuthorsListEntryPoint(
                     onAuthorClick = { backStack.next(Route.AuthorDetails(it)) },
-                    onChapterClick = { chapter ->
-                        when (chapter) {
-                            Chapter.AllWorks -> backStack.startNewRoot(Route.AllWorks)
-                            Chapter.PoemOfDay -> backStack.startNewRoot(Route.PoemOfDay())
-                            Chapter.AudioBooks -> backStack.startNewRoot(Route.AudioBooks)
-                            Chapter.Quiz -> backStack.startNewRoot(Route.Quiz)
-                            Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
-                            Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
-                            Chapter.Settings -> backStack.startNewRoot(Route.Settings)
-                            else -> {}
-                        }
-                    }
+                    onChapterClick = onChapterClick
                 )
             }
             entry<Route.AllWorks> {
                 AllWorksEntryPoint(
                     onAuthorClick = { backStack.next(Route.AuthorDetails(it)) },
                     onWorkClick = { backStack.next(Route.WorkDetails(it)) },
-                    onChapterClick = { chapter ->
-                        when (chapter) {
-                            Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
-                            Chapter.PoemOfDay -> backStack.startNewRoot(Route.PoemOfDay())
-                            Chapter.AudioBooks -> backStack.startNewRoot(Route.AudioBooks)
-                            Chapter.Quiz -> backStack.startNewRoot(Route.Quiz)
-                            Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
-                            Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
-                            Chapter.Settings -> backStack.startNewRoot(Route.Settings)
-                            else -> {}
-                        }
-                    }
+                    onChapterClick = onChapterClick
                 )
             }
             entry<Route.PoemOfDay> {
                 PoemOfDayEntryPoint(
                     poemId = it.poemId,
-                    onChapterClick = { chapter ->
-                        when (chapter) {
-                            Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
-                            Chapter.AllWorks -> backStack.startNewRoot(Route.AllWorks)
-                            Chapter.AudioBooks -> backStack.startNewRoot(Route.AudioBooks)
-                            Chapter.Quiz -> backStack.startNewRoot(Route.Quiz)
-                            Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
-                            Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
-                            Chapter.Settings -> backStack.startNewRoot(Route.Settings)
-                            else -> {}
-                        }
-                    }
+                    onSuggestPoemClick = { backStack.next(Route.SuggestPoem) },
+                    onChapterClick = onChapterClick
+                )
+            }
+            entry<Route.SuggestPoem> {
+                SuggestPoemEntryPoint(
+                    onChapterClick = onChapterClick
                 )
             }
             entry<Route.AuthorDetails> {
@@ -171,36 +149,14 @@ fun Navigator(
             }
             entry<Route.AudioBooks> {
                 AudioBooksEntryPoint(
-                    onChapterClick = { chapter ->
-                        when (chapter) {
-                            Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
-                            Chapter.AllWorks -> backStack.startNewRoot(Route.AllWorks)
-                            Chapter.PoemOfDay -> backStack.startNewRoot(Route.PoemOfDay())
-                            Chapter.Quiz -> backStack.startNewRoot(Route.Quiz)
-                            Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
-                            Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
-                            Chapter.Settings -> backStack.startNewRoot(Route.Settings)
-                            else -> {}
-                        }
-                    },
+                    onChapterClick = onChapterClick,
                     onWorkClick = { backStack.next(Route.WorkDetails(it)) }
                 )
             }
             entry<Route.Quiz> {
                 QuizListEntryPoint(
                     onQuizClick = { backStack.next(Route.QuizPlay(it)) },
-                    onChapterClick = { chapter ->
-                        when (chapter) {
-                            Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
-                            Chapter.AllWorks -> backStack.startNewRoot(Route.AllWorks)
-                            Chapter.PoemOfDay -> backStack.startNewRoot(Route.PoemOfDay())
-                            Chapter.AudioBooks -> backStack.startNewRoot(Route.AudioBooks)
-                            Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
-                            Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
-                            Chapter.Settings -> backStack.startNewRoot(Route.Settings)
-                            else -> {}
-                        }
-                    }
+                    onChapterClick = onChapterClick
                 )
             }
             entry<Route.QuizPlay> {
@@ -231,34 +187,12 @@ fun Navigator(
             }
             entry<Route.AboutApp> {
                 AboutAppEntryPoint(
-                    onChapterClick = { chapter ->
-                        when (chapter) {
-                            Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
-                            Chapter.AllWorks -> backStack.startNewRoot(Route.AllWorks)
-                            Chapter.PoemOfDay -> backStack.startNewRoot(Route.PoemOfDay())
-                            Chapter.AudioBooks -> backStack.startNewRoot(Route.AudioBooks)
-                            Chapter.Quiz -> backStack.startNewRoot(Route.Quiz)
-                            Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
-                            Chapter.Settings -> backStack.startNewRoot(Route.Settings)
-                            else -> {}
-                        }
-                    }
+                    onChapterClick = onChapterClick
                 )
             }
             entry<Route.Favourites> {
                 FavouritesEntryPoint(
-                    onChapterClick = { chapter ->
-                        when (chapter) {
-                            Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
-                            Chapter.AllWorks -> backStack.startNewRoot(Route.AllWorks)
-                            Chapter.PoemOfDay -> backStack.startNewRoot(Route.PoemOfDay())
-                            Chapter.AudioBooks -> backStack.startNewRoot(Route.AudioBooks)
-                            Chapter.Quiz -> backStack.startNewRoot(Route.Quiz)
-                            Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
-                            Chapter.Settings -> backStack.startNewRoot(Route.Settings)
-                            else -> {}
-                        }
-                    },
+                    onChapterClick = onChapterClick,
                     onAuthorClick = { backStack.next(Route.AuthorDetails(it)) },
                     onWorkClick = { backStack.next(Route.WorkDetails(it)) },
                     onPoemClick = { backStack.next(Route.PoemOfDay(it)) }
@@ -266,18 +200,7 @@ fun Navigator(
             }
             entry<Route.Settings> {
                 SettingsEntryPoint(
-                    onChapterClick = { chapter ->
-                        when (chapter) {
-                            Chapter.Authors -> backStack.startNewRoot(Route.AuthorsList)
-                            Chapter.AllWorks -> backStack.startNewRoot(Route.AllWorks)
-                            Chapter.PoemOfDay -> backStack.startNewRoot(Route.PoemOfDay())
-                            Chapter.AudioBooks -> backStack.startNewRoot(Route.AudioBooks)
-                            Chapter.Quiz -> backStack.startNewRoot(Route.Quiz)
-                            Chapter.AboutApp -> backStack.startNewRoot(Route.AboutApp)
-                            Chapter.Favourites -> backStack.startNewRoot(Route.Favourites)
-                            else -> {}
-                        }
-                    },
+                    onChapterClick = onChapterClick,
                     onChangeLanguageClick = { backStack.next(Route.Language) }
                 )
             }
@@ -288,4 +211,16 @@ fun Navigator(
             }
         }
     )
+}
+
+private fun Chapter.toRoute(): Route = when (this) {
+    Chapter.Authors -> Route.AuthorsList
+    Chapter.AllWorks -> Route.AllWorks
+    Chapter.PoemOfDay -> Route.PoemOfDay()
+    Chapter.SuggestPoem -> Route.SuggestPoem
+    Chapter.AudioBooks -> Route.AudioBooks
+    Chapter.Quiz -> Route.Quiz
+    Chapter.Favourites -> Route.Favourites
+    Chapter.Settings -> Route.Settings
+    Chapter.AboutApp -> Route.AboutApp
 }
