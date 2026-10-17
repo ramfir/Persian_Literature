@@ -5,6 +5,7 @@
     <!-- Update Feature -->
     <string name="update_available_title">Доступно обновление</string>
     <string name="update_available_message">Доступна новая версия приложения Сокровищница Литературы. Обновите сейчас, чтобы получить последние функции и улучшения.</string>
+    <string name="update_whats_new_title">Что нового</string>
     <string name="update_button">Обновить</string>
     <string name="update_later_button">Позже</string>
     <string name="update_downloading">Загрузка обновления…</string>

@@ -10,15 +10,19 @@ import com.firdavs.persianliterature.author_api.manager.NewWorksNotificationMana
 import com.firdavs.persianliterature.author_api.repository.AuthorRepository
 import com.firdavs.persianliterature.author_api.repository.PoemRepository
 import com.firdavs.persianliterature.author_api.repository.WorksRepository
+import com.firdavs.persianliterature.app.BuildConfig
 import com.firdavs.persianliterature.core.presentation.BaseViewModel
 import com.firdavs.persianliterature.quiz_api.repository.QuestionRepository
 import com.firdavs.persianliterature.quiz_api.repository.QuizRepository
 import com.firdavs.persianliterature.settings.api.Language
 import com.firdavs.persianliterature.settings.api.LanguageManager
 import com.firdavs.persianliterature.settings.api.NotificationManager
+import com.firdavs.persianliterature.settings.api.ReleaseNotes
+import com.firdavs.persianliterature.settings.api.ReleaseNotesRepository
 import com.firdavs.persianliterature.settings.api.UpdateInfo
 import com.firdavs.persianliterature.settings.api.UpdateManager
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import androidx.core.content.edit
 
 class MainViewModel(
@@ -31,6 +35,7 @@ class MainViewModel(
     private val languageManager: LanguageManager,
     private val notificationManager: NotificationManager,
     private val updateManager: UpdateManager,
+    private val releaseNotesRepository: ReleaseNotesRepository,
     private val newWorksNotificationManager: NewWorksNotificationManager
 ) : BaseViewModel<MainActivityUiState>(MainActivityUiState()) {
 
@@ -190,7 +195,8 @@ class MainViewModel(
             val updateInfo = updateManager.checkForUpdate()
             when (updateInfo) {
                 is UpdateInfo.UpdateAvailable -> {
-                    post { it.copy(showUpdateDialog = true) }
+                    val notes = loadReleaseNotes(updateInfo.availableVersionCode)
+                    post { it.copy(showUpdateDialog = true, updateReleaseNotes = notes) }
                 }
                 is UpdateInfo.UpdateDownloaded -> {
                     post { it.copy(showInstallPrompt = true) }
@@ -198,6 +204,16 @@ class MainViewModel(
                 else -> { /* No update available */ }
             }
         }
+    }
+
+    private suspend fun loadReleaseNotes(availableVersionCode: Int): List<ReleaseNotes> {
+        // Don't hold the update dialog for long if Firestore is slow - fall back to generic message
+        return withTimeoutOrNull(RELEASE_NOTES_TIMEOUT_MS) {
+            releaseNotesRepository.getReleaseNotes(
+                fromVersionCode = BuildConfig.VERSION_CODE,
+                toVersionCode = availableVersionCode
+            )
+        }.orEmpty()
     }
 
     private fun observeUpdateState() {
@@ -211,11 +227,11 @@ class MainViewModel(
     }
 
     fun onUpdateDialogDismissed() {
-        post { it.copy(showUpdateDialog = false) }
+        post { it.copy(showUpdateDialog = false, updateReleaseNotes = emptyList()) }
     }
 
     fun onUpdateClicked(activity: Activity) {
-        post { it.copy(showUpdateDialog = false) }
+        post { it.copy(showUpdateDialog = false, updateReleaseNotes = emptyList()) }
         viewModelScope.launch {
             updateManager.startFlexibleUpdate(activity)
         }
@@ -243,5 +259,6 @@ class MainViewModel(
         private const val TAG = "MainViewModel"
         private const val PREF_NAME = "app_preferences"
         private const val KEY_FIRST_LAUNCH = "is_first_launch"
+        private const val RELEASE_NOTES_TIMEOUT_MS = 3_000L
     }
 }

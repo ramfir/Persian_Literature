@@ -5,6 +5,7 @@
     <!-- Update Feature -->
     <string name="update_available_title">Навсозӣ дастрас аст</string>
     <string name="update_available_message">Версияи нави барномаи Ганҷи Адабиёт дастрас аст. Ҳозир навсозӣ кунед, то имконоти нав ва беҳтаршавиҳоро гиред.</string>
+    <string name="update_whats_new_title">Навгониҳо</string>
     <string name="update_button">Навсозӣ кунед</string>
     <string name="update_later_button">Баъдтар</string>
     <string name="update_downloading">Боргирии навсозӣ…</string>

@@ -5,6 +5,7 @@
     <!-- Update Feature -->
     <string name="update_available_title">Update Available</string>
     <string name="update_available_message">A new version of Treasure of Literature is available. Update now to get the latest features and improvements.</string>
+    <string name="update_whats_new_title">What\'s new</string>
     <string name="update_button">Update</string>
     <string name="update_later_button">Later</string>
     <string name="update_downloading">Downloading update…</string>

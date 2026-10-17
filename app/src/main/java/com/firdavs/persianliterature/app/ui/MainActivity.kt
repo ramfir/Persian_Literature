@@ -113,6 +113,7 @@ class MainActivity : ComponentActivity() {
 
                         if (state.showUpdateDialog) {
                             UpdateDialog(
+                                releaseNotes = state.updateReleaseNotes,
                                 onUpdate = { viewModel.onUpdateClicked(this@MainActivity) },
                                 onDismiss = { viewModel.onUpdateDialogDismissed() }
                             )

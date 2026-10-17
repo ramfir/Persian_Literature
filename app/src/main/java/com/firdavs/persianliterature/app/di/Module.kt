@@ -12,6 +12,7 @@ import com.firdavs.persianliterature.quiz.ui.di.quizUiModule
 import com.firdavs.persianliterature.suggest_poem.di.suggestPoemModule
 import com.firdavs.persianliterature.settings.data.LanguageManagerImpl
 import com.firdavs.persianliterature.settings.data.NotificationManagerImpl
+import com.firdavs.persianliterature.settings.data.ReleaseNotesRepositoryImpl
 import com.firdavs.persianliterature.settings.data.UpdateManagerImpl
 import com.firdavs.persianliterature.settings.ui.language.LanguageViewModel
 import com.firdavs.persianliterature.settings.ui.main.SettingsViewModel
@@ -19,6 +20,7 @@ import com.firdavs.persianliterature.settings.worker.DailyNotificationWorker
 import com.firdavs.persianliterature.settings.api.LanguageManager
 import com.firdavs.persianliterature.settings.api.LocaleHolder
 import com.firdavs.persianliterature.settings.api.NotificationManager
+import com.firdavs.persianliterature.settings.api.ReleaseNotesRepository
 import com.firdavs.persianliterature.settings.api.UpdateManager
 import com.firdavs.persianliterature.util.di.utilModule
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -35,6 +37,7 @@ val appModule = module {
     viewModelOf(::LanguageViewModel)
     single { LanguageManagerImpl(get()) } binds arrayOf(LanguageManager::class, LocaleHolder::class)
     singleOf(::NotificationManagerImpl) bind NotificationManager::class
+    singleOf(::ReleaseNotesRepositoryImpl) bind ReleaseNotesRepository::class
     single<UpdateManager> {
         UpdateManagerImpl(
             appUpdateManager = AppUpdateManagerFactory.create(get()),
